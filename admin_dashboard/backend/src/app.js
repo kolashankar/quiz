@@ -18,6 +18,8 @@ const subsectionRoutes = require('./routes/subsection/admin');
 const questionRoutes = require('./routes/question/admin');
 const analyticsRoutes = require('./routes/analytics/admin');
 const aiRoutes = require('./routes/ai/ai');
+const syllabusRoutes = require('./routes/syllabus/admin');
+const notificationRoutes = require('./routes/notification/admin');
 
 // Import middleware
 const errorHandler = require('./middleware/error/errorHandler');
