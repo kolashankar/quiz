@@ -219,7 +219,7 @@ router.post('/batch-delete', async (req, res) => {
   }
 });
 
-// CSV Bulk Upload
+// CSV and Excel Bulk Upload
 router.post('/bulk-upload', upload.single('file'), async (req, res) => {
   try {
     if (!req.file) {
@@ -233,36 +233,66 @@ router.post('/bulk-upload', upload.single('file'), async (req, res) => {
 
     const results = [];
     const errors = [];
-    
-    // Read and parse CSV file
-    const stream = fs.createReadStream(req.file.path)
-      .pipe(csvParser());
+    const fileExtension = path.extname(req.file.originalname).toLowerCase();
+    let rows = [];
 
-    for await (const row of stream) {
+    // Parse file based on extension
+    if (fileExtension === '.csv') {
+      // Parse CSV file
+      const stream = fs.createReadStream(req.file.path)
+        .pipe(csvParser());
+
+      for await (const row of stream) {
+        rows.push(row);
+      }
+    } else if (fileExtension === '.xlsx' || fileExtension === '.xls') {
+      // Parse Excel file
+      const workbook = XLSX.readFile(req.file.path);
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      rows = XLSX.utils.sheet_to_json(worksheet);
+    } else {
+      fs.unlinkSync(req.file.path);
+      return res.status(400).json({ error: 'Invalid file format. Only CSV and Excel (.xlsx, .xls) files are supported' });
+    }
+
+    // Process each row
+    for (const row of rows) {
       try {
-        // Parse CSV row
+        // Parse row data
         const question = {
-          text: row.question || row.text,
+          text: row.question || row.text || row.Question || row.Text,
           options: [
-            row.option1 || row.optionA,
-            row.option2 || row.optionB,
-            row.option3 || row.optionC,
-            row.option4 || row.optionD
+            row.option1 || row.optionA || row.Option1 || row.OptionA,
+            row.option2 || row.optionB || row.Option2 || row.OptionB,
+            row.option3 || row.optionC || row.Option3 || row.OptionC,
+            row.option4 || row.optionD || row.Option4 || row.OptionD
           ],
-          correctAnswer: parseInt(row.correctAnswer || row.correct_answer) || 0,
-          explanation: row.explanation || '',
-          difficulty: row.difficulty || 'medium',
-          tags: row.tags ? row.tags.split(',').map(t => t.trim()) : [],
-          timeLimit: parseInt(row.timeLimit || row.time_limit) || 60,
-          marks: parseInt(row.marks) || 1,
-          negativeMarks: parseFloat(row.negativeMarks || row.negative_marks) || 0,
+          correctAnswer: parseInt(row.correctAnswer || row.correct_answer || row.CorrectAnswer || row.Correct_Answer) || 0,
+          explanation: row.explanation || row.Explanation || '',
+          difficulty: (row.difficulty || row.Difficulty || 'medium').toLowerCase(),
+          tags: row.tags || row.Tags ? String(row.tags || row.Tags).split(',').map(t => t.trim()) : [],
+          timeLimit: parseInt(row.timeLimit || row.time_limit || row.TimeLimit || row.Time_Limit) || 60,
+          marks: parseInt(row.marks || row.Marks) || 1,
+          negativeMarks: parseFloat(row.negativeMarks || row.negative_marks || row.NegativeMarks || row.Negative_Marks) || 0,
           subsectionId,
-          isActive: row.isActive !== 'false'
+          isActive: (row.isActive || row.IsActive) !== 'false' && (row.isActive || row.IsActive) !== false
         };
 
         // Validate required fields
         if (!question.text || question.options.some(opt => !opt)) {
-          errors.push({ row, error: 'Missing required fields' });
+          errors.push({ row, error: 'Missing required fields (question text or options)' });
+          continue;
+        }
+
+        // Validate difficulty
+        if (!['easy', 'medium', 'hard'].includes(question.difficulty)) {
+          question.difficulty = 'medium';
+        }
+
+        // Validate correctAnswer
+        if (question.correctAnswer < 0 || question.correctAnswer > 3) {
+          errors.push({ row, error: 'Invalid correct answer index (must be 0-3)' });
           continue;
         }
 
@@ -283,14 +313,15 @@ router.post('/bulk-upload', upload.single('file'), async (req, res) => {
       created: results.length,
       errors: errors.length,
       results,
-      errorDetails: errors
+      errorDetails: errors,
+      message: `Successfully imported ${results.length} question(s) from ${fileExtension} file`
     });
   } catch (error) {
-    console.error('CSV upload error:', error);
+    console.error('Bulk upload error:', error);
     if (req.file) {
       fs.unlinkSync(req.file.path);
     }
-    res.status(500).json({ error: 'Server error during CSV upload' });
+    res.status(500).json({ error: 'Server error during bulk upload', details: error.message });
   }
 });
 
