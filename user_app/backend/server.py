@@ -2324,7 +2324,7 @@ async def update_push_token(
 @api_router.post("/admin/notifications/send")
 async def send_push_notifications(
     notification: SendNotificationRequest,
-    current_user: dict = Depends(get_current_admin_user)
+    current_user: dict = Depends(get_admin_user)
 ):
     """Send push notifications to users (Admin only)"""
     try:
