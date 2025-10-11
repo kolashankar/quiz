@@ -64,6 +64,8 @@ app.use('/api/admin/subsections', authMiddleware, subsectionRoutes);
 app.use('/api/admin/questions', authMiddleware, questionRoutes);
 app.use('/api/admin/analytics', authMiddleware, analyticsRoutes);
 app.use('/api/admin/ai', authMiddleware, aiRoutes);
+app.use('/api/admin/syllabus', authMiddleware, syllabusRoutes);
+app.use('/api/admin/notifications', authMiddleware, notificationRoutes);
 
 // Error handling middleware
 app.use(errorHandler);
