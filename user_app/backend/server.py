@@ -223,6 +223,17 @@ class AnalyticsResponse(BaseModel):
     weak_topics: List[Dict[str, Any]]
     improvement_suggestions: List[str]
 
+# Push Notification Models
+class PushTokenUpdate(BaseModel):
+    push_token: str
+
+class SendNotificationRequest(BaseModel):
+    title: str
+    body: str
+    data: Optional[Dict[str, Any]] = None
+    target_users: Optional[List[str]] = None  # User IDs, if None sends to all
+    exam_id: Optional[str] = None  # Send to users who selected this exam
+
 # ==================== HELPER FUNCTIONS ====================
 
 def verify_password(plain_password, hashed_password):
