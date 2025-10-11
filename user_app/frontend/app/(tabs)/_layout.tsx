@@ -89,5 +89,7 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
+    <CustomDrawer visible={drawerVisible} onClose={() => setDrawerVisible(false)} />
+    </>
   );
 }
