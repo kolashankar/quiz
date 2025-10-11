@@ -2430,7 +2430,7 @@ async def send_push_notifications(
 @api_router.get("/admin/notifications/history")
 async def get_notification_history(
     limit: int = 50,
-    current_user: dict = Depends(get_current_admin_user)
+    current_user: dict = Depends(get_admin_user)
 ):
     """Get notification history (Admin only)"""
     try:
