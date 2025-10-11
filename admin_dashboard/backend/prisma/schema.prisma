@@ -1,0 +1,243 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String
+  role      String   @default("user") // "admin" | "user"
+  name      String?
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  testResults TestResult[]
+  bookmarks   Bookmark[]
+  analytics   UserAnalytics[]
+
+  @@map("users")
+}
+
+model Exam {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  code        String   @unique // UPSC, JEE, NEET, etc.
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  subjects Subject[]
+
+  @@map("exams")
+}
+
+model Subject {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  code        String   // PHYS, CHEM, MATH, etc.
+  examId      String   @db.ObjectId
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  exam     Exam      @relation(fields: [examId], references: [id], onDelete: Cascade)
+  chapters Chapter[]
+
+  @@map("subjects")
+}
+
+model Chapter {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  code        String   // MECH, THERMO, etc.
+  subjectId   String   @db.ObjectId
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  topics  Topic[]
+
+  @@map("chapters")
+}
+
+model Topic {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  code        String   // FORCE, ENERGY, etc.
+  chapterId   String   @db.ObjectId
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  chapter   Chapter    @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  subtopics Subtopic[]
+
+  @@map("topics")
+}
+
+model Subtopic {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  code        String   // NEWTON_LAWS, WORK_ENERGY, etc.
+  topicId     String   @db.ObjectId
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  topic    Topic     @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  sections Section[]
+
+  @@map("subtopics")
+}
+
+model Section {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  code        String   // FIRST_LAW, SECOND_LAW, etc.
+  subtopicId  String   @db.ObjectId
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  subtopic    Subtopic     @relation(fields: [subtopicId], references: [id], onDelete: Cascade)
+  subsections Subsection[]
+
+  @@map("sections")
+}
+
+model Subsection {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  code        String   // APPLICATIONS, EXAMPLES, etc.
+  sectionId   String   @db.ObjectId
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  section   Section    @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  questions Question[]
+
+  @@map("subsections")
+}
+
+model Question {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  text           String
+  options        String[] // Array of 4 options
+  correctAnswer  Int      // Index of correct option (0-3)
+  explanation    String?
+  difficulty     String   @default("medium") // "easy" | "medium" | "hard"
+  tags           String[]
+  timeLimit      Int?     @default(60) // in seconds
+  marks          Int      @default(1)
+  negativeMarks  Float?   @default(0)
+  subsectionId   String   @db.ObjectId
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  subsection  Subsection   @relation(fields: [subsectionId], references: [id], onDelete: Cascade)
+  bookmarks   Bookmark[]
+
+  @@map("questions")
+}
+
+model TestResult {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  questions   String[] @db.ObjectId // Array of question IDs
+  answers     Int[]    // Array of selected answers
+  score       Int
+  totalMarks  Int
+  percentage  Float
+  percentile  Float?
+  timeTaken   Int      // in seconds
+  testType    String   @default("practice") // "practice" | "mock" | "previous_year"
+  createdAt   DateTime @default(now())
+
+  // Relations
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("test_results")
+}
+
+model Bookmark {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId
+  questionId String   @db.ObjectId
+  notes      String?
+  createdAt  DateTime @default(now())
+
+  // Relations
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questionId])
+  @@map("bookmarks")
+}
+
+model UserAnalytics {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String   @db.ObjectId
+  totalTests        Int      @default(0)
+  averageScore      Float    @default(0)
+  strongTopics      String[] // Topic codes where user performs well
+  weakTopics        String[] // Topic codes where user needs improvement
+  testsTaken        Int      @default(0)
+  questionsAnswered Int      @default(0)
+  correctAnswers    Int      @default(0)
+  lastActivity      DateTime @default(now())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+  @@map("user_analytics")
+}
+
+model AdminSettings {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  key           String   @unique
+  value         String
+  description   String?
+  category      String   @default("general") // "general" | "exam" | "scoring" | "ai"
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("admin_settings")
+}
