@@ -242,3 +242,33 @@ model AdminSettings {
 
   @@map("admin_settings")
 }
+
+model Syllabus {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  examId      String   @db.ObjectId
+  title       String
+  content     String   // Markdown content
+  aiGenerated Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  @@map("syllabuses")
+}
+
+model Notification {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  body        String
+  data        String?  // JSON string for additional data
+  targetUsers String?  // JSON array of user IDs
+  examId      String?  @db.ObjectId
+  sentCount   Int      @default(0)
+  status      String   @default("pending") // "pending" | "sent" | "failed"
+  createdAt   DateTime @default(now())
+
+  @@map("notifications")
+}
