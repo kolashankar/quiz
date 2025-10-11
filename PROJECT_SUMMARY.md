@@ -10,7 +10,7 @@ A comprehensive Quiz Android App supporting multiple competitive exams (UPSC, JE
 ### ✅ Phase 1: Complete Backend + Admin Dashboard (COMPLETED)
 
 #### 1. Backend API (FastAPI + MongoDB)
-**Location:** `/app/backend/`
+**Location:** `/user_app/backend/`
 
 **Features Implemented:**
 - ✅ JWT Authentication system (email/password)
