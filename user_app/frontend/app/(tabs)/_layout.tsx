@@ -1,29 +1,43 @@
+import React, { useState } from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native';
+import CustomDrawer from '../../src/components/navigation/CustomDrawer';
 
 export default function TabLayout() {
+  const [drawerVisible, setDrawerVisible] = useState(false);
+
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: '#007AFF',
-        tabBarInactiveTintColor: '#8E8E93',
-        tabBarStyle: {
-          backgroundColor: '#FFFFFF',
-          borderTopWidth: 1,
-          borderTopColor: '#E5E5E7',
-          paddingTop: 8,
-          paddingBottom: 8,
-          height: 60,
-        },
-        headerStyle: {
-          backgroundColor: '#007AFF',
-        },
-        headerTintColor: '#FFFFFF',
-        headerTitleStyle: {
-          fontWeight: '600',
-        },
-      }}
-    >
+    <>
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: '#007AFF',
+          tabBarInactiveTintColor: '#8E8E93',
+          tabBarStyle: {
+            backgroundColor: '#FFFFFF',
+            borderTopWidth: 1,
+            borderTopColor: '#E5E5E7',
+            paddingTop: 8,
+            paddingBottom: 8,
+            height: 60,
+          },
+          headerStyle: {
+            backgroundColor: '#007AFF',
+          },
+          headerTintColor: '#FFFFFF',
+          headerTitleStyle: {
+            fontWeight: '600',
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => setDrawerVisible(true)}
+              style={{ marginLeft: 16 }}
+            >
+              <Ionicons name="menu" size={28} color="#FFFFFF" />
+            </TouchableOpacity>
+          ),
+        }}
+      >
       <Tabs.Screen
         name="index"
         options={{
