@@ -4,6 +4,7 @@ const databaseConfig = require('../../config/database/prisma');
 const { adminMiddleware } = require('../../middleware/auth/authMiddleware');
 const multer = require('multer');
 const csvParser = require('csv-parser');
+const XLSX = require('xlsx');
 const fs = require('fs');
 const path = require('path');
 
