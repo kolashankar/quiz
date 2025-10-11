@@ -38,7 +38,8 @@ model Exam {
   updatedAt   DateTime @updatedAt
 
   // Relations
-  subjects Subject[]
+  subjects  Subject[]
+  syllabuses Syllabus[]
 
   @@map("exams")
 }
