@@ -336,4 +336,73 @@ router.get('/csv-template', (req, res) => {
   res.send(template);
 });
 
+// Download Excel template
+router.get('/excel-template', (req, res) => {
+  try {
+    const workbook = XLSX.utils.book_new();
+    
+    // Create sample data
+    const data = [
+      {
+        question: 'What is 2+2?',
+        option1: '2',
+        option2: '3',
+        option3: '4',
+        option4: '5',
+        correctAnswer: 2,
+        explanation: 'Simple addition: 2+2=4',
+        difficulty: 'easy',
+        tags: 'math,basic',
+        timeLimit: 60,
+        marks: 1,
+        negativeMarks: 0
+      },
+      {
+        question: 'Capital of France?',
+        option1: 'London',
+        option2: 'Paris',
+        option3: 'Berlin',
+        option4: 'Rome',
+        correctAnswer: 1,
+        explanation: 'Paris is the capital of France',
+        difficulty: 'medium',
+        tags: 'geography,europe',
+        timeLimit: 90,
+        marks: 2,
+        negativeMarks: 0.5
+      }
+    ];
+    
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    
+    // Set column widths
+    worksheet['!cols'] = [
+      { wch: 30 }, // question
+      { wch: 20 }, // option1
+      { wch: 20 }, // option2
+      { wch: 20 }, // option3
+      { wch: 20 }, // option4
+      { wch: 15 }, // correctAnswer
+      { wch: 40 }, // explanation
+      { wch: 12 }, // difficulty
+      { wch: 20 }, // tags
+      { wch: 12 }, // timeLimit
+      { wch: 10 }, // marks
+      { wch: 15 }  // negativeMarks
+    ];
+    
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Questions');
+    
+    // Generate buffer
+    const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+    
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=questions_template.xlsx');
+    res.send(buffer);
+  } catch (error) {
+    console.error('Excel template error:', error);
+    res.status(500).json({ error: 'Failed to generate Excel template' });
+  }
+});
+
 module.exports = router;
