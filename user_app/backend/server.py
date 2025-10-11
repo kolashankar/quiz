@@ -2298,6 +2298,180 @@ async def get_detailed_admin_analytics(
         }
     }
 
+# ==================== PUSH NOTIFICATIONS ====================
+
+# Update user's push token
+@api_router.post("/user/push-token")
+async def update_push_token(
+    token_data: PushTokenUpdate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Update user's Expo push notification token"""
+    try:
+        user_id = current_user['user_id']
+        
+        # Update user's push token in database
+        await db.users.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$set": {"push_token": token_data.push_token, "updated_at": datetime.utcnow()}}
+        )
+        
+        return {"success": True, "message": "Push token updated successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to update push token: {str(e)}")
+
+# Admin: Send push notifications
+@api_router.post("/admin/notifications/send")
+async def send_push_notifications(
+    notification: SendNotificationRequest,
+    current_user: dict = Depends(get_current_admin_user)
+):
+    """Send push notifications to users (Admin only)"""
+    try:
+        # Build query to find target users
+        query = {}
+        
+        if notification.target_users:
+            # Send to specific users
+            query["_id"] = {"$in": [ObjectId(uid) for uid in notification.target_users]}
+        elif notification.exam_id:
+            # Send to users who selected this exam
+            query["selected_exam_id"] = notification.exam_id
+        # else: send to all users
+        
+        # Get users with push tokens
+        users = await db.users.find(
+            {**query, "push_token": {"$exists": True, "$ne": None}},
+            {"push_token": 1, "email": 1}
+        ).to_list(length=None)
+        
+        if not users:
+            return {
+                "success": True,
+                "sent_count": 0,
+                "message": "No users found with push tokens"
+            }
+        
+        # Prepare push messages
+        messages = []
+        for user in users:
+            push_token = user.get("push_token")
+            if push_token and push_token.startswith("ExponentPushToken"):
+                messages.append(PushMessage(
+                    to=push_token,
+                    title=notification.title,
+                    body=notification.body,
+                    data=notification.data or {},
+                    sound="default",
+                    badge=1
+                ))
+        
+        if not messages:
+            return {
+                "success": True,
+                "sent_count": 0,
+                "message": "No valid push tokens found"
+            }
+        
+        # Send notifications
+        client = PushClient()
+        sent_count = 0
+        failed_tokens = []
+        
+        try:
+            # Send in chunks of 100 (Expo limit)
+            chunk_size = 100
+            for i in range(0, len(messages), chunk_size):
+                chunk = messages[i:i + chunk_size]
+                tickets = client.publish_multiple(chunk)
+                
+                # Check for errors
+                for j, ticket in enumerate(tickets):
+                    if ticket.status == 'ok':
+                        sent_count += 1
+                    else:
+                        failed_tokens.append(chunk[j].to)
+                        logger.error(f"Failed to send notification: {ticket.message}")
+        
+        except PushServerError as e:
+            logger.error(f"Push server error: {e}")
+            raise HTTPException(status_code=500, detail=f"Push server error: {str(e)}")
+        except Exception as e:
+            logger.error(f"Error sending notifications: {e}")
+            raise HTTPException(status_code=500, detail=f"Error sending notifications: {str(e)}")
+        
+        # Store notification in database
+        await db.notifications.insert_one({
+            "title": notification.title,
+            "body": notification.body,
+            "data": notification.data,
+            "target_users": notification.target_users,
+            "exam_id": notification.exam_id,
+            "sent_count": sent_count,
+            "failed_count": len(failed_tokens),
+            "sent_by": current_user['user_id'],
+            "created_at": datetime.utcnow()
+        })
+        
+        return {
+            "success": True,
+            "sent_count": sent_count,
+            "failed_count": len(failed_tokens),
+            "message": f"Successfully sent {sent_count} notification(s)"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Send notifications error: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to send notifications: {str(e)}")
+
+# Get notification history (Admin)
+@api_router.get("/admin/notifications/history")
+async def get_notification_history(
+    limit: int = 50,
+    current_user: dict = Depends(get_current_admin_user)
+):
+    """Get notification history (Admin only)"""
+    try:
+        notifications = await db.notifications.find().sort("created_at", -1).limit(limit).to_list(length=limit)
+        
+        # Convert ObjectId to string
+        for notif in notifications:
+            notif["_id"] = str(notif["_id"])
+            if notif.get("sent_by"):
+                notif["sent_by"] = str(notif["sent_by"])
+        
+        return {"notifications": notifications, "total": len(notifications)}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch notification history: {str(e)}")
+
+# Get user's notifications
+@api_router.get("/user/notifications")
+async def get_user_notifications(
+    limit: int = 20,
+    current_user: dict = Depends(get_current_user)
+):
+    """Get user's notification history"""
+    try:
+        user_id = current_user['user_id']
+        
+        # Get notifications sent to this user or to all users
+        notifications = await db.notifications.find({
+            "$or": [
+                {"target_users": user_id},
+                {"target_users": None}
+            ]
+        }).sort("created_at", -1).limit(limit).to_list(length=limit)
+        
+        # Convert ObjectId to string
+        for notif in notifications:
+            notif["_id"] = str(notif["_id"])
+        
+        return {"notifications": notifications, "total": len(notifications)}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch notifications: {str(e)}")
+
 # Include the router
 app.include_router(api_router)
 
