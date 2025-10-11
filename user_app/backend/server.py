@@ -1589,6 +1589,697 @@ async def get_filtered_questions(
         ) for q in questions
     ]
 
+# ==================== SYLLABUS MANAGEMENT ====================
+
+class SyllabusCreate(BaseModel):
+    exam_id: str
+    title: str
+    content: str  # Detailed syllabus content
+    ai_generated: bool = False
+
+class SyllabusResponse(BaseModel):
+    id: str
+    exam_id: str
+    title: str
+    content: str
+    ai_generated: bool
+    created_at: datetime
+
+@api_router.post("/admin/syllabus", response_model=SyllabusResponse)
+async def create_syllabus(syllabus: SyllabusCreate, admin: dict = Depends(get_admin_user)):
+    syllabus_dict = {
+        **syllabus.dict(),
+        "created_at": datetime.utcnow()
+    }
+    result = await db.syllabuses.insert_one(syllabus_dict)
+    syllabus_dict["_id"] = result.inserted_id
+    
+    return SyllabusResponse(
+        id=str(syllabus_dict["_id"]),
+        exam_id=syllabus_dict["exam_id"],
+        title=syllabus_dict["title"],
+        content=syllabus_dict["content"],
+        ai_generated=syllabus_dict["ai_generated"],
+        created_at=syllabus_dict["created_at"]
+    )
+
+@api_router.get("/admin/syllabus", response_model=List[SyllabusResponse])
+async def get_syllabuses(exam_id: Optional[str] = None, admin: dict = Depends(get_admin_user)):
+    query = {"exam_id": exam_id} if exam_id else {}
+    syllabuses = await db.syllabuses.find(query).to_list(1000)
+    return [SyllabusResponse(
+        id=str(s["_id"]),
+        exam_id=s["exam_id"],
+        title=s["title"],
+        content=s["content"],
+        ai_generated=s.get("ai_generated", False),
+        created_at=s["created_at"]
+    ) for s in syllabuses]
+
+@api_router.get("/syllabus", response_model=List[SyllabusResponse])
+async def get_syllabuses_public(exam_id: Optional[str] = None):
+    query = {"exam_id": exam_id} if exam_id else {}
+    syllabuses = await db.syllabuses.find(query).to_list(1000)
+    return [SyllabusResponse(
+        id=str(s["_id"]),
+        exam_id=s["exam_id"],
+        title=s["title"],
+        content=s["content"],
+        ai_generated=s.get("ai_generated", False),
+        created_at=s["created_at"]
+    ) for s in syllabuses]
+
+@api_router.put("/admin/syllabus/{syllabus_id}", response_model=SyllabusResponse)
+async def update_syllabus(syllabus_id: str, syllabus: SyllabusCreate, admin: dict = Depends(get_admin_user)):
+    result = await db.syllabuses.update_one(
+        {"_id": ObjectId(syllabus_id)},
+        {"$set": syllabus.dict()}
+    )
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Syllabus not found")
+    
+    updated_syllabus = await db.syllabuses.find_one({"_id": ObjectId(syllabus_id)})
+    return SyllabusResponse(
+        id=str(updated_syllabus["_id"]),
+        exam_id=updated_syllabus["exam_id"],
+        title=updated_syllabus["title"],
+        content=updated_syllabus["content"],
+        ai_generated=updated_syllabus.get("ai_generated", False),
+        created_at=updated_syllabus["created_at"]
+    )
+
+@api_router.delete("/admin/syllabus/{syllabus_id}")
+async def delete_syllabus(syllabus_id: str, admin: dict = Depends(get_admin_user)):
+    result = await db.syllabuses.delete_one({"_id": ObjectId(syllabus_id)})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Syllabus not found")
+    return {"message": "Syllabus deleted successfully"}
+
+@api_router.post("/admin/syllabus/generate-ai")
+async def generate_syllabus_ai(exam_name: str, admin: dict = Depends(get_admin_user)):
+    """Generate syllabus using Gemini AI"""
+    try:
+        model = genai.GenerativeModel('gemini-pro')
+        
+        prompt = f"""
+        Generate a comprehensive syllabus for the {exam_name} examination. 
+        Include:
+        1. Overview of the exam
+        2. Subject-wise breakdown
+        3. Important topics for each subject
+        4. Recommended study approach
+        5. Key areas to focus on
+        
+        Format the response in a clear, structured manner with sections and bullet points.
+        """
+        
+        response = model.generate_content(prompt)
+        content = response.text.strip()
+        
+        return {
+            "success": True,
+            "exam_name": exam_name,
+            "generated_content": content
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"AI generation failed: {str(e)}")
+
+# ==================== PUSH NOTIFICATIONS ====================
+
+class PushTokenCreate(BaseModel):
+    token: str
+    device_type: str = "android"  # or "ios"
+
+class NotificationCreate(BaseModel):
+    title: str
+    body: str
+    data: Optional[Dict[str, Any]] = None
+    target_users: Optional[List[str]] = None  # User IDs, None for all users
+    exam_id: Optional[str] = None  # Target users of specific exam
+
+@api_router.post("/notifications/register-token")
+async def register_push_token(token_data: PushTokenCreate, current_user: dict = Depends(get_current_user)):
+    """Register Expo push notification token for user"""
+    await db.push_tokens.update_one(
+        {"user_id": str(current_user["_id"])},
+        {
+            "$set": {
+                "token": token_data.token,
+                "device_type": token_data.device_type,
+                "updated_at": datetime.utcnow()
+            },
+            "$setOnInsert": {
+                "created_at": datetime.utcnow()
+            }
+        },
+        upsert=True
+    )
+    return {"message": "Push token registered successfully"}
+
+@api_router.post("/admin/notifications/send")
+async def send_notification(notification: NotificationCreate, admin: dict = Depends(get_admin_user)):
+    """Send push notification to users"""
+    import requests
+    
+    # Get target tokens
+    query = {}
+    if notification.target_users:
+        query["user_id"] = {"$in": notification.target_users}
+    
+    tokens = await db.push_tokens.find(query).to_list(None)
+    
+    # If exam_id specified, filter by users who have taken tests for that exam
+    if notification.exam_id and not notification.target_users:
+        # Get users who have taken tests (simplified - in production, link tests to exams)
+        user_ids = set()
+        test_results = await db.test_results.find().to_list(None)
+        user_ids = {r["user_id"] for r in test_results}
+        tokens = [t for t in tokens if t["user_id"] in user_ids]
+    
+    # Prepare Expo push notifications
+    expo_messages = []
+    for token_doc in tokens:
+        if token_doc["token"].startswith("ExponentPushToken"):
+            message = {
+                "to": token_doc["token"],
+                "title": notification.title,
+                "body": notification.body,
+                "data": notification.data or {},
+                "sound": "default"
+            }
+            expo_messages.append(message)
+    
+    # Send to Expo Push API
+    if expo_messages:
+        try:
+            response = requests.post(
+                "https://exp.host/--/api/v2/push/send",
+                json=expo_messages,
+                headers={
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                }
+            )
+            response.raise_for_status()
+            
+            # Store notification in database
+            notification_doc = {
+                "title": notification.title,
+                "body": notification.body,
+                "data": notification.data,
+                "target_users": notification.target_users,
+                "exam_id": notification.exam_id,
+                "sent_count": len(expo_messages),
+                "created_at": datetime.utcnow()
+            }
+            await db.notifications.insert_one(notification_doc)
+            
+            return {
+                "success": True,
+                "sent_count": len(expo_messages),
+                "message": f"Notification sent to {len(expo_messages)} devices"
+            }
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Failed to send notification: {str(e)}")
+    
+    return {"success": False, "message": "No valid push tokens found"}
+
+@api_router.get("/notifications/history")
+async def get_notification_history(limit: int = 50, current_user: dict = Depends(get_current_user)):
+    """Get notification history for user"""
+    notifications = await db.notifications.find({
+        "$or": [
+            {"target_users": None},  # Global notifications
+            {"target_users": str(current_user["_id"])}
+        ]
+    }).sort("created_at", -1).limit(limit).to_list(limit)
+    
+    return [
+        {
+            "id": str(n["_id"]),
+            "title": n["title"],
+            "body": n["body"],
+            "data": n.get("data"),
+            "created_at": n["created_at"]
+        } for n in notifications
+    ]
+
+# ==================== PRACTICE MODE ====================
+
+class PracticeSessionSubmit(BaseModel):
+    question_id: str
+    user_answer: int
+    is_correct: bool
+
+@api_router.post("/practice/check-answer")
+async def check_practice_answer(
+    question_id: str,
+    user_answer: int,
+    current_user: dict = Depends(get_current_user)
+):
+    """Check answer during practice mode"""
+    question = await db.questions.find_one({"_id": ObjectId(question_id)})
+    if not question:
+        raise HTTPException(status_code=404, detail="Question not found")
+    
+    is_correct = user_answer == question["correct_answer"]
+    
+    # Store practice attempt
+    practice_doc = {
+        "user_id": str(current_user["_id"]),
+        "question_id": question_id,
+        "user_answer": user_answer,
+        "correct_answer": question["correct_answer"],
+        "is_correct": is_correct,
+        "timestamp": datetime.utcnow()
+    }
+    await db.practice_attempts.insert_one(practice_doc)
+    
+    return {
+        "is_correct": is_correct,
+        "correct_answer": question["correct_answer"],
+        "explanation": question.get("explanation", ""),
+        "options": question["options"]
+    }
+
+@api_router.get("/practice/history")
+async def get_practice_history(current_user: dict = Depends(get_current_user), limit: int = 50):
+    """Get practice history for user"""
+    attempts = await db.practice_attempts.find(
+        {"user_id": str(current_user["_id"])}
+    ).sort("timestamp", -1).limit(limit).to_list(limit)
+    
+    return attempts
+
+# ==================== ENHANCED ANALYTICS ====================
+
+@api_router.get("/analytics/subject-wise")
+async def get_subject_wise_analytics(current_user: dict = Depends(get_current_user)):
+    """Get subject-wise performance analytics"""
+    # Get all test results
+    results = await db.test_results.find({"user_id": str(current_user["_id"])}).to_list(None)
+    
+    subject_performance = {}
+    
+    for result in results:
+        for q in result["questions"]:
+            question = await db.questions.find_one({"_id": ObjectId(q["question_id"])})
+            if question:
+                # Traverse up to find subject
+                sub_section = await db.sub_sections.find_one({"_id": ObjectId(question["sub_section_id"])})
+                if sub_section:
+                    section = await db.sections.find_one({"_id": ObjectId(sub_section["section_id"])})
+                    if section:
+                        sub_topic = await db.sub_topics.find_one({"_id": ObjectId(section["sub_topic_id"])})
+                        if sub_topic:
+                            topic = await db.topics.find_one({"_id": ObjectId(sub_topic["topic_id"])})
+                            if topic:
+                                chapter = await db.chapters.find_one({"_id": ObjectId(topic["chapter_id"])})
+                                if chapter:
+                                    subject = await db.subjects.find_one({"_id": ObjectId(chapter["subject_id"])})
+                                    if subject:
+                                        subject_id = str(subject["_id"])
+                                        if subject_id not in subject_performance:
+                                            subject_performance[subject_id] = {
+                                                "subject_name": subject["name"],
+                                                "correct": 0,
+                                                "total": 0
+                                            }
+                                        
+                                        subject_performance[subject_id]["total"] += 1
+                                        if q["is_correct"]:
+                                            subject_performance[subject_id]["correct"] += 1
+    
+    # Calculate percentages
+    result_data = []
+    for subject_id, perf in subject_performance.items():
+        percentage = (perf["correct"] / perf["total"]) * 100 if perf["total"] > 0 else 0
+        result_data.append({
+            "subject_id": subject_id,
+            "subject_name": perf["subject_name"],
+            "correct": perf["correct"],
+            "total": perf["total"],
+            "percentage": round(percentage, 2)
+        })
+    
+    result_data.sort(key=lambda x: x["percentage"], reverse=True)
+    return {"subject_wise_performance": result_data}
+
+@api_router.get("/analytics/chapter-wise")
+async def get_chapter_wise_analytics(subject_id: Optional[str] = None, current_user: dict = Depends(get_current_user)):
+    """Get chapter-wise performance analytics"""
+    results = await db.test_results.find({"user_id": str(current_user["_id"])}).to_list(None)
+    
+    chapter_performance = {}
+    
+    for result in results:
+        for q in result["questions"]:
+            question = await db.questions.find_one({"_id": ObjectId(q["question_id"])})
+            if question:
+                # Traverse up to find chapter
+                sub_section = await db.sub_sections.find_one({"_id": ObjectId(question["sub_section_id"])})
+                if sub_section:
+                    section = await db.sections.find_one({"_id": ObjectId(sub_section["section_id"])})
+                    if section:
+                        sub_topic = await db.sub_topics.find_one({"_id": ObjectId(section["sub_topic_id"])})
+                        if sub_topic:
+                            topic = await db.topics.find_one({"_id": ObjectId(sub_topic["topic_id"])})
+                            if topic:
+                                chapter = await db.chapters.find_one({"_id": ObjectId(topic["chapter_id"])})
+                                if chapter:
+                                    # Filter by subject if specified
+                                    if subject_id and chapter["subject_id"] != subject_id:
+                                        continue
+                                    
+                                    chapter_id = str(chapter["_id"])
+                                    if chapter_id not in chapter_performance:
+                                        chapter_performance[chapter_id] = {
+                                            "chapter_name": chapter["name"],
+                                            "subject_id": chapter["subject_id"],
+                                            "correct": 0,
+                                            "total": 0
+                                        }
+                                    
+                                    chapter_performance[chapter_id]["total"] += 1
+                                    if q["is_correct"]:
+                                        chapter_performance[chapter_id]["correct"] += 1
+    
+    # Calculate percentages
+    result_data = []
+    for chapter_id, perf in chapter_performance.items():
+        percentage = (perf["correct"] / perf["total"]) * 100 if perf["total"] > 0 else 0
+        result_data.append({
+            "chapter_id": chapter_id,
+            "chapter_name": perf["chapter_name"],
+            "subject_id": perf["subject_id"],
+            "correct": perf["correct"],
+            "total": perf["total"],
+            "percentage": round(percentage, 2)
+        })
+    
+    result_data.sort(key=lambda x: x["percentage"], reverse=True)
+    return {"chapter_wise_performance": result_data}
+
+@api_router.get("/analytics/export")
+async def export_analytics(format: str = "json", current_user: dict = Depends(get_current_user)):
+    """Export user analytics data"""
+    # Get all data
+    test_results = await db.test_results.find({"user_id": str(current_user["_id"])}).to_list(None)
+    analytics = await get_user_analytics(current_user)
+    subject_analytics = await get_subject_wise_analytics(current_user)
+    
+    export_data = {
+        "user_id": str(current_user["_id"]),
+        "user_email": current_user["email"],
+        "total_tests": len(test_results),
+        "average_score": analytics.average_score,
+        "strong_topics": analytics.strong_topics,
+        "weak_topics": analytics.weak_topics,
+        "subject_wise_performance": subject_analytics["subject_wise_performance"],
+        "test_history": [
+            {
+                "test_id": str(r["_id"]),
+                "score": r["score"],
+                "total_questions": r["total_questions"],
+                "correct_answers": r["correct_answers"],
+                "percentile": r["percentile"],
+                "timestamp": r["timestamp"].isoformat()
+            } for r in test_results
+        ],
+        "exported_at": datetime.utcnow().isoformat()
+    }
+    
+    if format == "csv":
+        # Convert to CSV format (simplified)
+        import csv
+        from io import StringIO
+        
+        output = StringIO()
+        writer = csv.writer(output)
+        
+        # Write headers
+        writer.writerow(["Test ID", "Score", "Total Questions", "Correct Answers", "Percentile", "Timestamp"])
+        
+        # Write test data
+        for test in export_data["test_history"]:
+            writer.writerow([
+                test["test_id"],
+                test["score"],
+                test["total_questions"],
+                test["correct_answers"],
+                test["percentile"],
+                test["timestamp"]
+            ])
+        
+        return {"format": "csv", "data": output.getvalue()}
+    
+    return {"format": "json", "data": export_data}
+
+# ==================== EXCEL UPLOAD SUPPORT ====================
+
+@api_router.post("/admin/questions/bulk-upload-excel")
+async def bulk_upload_questions_excel(file: UploadFile = File(...), admin: dict = Depends(get_admin_user)):
+    """Bulk upload questions from Excel file"""
+    try:
+        contents = await file.read()
+        
+        # Check file extension
+        if file.filename.endswith('.xlsx') or file.filename.endswith('.xls'):
+            df = pd.read_excel(io.BytesIO(contents))
+        elif file.filename.endswith('.csv'):
+            df = pd.read_csv(io.BytesIO(contents))
+        else:
+            raise HTTPException(status_code=400, detail="File must be CSV or Excel (.xlsx, .xls)")
+        
+        # Expected columns: sub_section_id, question_text, option1, option2, option3, option4, correct_answer, difficulty, tags, explanation
+        required_columns = ["sub_section_id", "question_text", "option1", "option2", "option3", "option4", "correct_answer", "difficulty"]
+        if not all(col in df.columns for col in required_columns):
+            raise HTTPException(status_code=400, detail=f"File must contain columns: {required_columns}")
+        
+        questions = []
+        for _, row in df.iterrows():
+            options = [row["option1"], row["option2"], row["option3"], row["option4"]]
+            tags = row.get("tags", "").split(",") if pd.notna(row.get("tags")) else []
+            tags = [tag.strip() for tag in tags if tag.strip()]
+            
+            question_dict = {
+                "sub_section_id": str(row["sub_section_id"]),
+                "question_text": row["question_text"],
+                "options": options,
+                "correct_answer": int(row["correct_answer"]),
+                "difficulty": row["difficulty"],
+                "tags": tags,
+                "explanation": row.get("explanation", ""),
+                "created_at": datetime.utcnow()
+            }
+            questions.append(question_dict)
+        
+        if questions:
+            result = await db.questions.insert_many(questions)
+            return {
+                "success": True,
+                "message": f"Successfully uploaded {len(result.inserted_ids)} questions",
+                "count": len(result.inserted_ids)
+            }
+        else:
+            raise HTTPException(status_code=400, detail="No valid questions found in file")
+    
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error processing file: {str(e)}")
+
+# ==================== AI TOOLS ENHANCEMENT ====================
+
+@api_router.post("/admin/ai/generate-questions")
+async def generate_questions_ai(
+    topic_name: str,
+    difficulty: str,
+    count: int = 5,
+    admin: dict = Depends(get_admin_user)
+):
+    """Generate questions using Gemini AI"""
+    try:
+        model = genai.GenerativeModel('gemini-pro')
+        
+        prompt = f"""
+        Generate {count} multiple-choice questions for the topic: {topic_name}
+        Difficulty level: {difficulty}
+        
+        For each question, provide:
+        1. Question text
+        2. Four options (A, B, C, D)
+        3. Correct answer (letter)
+        4. Brief explanation
+        
+        Format as JSON array with fields: question_text, options, correct_answer_index, explanation
+        """
+        
+        response = model.generate_content(prompt)
+        
+        return {
+            "success": True,
+            "topic_name": topic_name,
+            "difficulty": difficulty,
+            "generated_content": response.text.strip()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"AI generation failed: {str(e)}")
+
+@api_router.post("/admin/ai/improve-question")
+async def improve_question_ai(
+    question_id: str,
+    admin: dict = Depends(get_admin_user)
+):
+    """Improve an existing question using AI"""
+    question = await db.questions.find_one({"_id": ObjectId(question_id)})
+    if not question:
+        raise HTTPException(status_code=404, detail="Question not found")
+    
+    try:
+        model = genai.GenerativeModel('gemini-pro')
+        
+        prompt = f"""
+        Improve this multiple-choice question:
+        
+        Question: {question['question_text']}
+        Options: {', '.join(question['options'])}
+        Correct Answer: {question['options'][question['correct_answer']]}
+        
+        Provide:
+        1. Improved question text (clearer, more precise)
+        2. Better options (if needed)
+        3. Enhanced explanation
+        
+        Format as JSON with fields: improved_question, improved_options, improved_explanation
+        """
+        
+        response = model.generate_content(prompt)
+        
+        return {
+            "success": True,
+            "original_question": question["question_text"],
+            "suggestions": response.text.strip()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"AI improvement failed: {str(e)}")
+
+@api_router.post("/admin/ai/analyze-question")
+async def analyze_question_ai(
+    question_id: str,
+    admin: dict = Depends(get_admin_user)
+):
+    """Analyze question quality using AI"""
+    question = await db.questions.find_one({"_id": ObjectId(question_id)})
+    if not question:
+        raise HTTPException(status_code=404, detail="Question not found")
+    
+    try:
+        model = genai.GenerativeModel('gemini-pro')
+        
+        prompt = f"""
+        Analyze this multiple-choice question for quality:
+        
+        Question: {question['question_text']}
+        Options: {', '.join(question['options'])}
+        Difficulty: {question['difficulty']}
+        
+        Provide analysis on:
+        1. Question clarity
+        2. Option quality (are they distinct and plausible?)
+        3. Difficulty appropriateness
+        4. Potential improvements
+        5. Common student mistakes
+        
+        Format as structured feedback.
+        """
+        
+        response = model.generate_content(prompt)
+        
+        return {
+            "success": True,
+            "question_id": question_id,
+            "analysis": response.text.strip()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"AI analysis failed: {str(e)}")
+
+# ==================== ADMIN ANALYTICS ENHANCED ====================
+
+@api_router.get("/admin/analytics/detailed")
+async def get_detailed_admin_analytics(
+    exam_id: Optional[str] = None,
+    subject_id: Optional[str] = None,
+    date_from: Optional[str] = None,
+    date_to: Optional[str] = None,
+    admin: dict = Depends(get_admin_user)
+):
+    """Get detailed admin analytics with filters"""
+    
+    # Build date filter
+    date_filter = {}
+    if date_from:
+        date_filter["$gte"] = datetime.fromisoformat(date_from)
+    if date_to:
+        date_filter["$lte"] = datetime.fromisoformat(date_to)
+    
+    test_query = {}
+    if date_filter:
+        test_query["timestamp"] = date_filter
+    
+    # Get basic counts
+    total_users = await db.users.count_documents({"role": "user"})
+    total_questions = await db.questions.count_documents({})
+    total_tests = await db.test_results.count_documents(test_query)
+    total_exams = await db.exams.count_documents({})
+    
+    # Get test statistics
+    test_results = await db.test_results.find(test_query).to_list(None)
+    
+    if test_results:
+        avg_score = sum(r["score"] for r in test_results) / len(test_results)
+        avg_time_per_test = len(test_results) / max(1, (datetime.utcnow() - test_results[0]["timestamp"]).days)
+    else:
+        avg_score = 0
+        avg_time_per_test = 0
+    
+    # Popular subjects
+    subject_popularity = {}
+    for result in test_results:
+        for q in result.get("questions", []):
+            question = await db.questions.find_one({"_id": ObjectId(q["question_id"])})
+            if question:
+                # Get subject (simplified traversal)
+                sub_section = await db.sub_sections.find_one({"_id": ObjectId(question["sub_section_id"])})
+                if sub_section:
+                    section = await db.sections.find_one({"_id": ObjectId(sub_section["section_id"])})
+                    if section:
+                        sub_topic = await db.sub_topics.find_one({"_id": ObjectId(section["sub_topic_id"])})
+                        if sub_topic:
+                            topic = await db.topics.find_one({"_id": ObjectId(sub_topic["topic_id"])})
+                            if topic:
+                                chapter = await db.chapters.find_one({"_id": ObjectId(topic["chapter_id"])})
+                                if chapter:
+                                    subject_id_key = chapter["subject_id"]
+                                    subject_popularity[subject_id_key] = subject_popularity.get(subject_id_key, 0) + 1
+    
+    popular_subjects = sorted(subject_popularity.items(), key=lambda x: x[1], reverse=True)[:5]
+    
+    return {
+        "total_users": total_users,
+        "total_questions": total_questions,
+        "total_tests": total_tests,
+        "total_exams": total_exams,
+        "average_score": round(avg_score, 2),
+        "tests_per_day": round(avg_time_per_test, 2),
+        "popular_subjects": [
+            {"subject_id": subj_id, "test_count": count}
+            for subj_id, count in popular_subjects
+        ],
+        "date_range": {
+            "from": date_from,
+            "to": date_to
+        }
+    }
+
 # Include the router
 app.include_router(api_router)
 
