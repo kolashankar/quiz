@@ -88,6 +88,72 @@ export default function TabLayout() {
           ),
         }}
       />
+      
+      {/* Hidden screens - accessible via drawer but not shown in tab bar */}
+      <Tabs.Screen
+        name="syllabus"
+        options={{
+          href: null, // Hide from tab bar
+          title: 'Syllabus',
+          headerTitle: 'Exam Syllabus',
+        }}
+      />
+      <Tabs.Screen
+        name="about"
+        options={{
+          href: null,
+          title: 'About Us',
+          headerTitle: 'About QuizMaster',
+        }}
+      />
+      <Tabs.Screen
+        name="privacy"
+        options={{
+          href: null,
+          title: 'Privacy Policy',
+          headerTitle: 'Privacy Policy',
+        }}
+      />
+      <Tabs.Screen
+        name="contact"
+        options={{
+          href: null,
+          title: 'Contact',
+          headerTitle: 'Contact Us',
+        }}
+      />
+      <Tabs.Screen
+        name="analytics"
+        options={{
+          href: null,
+          title: 'Analytics',
+          headerTitle: 'My Analytics',
+        }}
+      />
+      <Tabs.Screen
+        name="notifications"
+        options={{
+          href: null,
+          title: 'Notifications',
+          headerTitle: 'Notifications',
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          href: null,
+          title: 'Settings',
+          headerTitle: 'Settings',
+        }}
+      />
+      <Tabs.Screen
+        name="practice"
+        options={{
+          href: null,
+          title: 'Practice',
+          headerTitle: 'Practice Mode',
+        }}
+      />
     </Tabs>
     <CustomDrawer visible={drawerVisible} onClose={() => setDrawerVisible(false)} />
     </>
