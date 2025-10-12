@@ -3,32 +3,33 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
+import { authService } from '@/lib/auth-service';
 import { Button, Input, Card } from '@/components/common';
 import toast from 'react-hot-toast';
 
-export default function LoginPage() {
+export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const [resetCode, setResetCode] = useState('');
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!email || !password) {
-      toast.error('Please fill in all fields');
+    if (!email) {
+      toast.error('Please enter your email');
       return;
     }
 
     setLoading(true);
     try {
-      await login({ email, password });
-      toast.success('Login successful!');
-      router.push('/dashboard');
+      const response = await authService.forgotPassword(email);
+      setResetCode(response.reset_code || '');
+      toast.success('Reset code sent to your email!');
+      // Navigate to reset password with email
+      router.push(`/auth/reset-password?email=${encodeURIComponent(email)}`);
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Login failed');
+      toast.error(error.response?.data?.detail || 'Failed to send reset code');
     } finally {
       setLoading(false);
     }
@@ -38,12 +39,12 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-primary/10 via-secondary/5 to-primary/10 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Welcome Back!</h1>
-          <p className="text-gray-600">Sign in to continue your learning journey</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Forgot Password?</h1>
+          <p className="text-gray-600">Enter your email to receive a reset code</p>
         </div>
 
         <Card className="p-6">
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleForgotPassword} className="space-y-4">
             <Input
               type="email"
               label="Email"
@@ -53,16 +54,16 @@ export default function LoginPage() {
               autoComplete="email"
               required
             />
-            
-            <Input
-              type="password"
-              label="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              autoComplete="current-password"
-              required
-            />
+
+            {resetCode && (
+              <div className="bg-info/10 border border-info rounded-lg p-4">
+                <p className="text-sm font-medium text-info mb-1">Your Reset Code:</p>
+                <p className="text-2xl font-bold text-info text-center">{resetCode}</p>
+                <p className="text-xs text-gray-600 mt-2 text-center">
+                  Copy this code and use it on the reset password page
+                </p>
+              </div>
+            )}
 
             <Button
               type="submit"
@@ -71,29 +72,19 @@ export default function LoginPage() {
               className="w-full"
               isLoading={loading}
             >
-              Sign In
+              Send Reset Code
             </Button>
 
             <div className="text-center">
               <Link
-                href="/auth/forgot-password"
+                href="/auth/login"
                 className="text-sm text-primary hover:text-primary-dark font-medium"
               >
-                Forgot Password?
+                Back to Login
               </Link>
             </div>
           </form>
         </Card>
-
-        <div className="text-center mt-6">
-          <span className="text-gray-600">Don't have an account? </span>
-          <Link
-            href="/auth/signup"
-            className="text-primary hover:text-primary-dark font-semibold"
-          >
-            Sign Up
-          </Link>
-        </div>
       </div>
     </div>
   );

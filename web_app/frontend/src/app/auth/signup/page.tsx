@@ -1,108 +1,111 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
+import { Button, Input, Card } from '@/components/common';
+import toast from 'react-hot-toast';
 
 export default function SignupPage() {
-  const { signup } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const { signup } = useAuth();
+  const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    
+    if (!email || !password || !confirmPassword) {
+      toast.error('Please fill in all fields');
+      return;
+    }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      toast.error('Passwords do not match');
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error('Password must be at least 6 characters');
       return;
     }
 
     setLoading(true);
     try {
-      await signup(email, password);
-    } catch (error) {
-      // Error handled in context
+      await signup({ email, password, role: 'user' });
+      toast.success('Account created successfully!');
+      router.push('/dashboard');
+    } catch (error: any) {
+      toast.error(error.response?.data?.detail || 'Signup failed');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-500 to-pink-600 px-4">
-      <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-secondary/5 to-primary/10 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">Genuis</h1>
-          <p className="text-gray-600 dark:text-gray-400">Create your account and start learning!</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Create Account</h1>
+          <p className="text-gray-600">Start your learning journey today</p>
         </div>
 
-        {error && (
-          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Email
-            </label>
-            <input
+        <Card className="p-6">
+          <form onSubmit={handleSignup} className="space-y-4">
+            <Input
               type="email"
-              required
+              label="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
               placeholder="Enter your email"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Password
-            </label>
-            <input
-              type="password"
+              autoComplete="email"
               required
+            />
+            
+            <Input
+              type="password"
+              label="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
               placeholder="Create a password"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Confirm Password
-            </label>
-            <input
-              type="password"
+              autoComplete="new-password"
               required
+            />
+
+            <Input
+              type="password"
+              label="Confirm Password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
               placeholder="Confirm your password"
+              autoComplete="new-password"
+              required
             />
-          </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+            <Button
+              type="submit"
+              variant="primary"
+              size="large"
+              className="w-full"
+              isLoading={loading}
+            >
+              Create Account
+            </Button>
+          </form>
+        </Card>
+
+        <div className="text-center mt-6">
+          <span className="text-gray-600">Already have an account? </span>
+          <Link
+            href="/auth/login"
+            className="text-primary hover:text-primary-dark font-semibold"
           >
-            {loading ? 'Creating account...' : 'Sign Up'}
-          </button>
-        </form>
-
-        <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-          Already have an account?{' '}
-          <Link href="/auth/login" className="text-purple-600 hover:text-purple-700 font-semibold">
-            Login
+            Sign In
           </Link>
-        </p>
+        </div>
       </div>
     </div>
   );
