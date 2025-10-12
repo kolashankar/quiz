@@ -305,6 +305,66 @@ export default function TestScreen() {
         </View>
       </View>
 
+      {/* NEW: Top Quiz Navigation Bar */}
+      <View style={styles.topNavigationBar}>
+        <ScrollView 
+          horizontal 
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.topNavContent}
+        >
+          {questions.map((_, index) => {
+            const status = getQuestionStatus(index);
+            const isCurrent = index === currentQuestionIndex;
+            
+            return (
+              <TouchableOpacity
+                key={index}
+                style={[
+                  styles.navButton,
+                  status === 'answered' && styles.navButtonAnswered,
+                  status === 'visited' && styles.navButtonVisited,
+                  status === 'marked' && styles.navButtonMarked,
+                  status === 'unvisited' && styles.navButtonUnvisited,
+                  isCurrent && styles.navButtonCurrent,
+                ]}
+                onPress={() => handleJumpToQuestion(index)}
+              >
+                <Text
+                  style={[
+                    styles.navButtonText,
+                    status === 'answered' && styles.navButtonTextAnswered,
+                    status === 'marked' && styles.navButtonTextMarked,
+                    isCurrent && styles.navButtonTextCurrent,
+                  ]}
+                >
+                  {index + 1}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+        
+        {/* Legend */}
+        <View style={styles.topNavLegend}>
+          <View style={styles.topLegendItem}>
+            <View style={[styles.topLegendDot, styles.navButtonAnswered]} />
+            <Text style={styles.topLegendText}>Answered</Text>
+          </View>
+          <View style={styles.topLegendItem}>
+            <View style={[styles.topLegendDot, styles.navButtonMarked]} />
+            <Text style={styles.topLegendText}>Review</Text>
+          </View>
+          <View style={styles.topLegendItem}>
+            <View style={[styles.topLegendDot, styles.navButtonVisited]} />
+            <Text style={styles.topLegendText}>Visited</Text>
+          </View>
+          <View style={styles.topLegendItem}>
+            <View style={[styles.topLegendDot, styles.navButtonUnvisited]} />
+            <Text style={styles.topLegendText}>Not Visited</Text>
+          </View>
+        </View>
+      </View>
+
       {/* Pause Overlay */}
       {isPaused && (
         <View style={styles.pauseOverlay}>
