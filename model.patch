@@ -1066,7 +1066,7 @@ index 0000000..1a00966
 +from typing import Dict, Any, Optional
 +
 +class UserAppAuthTester:
-+    def __init__(self, base_url: str = "https://gemini-quizapp.preview.emergentagent.com"):
++    def __init__(self, base_url: str = "https://brainwave-quiz-4.preview.emergentagent.com"):
 +        self.base_url = base_url
 +        self.api_url = f"{base_url}/api"
 +        self.session = requests.Session()
