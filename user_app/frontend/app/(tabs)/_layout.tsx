@@ -166,6 +166,14 @@ export default function TabLayout() {
           headerTitle: 'Practice Mode',
         }}
       />
+      <Tabs.Screen
+        name="profile/edit"
+        options={{
+          href: null,
+          title: 'Edit Profile',
+          headerTitle: 'Edit Profile',
+        }}
+      />
         </Tabs>
         <CustomDrawer visible={drawerVisible} onClose={() => setDrawerVisible(false)} />
       </View>
