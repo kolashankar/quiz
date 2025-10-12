@@ -766,4 +766,212 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 24,
   },
+  // NEW: Top Navigation Bar Styles
+  topNavigationBar: {
+    backgroundColor: '#FFFFFF',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E5E7',
+    paddingVertical: 12,
+  },
+  topNavContent: {
+    paddingHorizontal: 16,
+    gap: 8,
+    alignItems: 'center',
+  },
+  navButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+  },
+  navButtonAnswered: {
+    backgroundColor: '#34C759',
+    borderColor: '#34C759',
+  },
+  navButtonVisited: {
+    backgroundColor: '#FF3B30',
+    borderColor: '#FF3B30',
+  },
+  navButtonMarked: {
+    backgroundColor: '#FF9500',
+    borderColor: '#FF9500',
+  },
+  navButtonUnvisited: {
+    backgroundColor: '#8E8E93',
+    borderColor: '#8E8E93',
+  },
+  navButtonCurrent: {
+    borderWidth: 3,
+    borderColor: '#007AFF',
+    transform: [{ scale: 1.1 }],
+  },
+  navButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#FFFFFF',
+  },
+  navButtonTextAnswered: {
+    color: '#FFFFFF',
+  },
+  navButtonTextMarked: {
+    color: '#FFFFFF',
+  },
+  navButtonTextCurrent: {
+    color: '#FFFFFF',
+  },
+  topNavLegend: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    gap: 16,
+    flexWrap: 'wrap',
+  },
+  topLegendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  topLegendDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+  },
+  topLegendText: {
+    fontSize: 11,
+    color: '#8E8E93',
+  },
+  markReviewButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 12,
+    backgroundColor: '#FFF4E6',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#FF9500',
+    marginBottom: 16,
+    gap: 8,
+  },
+  markReviewButtonActive: {
+    backgroundColor: '#FF9500',
+    borderColor: '#FF9500',
+  },
+  markReviewText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#FF9500',
+  },
+  markReviewTextActive: {
+    color: '#FFFFFF',
+  },
+  // Existing missing styles for question grid
+  navigationCard: {
+    marginTop: 16,
+  },
+  navigationTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#1D1D1F',
+    marginBottom: 12,
+  },
+  questionGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 16,
+  },
+  questionGridItem: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+    backgroundColor: '#F2F2F7',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E5E5E7',
+  },
+  currentQuestion: {
+    backgroundColor: '#007AFF',
+    borderColor: '#007AFF',
+  },
+  answeredQuestion: {
+    backgroundColor: '#34C759',
+    borderColor: '#34C759',
+  },
+  bookmarkedQuestion: {
+    borderColor: '#FF9500',
+  },
+  questionGridText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1D1D1F',
+  },
+  currentQuestionText: {
+    color: '#FFFFFF',
+  },
+  answeredQuestionText: {
+    color: '#FFFFFF',
+  },
+  gridBookmark: {
+    position: 'absolute',
+    top: -4,
+    right: -4,
+  },
+  legendContainer: {
+    flexDirection: 'row',
+    gap: 16,
+    flexWrap: 'wrap',
+  },
+  legendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  legendDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+  },
+  legendText: {
+    fontSize: 12,
+    color: '#8E8E93',
+  },
+  navSection: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  navCenter: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pauseBtn: {
+    minWidth: 80,
+  },
+  submitBtn: {
+    minWidth: 100,
+  },
+  progressIndicator: {
+    marginTop: 4,
+  },
+  progressDots: {
+    flexDirection: 'row',
+    gap: 4,
+  },
+  progressDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#E5E5E7',
+  },
+  completedDot: {
+    backgroundColor: '#34C759',
+  },
+  currentDot: {
+    backgroundColor: '#007AFF',
+  },
 });
