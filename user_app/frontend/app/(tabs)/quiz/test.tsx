@@ -146,14 +146,43 @@ export default function TestScreen() {
 
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      const nextIndex = currentQuestionIndex + 1;
+      setCurrentQuestionIndex(nextIndex);
+      setVisitedQuestions(prev => new Set([...prev, nextIndex]));
     }
   };
 
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      const prevIndex = currentQuestionIndex - 1;
+      setCurrentQuestionIndex(prevIndex);
+      setVisitedQuestions(prev => new Set([...prev, prevIndex]));
     }
+  };
+
+  const handleJumpToQuestion = (index: number) => {
+    setCurrentQuestionIndex(index);
+    setVisitedQuestions(prev => new Set([...prev, index]));
+  };
+
+  const handleMarkForReview = () => {
+    setMarkedForReview(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(currentQuestionIndex)) {
+        newSet.delete(currentQuestionIndex);
+      } else {
+        newSet.add(currentQuestionIndex);
+      }
+      return newSet;
+    });
+  };
+
+  // Get question status for navigation bar
+  const getQuestionStatus = (index: number) => {
+    if (markedForReview.has(index)) return 'marked';
+    if (answers[index] !== -1) return 'answered';
+    if (visitedQuestions.has(index)) return 'visited';
+    return 'unvisited';
   };
 
   const handleBookmark = async () => {
