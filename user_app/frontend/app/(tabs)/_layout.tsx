@@ -166,8 +166,9 @@ export default function TabLayout() {
           headerTitle: 'Practice Mode',
         }}
       />
-    </Tabs>
-    <CustomDrawer visible={drawerVisible} onClose={() => setDrawerVisible(false)} />
-    </>
+        </Tabs>
+        <CustomDrawer visible={drawerVisible} onClose={() => setDrawerVisible(false)} />
+      </View>
+    </View>
   );
 }
