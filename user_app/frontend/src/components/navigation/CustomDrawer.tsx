@@ -150,7 +150,7 @@ export default function CustomDrawer({ visible, onClose }: DrawerProps) {
               {/* Contact */}
               <TouchableOpacity
                 style={styles.menuItem}
-                onPress={() => Linking.openURL('mailto:support@quizmaster.com')}
+                onPress={() => handleNavigation('/(tabs)/contact')}
               >
                 <Ionicons name="mail" size={24} color="#007AFF" />
                 <Text style={styles.menuText}>Contact Support</Text>
