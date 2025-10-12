@@ -1,43 +1,55 @@
 import React, { useState } from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View, Platform, Dimensions } from 'react-native';
 import CustomDrawer from '../../src/components/navigation/CustomDrawer';
+import { WebSidebar } from '../../src/components/layout/WebSidebar';
 
 export default function TabLayout() {
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const isWeb = Platform.OS === 'web';
+  const { width } = Dimensions.get('window');
+  const showWebSidebar = isWeb && width >= 1024; // Show sidebar on desktop web
 
   return (
-    <>
-      <Tabs
-        screenOptions={{
-          tabBarActiveTintColor: '#007AFF',
-          tabBarInactiveTintColor: '#8E8E93',
-          tabBarStyle: {
-            backgroundColor: '#FFFFFF',
-            borderTopWidth: 1,
-            borderTopColor: '#E5E5E7',
-            paddingTop: 8,
-            paddingBottom: 8,
-            height: 60,
-          },
-          headerStyle: {
-            backgroundColor: '#007AFF',
-          },
-          headerTintColor: '#FFFFFF',
-          headerTitleStyle: {
-            fontWeight: '600',
-          },
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => setDrawerVisible(true)}
-              style={{ marginLeft: 16 }}
-            >
-              <Ionicons name="menu" size={28} color="#FFFFFF" />
-            </TouchableOpacity>
-          ),
-        }}
-      >
+    <View style={{ flex: 1, flexDirection: 'row' }}>
+      {/* Web Sidebar for Desktop */}
+      {showWebSidebar && <WebSidebar />}
+      
+      {/* Main Content */}
+      <View style={{ flex: 1 }}>
+        <Tabs
+          screenOptions={{
+            tabBarActiveTintColor: '#007AFF',
+            tabBarInactiveTintColor: '#8E8E93',
+            tabBarStyle: isWeb && width >= 768 ? {
+              display: 'none' as any, // Hide tab bar on tablet and desktop web
+            } : {
+              backgroundColor: '#FFFFFF',
+              borderTopWidth: 1,
+              borderTopColor: '#E5E5E7',
+              paddingTop: 8,
+              paddingBottom: 8,
+              height: 60,
+            },
+            headerStyle: {
+              backgroundColor: '#007AFF',
+            },
+            headerTintColor: '#FFFFFF',
+            headerTitleStyle: {
+              fontWeight: '600',
+            },
+            headerShown: !showWebSidebar, // Hide header on desktop web with sidebar
+            headerLeft: !showWebSidebar ? () => (
+              <TouchableOpacity
+                onPress={() => setDrawerVisible(true)}
+                style={{ marginLeft: 16 }}
+              >
+                <Ionicons name="menu" size={28} color="#FFFFFF" />
+              </TouchableOpacity>
+            ) : undefined,
+          }}
+        >
       <Tabs.Screen
         name="index"
         options={{
