@@ -1,50 +1,109 @@
-# Welcome to your Expo app 👋
+# Genuis User App - Frontend (Mobile)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Expo/React Native mobile application for students to take quizzes and track performance.
 
-## Get started
+## Features
 
-1. Install dependencies
+- **Authentication**: Email/password login and signup
+- **Quiz Mode**: Timed tests with scoring
+- **Practice Mode**: Untimed practice
+- **8-Level Hierarchy**: Navigate through exam structure
+- **Bookmarks**: Save questions for review
+- **Analytics**: Performance tracking and insights
+- **Leaderboard**: Compare with other users
+- **AI Recommendations**: Personalized study suggestions
+- **Push Notifications**: Exam updates
+- **Responsive Sidebar**: Hamburger menu navigation
 
-   ```bash
-   npm install
-   ```
+## Technology Stack
 
-2. Start the app
+- Expo SDK 52
+- React Native
+- Expo Router (file-based routing)
+- TypeScript
+- Axios for API calls
+- AsyncStorage for local data
+- Expo Notifications
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Installation
 
 ```bash
-npm run reset-project
+cd user_app/frontend
+yarn install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Environment Variables
 
-## Learn more
+Create `.env`:
 
-To learn more about developing your project with Expo, look at the following resources:
+```env
+EXPO_PUBLIC_BACKEND_URL=http://localhost:8001
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Development
 
-## Join the community
+```bash
+# Start Expo development server
+expor start
 
-Join our community of developers creating universal apps.
+# Start with tunnel (for testing on physical device)
+expo start --tunnel
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+# Run on Android
+expo start --android
+
+# Run on iOS
+expo start --ios
+```
+
+## Project Structure
+
+```
+app/
+├── (auth)/          # Authentication screens
+│   ├── login.tsx
+│   └── signup.tsx
+├── (tabs)/          # Main tab navigation
+│   ├── index.tsx   # Home/Dashboard
+│   ├── quiz/       # Quiz screens
+│   ├── profile.tsx
+│   └── bookmarks.tsx
+src/
+├── components/     # Reusable components
+├── context/        # React contexts
+├── services/       # API services
+└── constants/      # App constants
+```
+
+## Key Screens
+
+- **Home**: Dashboard with stats and recommendations
+- **Quiz**: Browse and take timed tests
+- **Practice**: Untimed practice mode
+- **Bookmarks**: Saved questions
+- **Profile**: User info and settings
+- **Analytics**: Performance insights
+- **Leaderboard**: Rankings
+
+## Building for Production
+
+### Android
+```bash
+eas build --platform android
+```
+
+### iOS
+```bash
+eas build --platform ios
+```
+
+## App Configuration
+
+- App name: **Genuis**
+- Package: `com.genuis.app`
+- Version: 1.0.0
+
+## Testing
+
+- Use Expo Go app on Android/iOS
+- Scan QR code from `expo start`
