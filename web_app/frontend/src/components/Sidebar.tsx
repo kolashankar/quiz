@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
@@ -14,21 +14,20 @@ import {
   BellIcon,
   Cog6ToothIcon,
   ArrowRightOnRectangleIcon,
+  BookOpenIcon,
+  RectangleStackIcon,
 } from '@heroicons/react/24/outline';
 
-interface SidebarProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+export default function Sidebar() {
   const pathname = usePathname();
   const { logout } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
 
   const navigation = [
     { name: 'Home', href: '/dashboard', icon: HomeIcon },
     { name: 'Quiz', href: '/dashboard/quiz', icon: AcademicCapIcon },
-    { name: 'Practice', href: '/dashboard/practice', icon: AcademicCapIcon },
+    { name: 'Practice', href: '/dashboard/practice', icon: RectangleStackIcon },
+    { name: 'Syllabus', href: '/dashboard/syllabus', icon: BookOpenIcon },
     { name: 'Bookmarks', href: '/dashboard/bookmarks', icon: BookmarkIcon },
     { name: 'Leaderboard', href: '/dashboard/leaderboard', icon: TrophyIcon },
     { name: 'Analytics', href: '/dashboard/analytics', icon: ChartBarIcon },
@@ -43,23 +42,35 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
-          onClick={onClose}
+          onClick={() => setIsOpen(false)}
         />
       )}
 
+      {/* Mobile menu button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed top-4 left-4 z-50 lg:hidden p-2 rounded-lg bg-white shadow-lg"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-30 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 h-full w-64 bg-white border-r border-gray-200 z-30 transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0`}
+        } lg:translate-x-0 lg:static`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-            <h1 className="text-2xl font-bold text-blue-600">Genuis</h1>
+          <div className="flex items-center justify-between p-6 border-b border-gray-200">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              Genuis
+            </h1>
             <button
-              onClick={onClose}
-              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+              onClick={() => setIsOpen(false)}
+              className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -76,11 +87,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <Link
                   key={item.name}
                   href={item.href}
-                  onClick={() => onClose()}
+                  onClick={() => setIsOpen(false)}
                   className={`flex items-center px-4 py-3 rounded-lg transition ${
                     isActive
-                      ? 'bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-400 font-semibold'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                      ? 'bg-gradient-to-r from-primary/10 to-secondary/10 text-primary font-semibold'
+                      : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
                   <Icon className="w-5 h-5 mr-3" />
@@ -91,13 +102,13 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </nav>
 
           {/* Logout */}
-          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="p-4 border-t border-gray-200">
             <button
               onClick={() => {
                 logout();
-                onClose();
+                setIsOpen(false);
               }}
-              className="flex items-center w-full px-4 py-3 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900 transition"
+              className="flex items-center w-full px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition"
             >
               <ArrowRightOnRectangleIcon className="w-5 h-5 mr-3" />
               Logout
