@@ -29,6 +29,10 @@ export default function TestScreen() {
   const [isPaused, setIsPaused] = useState(false);
   const [showConfirmExit, setShowConfirmExit] = useState(false);
   
+  // NEW: Track question status for navigation bar
+  const [visitedQuestions, setVisitedQuestions] = useState<Set<number>>(new Set([0]));
+  const [markedForReview, setMarkedForReview] = useState<Set<number>>(new Set());
+  
   // Enhanced timer with 30 minutes (1800 seconds)
   const timer = useTimer({
     initialTime: 30 * 60,
