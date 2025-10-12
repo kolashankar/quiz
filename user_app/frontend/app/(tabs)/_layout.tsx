@@ -115,7 +115,7 @@ export default function TabLayout() {
         options={{
           href: null,
           title: 'About Us',
-          headerTitle: 'About QuizMaster',
+          headerTitle: 'About Genuis',
         }}
       />
       <Tabs.Screen
