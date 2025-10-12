@@ -390,6 +390,27 @@ export default function TestScreen() {
       )}
 
       <ScrollView style={styles.scrollView}>
+        {/* Mark for Review Button */}
+        <TouchableOpacity
+          style={[
+            styles.markReviewButton,
+            markedForReview.has(currentQuestionIndex) && styles.markReviewButtonActive
+          ]}
+          onPress={handleMarkForReview}
+        >
+          <Ionicons 
+            name={markedForReview.has(currentQuestionIndex) ? "flag" : "flag-outline"} 
+            size={20} 
+            color={markedForReview.has(currentQuestionIndex) ? "#FFFFFF" : "#FF9500"} 
+          />
+          <Text style={[
+            styles.markReviewText,
+            markedForReview.has(currentQuestionIndex) && styles.markReviewTextActive
+          ]}>
+            {markedForReview.has(currentQuestionIndex) ? "Marked for Review" : "Mark for Review"}
+          </Text>
+        </TouchableOpacity>
+
         <QuestionCard
           question={currentQuestion}
           questionIndex={currentQuestionIndex}
