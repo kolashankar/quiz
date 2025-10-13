@@ -50,6 +50,14 @@ export const authService = {
     return response.data;
   },
 
+  async changePassword(currentPassword: string, newPassword: string): Promise<{ message: string }> {
+    const response = await apiClient.post(`${API_ENDPOINTS.PROFILE_UPDATE}/password`, {
+      current_password: currentPassword,
+      new_password: newPassword,
+    });
+    return response.data;
+  },
+
   logout(): void {
     storage.clearAll();
   },
