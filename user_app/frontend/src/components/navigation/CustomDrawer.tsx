@@ -158,6 +158,18 @@ export default function CustomDrawer({ visible, onClose }: DrawerProps) {
 
               <View style={styles.divider} />
 
+              {/* WhatsApp Community */}
+              <TouchableOpacity
+                style={[styles.menuItem, styles.whatsappItem]}
+                onPress={() => {
+                  Linking.openURL('https://whatsapp.com/channel/0029VaeW5Vu4WT9pTBq8eL2i');
+                  onClose();
+                }}
+              >
+                <Ionicons name="logo-whatsapp" size={24} color="#25D366" />
+                <Text style={[styles.menuText, styles.whatsappText]}>Join WhatsApp Community</Text>
+              </TouchableOpacity>
+
               {/* Settings */}
               <TouchableOpacity
                 style={styles.menuItem}
