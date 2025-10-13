@@ -3,12 +3,18 @@
 import React, { useState } from 'react';
 import { Card, Button, Input } from '@/components/common';
 import toast from 'react-hot-toast';
+import emailjs from '@emailjs/browser';
 import {
   EnvelopeIcon,
   PhoneIcon,
   MapPinIcon,
   PaperAirplaneIcon,
 } from '@heroicons/react/24/outline';
+
+// EmailJS Configuration (You can update these with your EmailJS credentials)
+const EMAILJS_SERVICE_ID = 'service_xxxxxxx'; // Replace with your service ID
+const EMAILJS_TEMPLATE_ID = 'template_xxxxxxx'; // Replace with your template ID
+const EMAILJS_PUBLIC_KEY = 'xxxxxxxxxxxxxxxxxxx'; // Replace with your public key
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -37,8 +43,23 @@ export default function ContactPage() {
 
     setSubmitting(true);
     
-    // Simulate form submission (in a real app, this would send to backend)
-    setTimeout(() => {
+    try {
+      // Send email using EmailJS
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        to_name: 'Quiz App Support Team',
+      };
+
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      );
+
       toast.success('Message sent successfully! We\'ll get back to you soon.');
       setFormData({
         name: '',
@@ -46,8 +67,12 @@ export default function ContactPage() {
         subject: '',
         message: '',
       });
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      toast.error('Failed to send message. Please try again or contact us directly at support@genuis.com');
+    } finally {
       setSubmitting(false);
-    }, 1500);
+    }
   };
 
   return (
