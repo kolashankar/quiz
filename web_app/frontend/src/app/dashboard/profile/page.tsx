@@ -40,24 +40,38 @@ import {
 export default function ProfilePage() {
   const { user, updateUser } = useAuth();
   const [analytics, setAnalytics] = useState<Analytics | null>(null);
+  const [testHistory, setTestHistory] = useState<TestResult[]>([]);
+  const [difficultyBreakdown, setDifficultyBreakdown] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
+  const [changingPassword, setChangingPassword] = useState(false);
   const [email, setEmail] = useState(user?.email || '');
+  const [name, setName] = useState(user?.name || '');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [saving, setSaving] = useState(false);
+  const [activeTab, setActiveTab] = useState<'overview' | 'history' | 'analytics'>('overview');
 
-  const fetchAnalytics = async () => {
+  const fetchData = async () => {
     try {
-      const data = await quizService.getUserAnalytics();
-      setAnalytics(data);
+      const [analyticsData, historyData, difficultyData] = await Promise.all([
+        quizService.getUserAnalytics(),
+        quizService.getTestHistory(),
+        quizService.getDifficultyBreakdown(),
+      ]);
+      setAnalytics(analyticsData);
+      setTestHistory(historyData);
+      setDifficultyBreakdown(difficultyData);
     } catch (error) {
-      console.error('Error fetching analytics:', error);
+      console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchAnalytics();
+    fetchData();
   }, []);
 
   const handleSaveProfile = async () => {
