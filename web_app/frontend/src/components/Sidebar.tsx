@@ -114,7 +114,23 @@ export default function Sidebar() {
           </nav>
 
           {/* Logout */}
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-4 border-t border-gray-200 space-y-2">
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="flex items-center justify-between w-full px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition"
+            >
+              <div className="flex items-center">
+                {theme === 'light' ? (
+                  <MoonIcon className="w-5 h-5 mr-3" />
+                ) : (
+                  <SunIcon className="w-5 h-5 mr-3" />
+                )}
+                <span>{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
+              </div>
+            </button>
+            
+            {/* Logout Button */}
             <button
               onClick={() => {
                 logout();
