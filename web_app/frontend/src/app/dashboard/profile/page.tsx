@@ -5,7 +5,7 @@ import { Card, Loading, Button, Input } from '@/components/common';
 import { useAuth } from '@/contexts/AuthContext';
 import { quizService } from '@/lib/quiz-service';
 import { authService } from '@/lib/auth-service';
-import { Analytics } from '@/types';
+import { Analytics, TestResult } from '@/types';
 import toast from 'react-hot-toast';
 import {
   UserIcon,
@@ -15,7 +15,27 @@ import {
   ChartBarIcon,
   FireIcon,
   SparklesIcon,
+  ClockIcon,
+  CalendarIcon,
+  KeyIcon,
 } from '@heroicons/react/24/outline';
+import {
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 
 export default function ProfilePage() {
   const { user, updateUser } = useAuth();
