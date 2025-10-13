@@ -41,6 +41,10 @@ export default function Sidebar() {
     { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon },
   ];
 
+  const handleWhatsAppCommunity = () => {
+    window.open('https://whatsapp.com/channel/0029VaeW5Vu4WT9pTBq8eL2i', '_blank');
+  };
+
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
