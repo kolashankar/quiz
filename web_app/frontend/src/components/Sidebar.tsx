@@ -16,15 +16,20 @@ import {
   ArrowRightOnRectangleIcon,
   BookOpenIcon,
   RectangleStackIcon,
+  MagnifyingGlassIcon,
+  MoonIcon,
+  SunIcon,
 } from '@heroicons/react/24/outline';
 
 export default function Sidebar() {
   const pathname = usePathname();
   const { logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   const navigation = [
     { name: 'Home', href: '/dashboard', icon: HomeIcon },
+    { name: 'Search', href: '/dashboard/search', icon: MagnifyingGlassIcon },
     { name: 'Quiz', href: '/dashboard/quiz', icon: AcademicCapIcon },
     { name: 'Practice', href: '/dashboard/practice', icon: RectangleStackIcon },
     { name: 'Syllabus', href: '/dashboard/syllabus', icon: BookOpenIcon },
@@ -35,6 +40,13 @@ export default function Sidebar() {
     { name: 'Profile', href: '/dashboard/profile', icon: UserIcon },
     { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon },
   ];
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+  };
 
   return (
     <>
