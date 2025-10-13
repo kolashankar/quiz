@@ -363,11 +363,60 @@ export default function LeaderboardPage() {
         </div>
       )}
 
-      {/* Remaining Rankings */}
+      {/* Nearby Rankings (for current user) */}
+      {currentUserEntry && nearbyUsers.length > 0 && (
+        <Card className="mb-6 bg-blue-50 border-blue-200">
+          <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <StarIcon className="w-5 h-5 text-primary" />
+            Your Position
+          </h2>
+          <div className="space-y-2">
+            {nearbyUsers.map((entry) => {
+              const isCurrentUser = entry.user_email === user?.email;
+              return (
+                <div
+                  key={entry.rank}
+                  className={`flex items-center justify-between p-3 rounded-lg ${
+                    isCurrentUser ? 'bg-primary text-white' : 'bg-white'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+                      isCurrentUser ? 'bg-white text-primary' : 'bg-gray-200 text-gray-700'
+                    }`}>
+                      {entry.rank}
+                    </div>
+                    <div>
+                      <div className={`font-semibold ${isCurrentUser ? 'text-white' : 'text-gray-900'}`}>
+                        {entry.user_email}
+                        {isCurrentUser && (
+                          <span className="ml-2 text-xs bg-white text-primary px-2 py-1 rounded">
+                            You
+                          </span>
+                        )}
+                      </div>
+                      <div className={`text-xs ${isCurrentUser ? 'text-blue-100' : 'text-gray-600'}`}>
+                        {entry.total_tests} tests
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className={`text-xl font-bold ${isCurrentUser ? 'text-white' : 'text-primary'}`}>
+                      {entry.average_score.toFixed(1)}%
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </Card>
+      )}
+
+      {/* All Rankings */}
       <Card>
         <h2 className="text-xl font-bold text-gray-900 mb-4">All Rankings</h2>
         <div className="space-y-2">
-          {remaining.map((entry) => {
+          {leaderboard.map((entry) => {
             const isCurrentUser = entry.user_email === user?.email;
             return (
               <div
