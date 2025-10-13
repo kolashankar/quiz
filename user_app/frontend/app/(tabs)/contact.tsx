@@ -8,10 +8,16 @@ import {
   TextInput,
   Alert,
   Linking,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+
+// EmailJS Configuration (Update with your EmailJS credentials)
+const EMAILJS_SERVICE_ID = 'service_xxxxxxx';
+const EMAILJS_TEMPLATE_ID = 'template_xxxxxxx';
+const EMAILJS_PUBLIC_KEY = 'xxxxxxxxxxxxxxxxxxx';
 
 export default function ContactScreen() {
   const [name, setName] = useState('');
@@ -20,22 +26,73 @@ export default function ContactScreen() {
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!name || !email || !subject || !message) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
 
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert('Error', 'Please enter a valid email address');
+      return;
+    }
+
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
+
+    try {
+      // Send email using EmailJS REST API
+      const templateParams = {
+        from_name: name,
+        from_email: email,
+        subject: subject,
+        message: message,
+        to_name: 'Quiz App Support Team',
+      };
+
+      const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          service_id: EMAILJS_SERVICE_ID,
+          template_id: EMAILJS_TEMPLATE_ID,
+          user_id: EMAILJS_PUBLIC_KEY,
+          template_params: templateParams,
+        }),
+      });
+
+      if (response.ok) {
+        Alert.alert(
+          'Success',
+          'Your message has been sent! We\'ll get back to you soon.',
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                setName('');
+                setEmail('');
+                setSubject('');
+                setMessage('');
+                router.back();
+              },
+            },
+          ]
+        );
+      } else {
+        throw new Error('Failed to send email');
+      }
+    } catch (error) {
+      console.error('EmailJS Error:', error);
       Alert.alert(
-        'Success',
-        'Your message has been sent! We\'ll get back to you soon.',
-        [{ text: 'OK', onPress: () => router.back() }]
+        'Error',
+        'Failed to send message. Please try again or contact us directly at support@genuis.com'
       );
-    }, 1500);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const openLink = (url: string) => {
