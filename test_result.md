@@ -524,6 +524,18 @@ web_app:
           agent: "main"
           comment: "Updated Sidebar navigation with Search link and theme toggle button. Improved mobile responsiveness with hamburger menu and overlay. All navigation items properly highlighted based on current route."
 
+  - task: "WhatsApp Community Integration - Both Apps"
+    implemented: true
+    working: "NA"
+    file: "web_app/frontend/src/components/Sidebar.tsx, user_app/frontend/src/components/navigation/CustomDrawer.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Added 'Join WhatsApp Community' button to both user_app (Android) and web_app. Web app: Green WhatsApp button in sidebar above theme toggle. User app: Green styled menu item in CustomDrawer. Sample URL configured: https://whatsapp.com/channel/0029VaeW5Vu4WT9pTBq8eL2i (can be changed later)."
+
 metadata:
   created_by: "testing_agent"
   version: "1.0"
