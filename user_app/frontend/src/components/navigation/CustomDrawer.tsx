@@ -310,6 +310,13 @@ const styles = StyleSheet.create({
   logoutText: {
     color: '#FF3B30',
   },
+  whatsappItem: {
+    backgroundColor: '#E7F8F0',
+  },
+  whatsappText: {
+    color: '#25D366',
+    fontWeight: '600',
+  },
   badge: {
     backgroundColor: '#FF3B30',
     borderRadius: 12,
