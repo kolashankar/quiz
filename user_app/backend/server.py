@@ -1633,6 +1633,11 @@ async def get_filtered_questions(
             difficulty=q["difficulty"],
             tags=q.get("tags", []),
             explanation=q.get("explanation", ""),
+            hint=q.get("hint", ""),
+            solution=q.get("solution", ""),
+            code_snippet=q.get("code_snippet", ""),
+            image_url=q.get("image_url", ""),
+            formula=q.get("formula", ""),
             created_at=q["created_at"]
         ) for q in questions
     ]
