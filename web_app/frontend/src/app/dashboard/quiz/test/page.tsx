@@ -14,7 +14,9 @@ import {
   ChevronRightIcon,
   CheckIcon,
   XMarkIcon,
+  FlagIcon,
 } from '@heroicons/react/24/outline';
+import { FlagIcon as FlagSolidIcon } from '@heroicons/react/24/solid';
 
 export default function TestPage() {
   const searchParams = useSearchParams();
@@ -26,9 +28,11 @@ export default function TestPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [bookmarked, setBookmarked] = useState<Set<string>>(new Set());
+  const [markedForReview, setMarkedForReview] = useState<Set<number>>(new Set());
+  const [visitedQuestions, setVisitedQuestions] = useState<Set<number>>(new Set([0]));
 
   const timer = useTimer({
-    initialTime: 30 * 60, // 30 minutes
+    initialTime: 30 * 60,
     onTimeUp: handleTimeUp,
     autoStart: false,
   });
@@ -65,7 +69,6 @@ export default function TestPage() {
       setAnswers(new Array(questionList.length).fill(-1));
       timer.start();
       
-      // Fetch bookmarks
       fetchBookmarks();
     } catch (error) {
       console.error('Error fetching questions:', error);
@@ -94,18 +97,23 @@ export default function TestPage() {
 
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      const nextIndex = currentQuestionIndex + 1;
+      setCurrentQuestionIndex(nextIndex);
+      setVisitedQuestions(prev => new Set([...prev, nextIndex]));
     }
   };
 
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      const prevIndex = currentQuestionIndex - 1;
+      setCurrentQuestionIndex(prevIndex);
+      setVisitedQuestions(prev => new Set([...prev, prevIndex]));
     }
   };
 
   const handleQuestionNavigation = (index: number) => {
     setCurrentQuestionIndex(index);
+    setVisitedQuestions(prev => new Set([...prev, index]));
   };
 
   const handleToggleBookmark = async () => {
@@ -114,7 +122,6 @@ export default function TestPage() {
 
     try {
       if (isBookmarked) {
-        // Find bookmark and delete it
         const bookmarks = await quizService.getBookmarks();
         const bookmark = bookmarks.find((b: any) => b.question_id === currentQuestion.id);
         if (bookmark) {
@@ -134,6 +141,25 @@ export default function TestPage() {
     } catch (error) {
       toast.error('Failed to update bookmark');
     }
+  };
+
+  const handleToggleMarkForReview = () => {
+    setMarkedForReview(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(currentQuestionIndex)) {
+        newSet.delete(currentQuestionIndex);
+      } else {
+        newSet.add(currentQuestionIndex);
+      }
+      return newSet;
+    });
+  };
+
+  const getQuestionStatus = (index: number) => {
+    if (markedForReview.has(index)) return 'marked';
+    if (answers[index] !== -1) return 'answered';
+    if (visitedQuestions.has(index)) return 'visited';
+    return 'unvisited';
   };
 
   const submitTest = async () => {
@@ -184,6 +210,7 @@ export default function TestPage() {
   const currentQuestion = questions[currentQuestionIndex];
   const answeredCount = answers.filter(a => a !== -1).length;
   const progress = (answeredCount / questions.length) * 100;
+  const isMarkedForReview = markedForReview.has(currentQuestionIndex);
 
   return (
     <div className="min-h-screen bg-background">
@@ -227,12 +254,84 @@ export default function TestPage() {
             />
           </div>
         </div>
+
+        {/* Question Navigation Bar */}
+        <div className="border-t border-gray-200 bg-gray-50 px-4 py-3">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center gap-2 overflow-x-auto pb-2">
+              {questions.map((_, index) => {
+                const status = getQuestionStatus(index);
+                const isCurrent = index === currentQuestionIndex;
+                
+                const statusColors = {
+                  answered: 'bg-success text-white border-success',
+                  marked: 'bg-warning text-white border-warning',
+                  visited: 'bg-danger text-white border-danger',
+                  unvisited: 'bg-gray-300 text-gray-700 border-gray-300',
+                };
+                
+                return (
+                  <button
+                    key={index}
+                    onClick={() => handleQuestionNavigation(index)}
+                    className={`flex-shrink-0 w-10 h-10 rounded-full font-semibold text-sm transition border-2 ${
+                      isCurrent
+                        ? 'ring-4 ring-blue-300 scale-110'
+                        : ''
+                    } ${statusColors[status as keyof typeof statusColors]}`}
+                  >
+                    {index + 1}
+                  </button>
+                );
+              })}
+            </div>
+            
+            {/* Legend */}
+            <div className="flex flex-wrap gap-4 mt-3 text-xs">
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-success"></div>
+                <span className="text-gray-600">Answered</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-warning"></div>
+                <span className="text-gray-600">Review</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-danger"></div>
+                <span className="text-gray-600">Visited</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-gray-300"></div>
+                <span className="text-gray-600">Not Visited</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Main Question Area */}
           <div className="lg:col-span-3">
+            {/* Mark for Review Button */}
+            <button
+              onClick={handleToggleMarkForReview}
+              className={`w-full mb-4 flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 transition ${
+                isMarkedForReview
+                  ? 'bg-warning border-warning text-white'
+                  : 'bg-yellow-50 border-warning text-warning hover:bg-yellow-100'
+              }`}
+            >
+              {isMarkedForReview ? (
+                <FlagSolidIcon className="w-5 h-5" />
+              ) : (
+                <FlagIcon className="w-5 h-5" />
+              )}
+              <span className="font-semibold">
+                {isMarkedForReview ? 'Marked for Review' : 'Mark for Review'}
+              </span>
+            </button>
+
             <QuestionCard
               question={currentQuestion}
               questionNumber={currentQuestionIndex + 1}
@@ -284,8 +383,15 @@ export default function TestPage() {
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Questions</h3>
               <div className="grid grid-cols-5 lg:grid-cols-4 gap-2">
                 {questions.map((_, index) => {
-                  const isAnswered = answers[index] !== -1;
+                  const status = getQuestionStatus(index);
                   const isCurrent = index === currentQuestionIndex;
+                  
+                  const statusColors = {
+                    answered: 'bg-success text-white',
+                    marked: 'bg-warning text-white',
+                    visited: 'bg-danger text-white',
+                    unvisited: 'bg-gray-200 text-gray-700',
+                  };
                   
                   return (
                     <button
@@ -293,11 +399,9 @@ export default function TestPage() {
                       onClick={() => handleQuestionNavigation(index)}
                       className={`aspect-square rounded-lg font-semibold text-sm transition ${
                         isCurrent
-                          ? 'bg-primary text-white'
-                          : isAnswered
-                          ? 'bg-success text-white'
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                      }`}
+                          ? 'ring-2 ring-primary'
+                          : 'hover:opacity-80'
+                      } ${statusColors[status as keyof typeof statusColors]}`}
                     >
                       {index + 1}
                     </button>
@@ -311,12 +415,39 @@ export default function TestPage() {
                   <span className="text-gray-700">Answered</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded bg-gray-200"></div>
-                  <span className="text-gray-700">Not Answered</span>
+                  <div className="w-4 h-4 rounded bg-warning"></div>
+                  <span className="text-gray-700">Review</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded bg-primary"></div>
-                  <span className="text-gray-700">Current</span>
+                  <div className="w-4 h-4 rounded bg-danger"></div>
+                  <span className="text-gray-700">Visited</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded bg-gray-200"></div>
+                  <span className="text-gray-700">Not Visited</span>
+                </div>
+              </div>
+            </Card>
+
+            {/* Test Stats */}
+            <Card className="mt-4">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Test Stats</h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Total:</span>
+                  <span className="font-semibold">{questions.length}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Answered:</span>
+                  <span className="font-semibold text-success">{answeredCount}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Not Answered:</span>
+                  <span className="font-semibold text-danger">{questions.length - answeredCount}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Marked:</span>
+                  <span className="font-semibold text-warning">{markedForReview.size}</span>
                 </div>
               </div>
             </Card>
