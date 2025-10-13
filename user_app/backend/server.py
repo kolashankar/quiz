@@ -881,6 +881,11 @@ async def update_question(question_id: str, question: QuestionCreate, admin: dic
         difficulty=updated_question["difficulty"],
         tags=updated_question.get("tags", []),
         explanation=updated_question.get("explanation", ""),
+        hint=updated_question.get("hint", ""),
+        solution=updated_question.get("solution", ""),
+        code_snippet=updated_question.get("code_snippet", ""),
+        image_url=updated_question.get("image_url", ""),
+        formula=updated_question.get("formula", ""),
         created_at=updated_question["created_at"]
     )
 
