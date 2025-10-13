@@ -27,6 +27,8 @@ export function QuestionCard({
   isBookmarked,
   onToggleBookmark,
 }: QuestionCardProps) {
+  const [showHint, setShowHint] = useState(false);
+
   const difficultyColors = {
     easy: 'bg-easy/10 text-easy border-easy',
     medium: 'bg-medium/10 text-medium border-medium',
@@ -34,6 +36,33 @@ export function QuestionCard({
   };
 
   const difficultyColor = difficultyColors[question.difficulty as keyof typeof difficultyColors] || difficultyColors.medium;
+
+  // Helper function to render text with LaTeX and code
+  const renderFormattedText = (text: string) => {
+    // First check for code blocks
+    if (text.includes('```')) {
+      return renderCodeBlocks(text);
+    }
+    // Then check for inline code
+    if (text.includes('`')) {
+      const parts = renderInlineCode(text);
+      // Now check each part for LaTeX
+      return parts.map((part, idx) => {
+        if (typeof part === 'string') {
+          if (part.includes('$')) {
+            return <span key={idx}>{renderLatex(part)}</span>;
+          }
+          return <span key={idx}>{part}</span>;
+        }
+        return part;
+      });
+    }
+    // Check for LaTeX
+    if (text.includes('$')) {
+      return renderLatex(text);
+    }
+    return text;
+  };
 
   return (
     <Card>
@@ -62,8 +91,48 @@ export function QuestionCard({
 
       {/* Question Text */}
       <div className="mb-6">
-        <p className="text-lg text-gray-900 leading-relaxed">{question.question_text}</p>
+        <div className="text-lg text-gray-900 leading-relaxed">
+          {renderFormattedText(question.question_text)}
+        </div>
       </div>
+
+      {/* Question Image (if exists) */}
+      {question.image && (
+        <div className="mb-6">
+          <img
+            src={question.image}
+            alt="Question illustration"
+            className="max-w-full h-auto rounded-lg border border-gray-200"
+          />
+        </div>
+      )}
+
+      {/* Hint Button */}
+      {question.hint && (
+        <div className="mb-4">
+          <button
+            onClick={() => setShowHint(!showHint)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 transition ${
+              showHint
+                ? 'bg-yellow-50 border-yellow-400 text-yellow-700'
+                : 'border-yellow-300 text-yellow-600 hover:bg-yellow-50'
+            }`}
+          >
+            <LightBulbIcon className="w-5 h-5" />
+            <span className="font-medium">
+              {showHint ? 'Hide Hint' : 'Show Hint'}
+            </span>
+          </button>
+          {showHint && (
+            <div className="mt-3 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg">
+              <p className="text-sm text-gray-800">
+                <strong className="text-yellow-700">Hint:</strong>{' '}
+                {renderFormattedText(question.hint)}
+              </p>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Options */}
       <div className="space-y-3">
@@ -98,7 +167,7 @@ export function QuestionCard({
                   <span className={`ml-2 ${
                     isSelected ? 'text-gray-900' : 'text-gray-700'
                   }`}>
-                    {option}
+                    {typeof option === 'string' ? renderFormattedText(option) : option}
                   </span>
                 </div>
               </div>
@@ -106,6 +175,14 @@ export function QuestionCard({
           );
         })}
       </div>
+
+      {/* Code Snippet (if exists) */}
+      {question.code_snippet && (
+        <div className="mt-6">
+          <div className="text-sm font-semibold text-gray-700 mb-2">Code Reference:</div>
+          {renderCodeBlocks(`\`\`\`${question.code_language || 'javascript'}\n${question.code_snippet}\n\`\`\``)}
+        </div>
+      )}
     </Card>
   );
 }
