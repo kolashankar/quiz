@@ -842,18 +842,23 @@ async def create_question(question: QuestionCreate, admin: dict = Depends(get_ad
     )
 
 @api_router.get("/admin/questions", response_model=List[QuestionResponse])
-async def get_questions_admin(topic_id: Optional[str] = None, admin: dict = Depends(get_admin_user)):
-    query = {"topic_id": topic_id} if topic_id else {}
+async def get_questions_admin(sub_section_id: Optional[str] = None, admin: dict = Depends(get_admin_user)):
+    query = {"sub_section_id": sub_section_id} if sub_section_id else {}
     questions = await db.questions.find(query).to_list(1000)
     return [QuestionResponse(
         id=str(q["_id"]),
-        topic_id=q["topic_id"],
+        sub_section_id=q["sub_section_id"],
         question_text=q["question_text"],
         options=q["options"],
         correct_answer=q["correct_answer"],
         difficulty=q["difficulty"],
         tags=q.get("tags", []),
         explanation=q.get("explanation", ""),
+        hint=q.get("hint", ""),
+        solution=q.get("solution", ""),
+        code_snippet=q.get("code_snippet", ""),
+        image_url=q.get("image_url", ""),
+        formula=q.get("formula", ""),
         created_at=q["created_at"]
     ) for q in questions]
 
