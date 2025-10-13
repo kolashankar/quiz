@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card, Loading } from '@/components/common';
+import { Card, Loading, Button } from '@/components/common';
 import { quizService } from '@/lib/quiz-service';
 import { useAuth } from '@/contexts/AuthContext';
 import { LeaderboardEntry } from '@/types';
@@ -10,17 +10,54 @@ import {
   TrophyIcon,
   FireIcon,
   StarIcon,
+  FunnelIcon,
+  UsersIcon,
+  ChartBarIcon,
 } from '@heroicons/react/24/outline';
+
+type Period = 'all_time' | 'weekly' | 'monthly';
+type Scope = 'global' | 'exam' | 'subject';
 
 export default function LeaderboardPage() {
   const { user } = useAuth();
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [period, setPeriod] = useState<Period>('all_time');
+  const [scope, setScope] = useState<Scope>('global');
+  const [exams, setExams] = useState<any[]>([]);
+  const [subjects, setSubjects] = useState<any[]>([]);
+  const [selectedExam, setSelectedExam] = useState<string>('');
+  const [selectedSubject, setSelectedSubject] = useState<string>('');
+  const [showFilters, setShowFilters] = useState(false);
+  const [stats, setStats] = useState({
+    totalParticipants: 0,
+    averageScore: 0,
+  });
 
   const fetchLeaderboard = async () => {
     try {
-      const data = await quizService.getLeaderboard(50);
-      setLeaderboard(data);
+      const params: any = { period, scope };
+      if (scope === 'exam' && selectedExam) {
+        params.exam_id = selectedExam;
+      }
+      if (scope === 'subject' && selectedSubject) {
+        params.subject_id = selectedSubject;
+      }
+
+      const data = await quizService.getFilteredLeaderboard(params);
+      setLeaderboard(data.leaderboard || data);
+      
+      // Calculate stats
+      if (data.leaderboard && Array.isArray(data.leaderboard)) {
+        const participants = data.leaderboard.length;
+        const avgScore = participants > 0 
+          ? data.leaderboard.reduce((sum: number, entry: any) => sum + entry.average_score, 0) / participants
+          : 0;
+        setStats({
+          totalParticipants: participants,
+          averageScore: avgScore,
+        });
+      }
     } catch (error) {
       console.error('Error fetching leaderboard:', error);
       toast.error('Failed to load leaderboard');
@@ -29,9 +66,37 @@ export default function LeaderboardPage() {
     }
   };
 
+  const fetchExams = async () => {
+    try {
+      const data = await quizService.getExams();
+      setExams(data);
+    } catch (error) {
+      console.error('Error fetching exams:', error);
+    }
+  };
+
+  const fetchSubjects = async (examId?: string) => {
+    try {
+      const data = await quizService.getSubjects(examId);
+      setSubjects(data);
+    } catch (error) {
+      console.error('Error fetching subjects:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchExams();
+  }, []);
+
+  useEffect(() => {
+    if (scope === 'exam' && selectedExam) {
+      fetchSubjects(selectedExam);
+    }
+  }, [selectedExam]);
+
   useEffect(() => {
     fetchLeaderboard();
-  }, []);
+  }, [period, scope, selectedExam, selectedSubject]);
 
   const handleRefresh = async () => {
     setLoading(true);
