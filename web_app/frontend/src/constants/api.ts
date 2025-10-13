@@ -1,47 +1,46 @@
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
-export const API_PREFIX = '/api';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
 
 export const API_ENDPOINTS = {
   // Auth
-  AUTH_LOGIN: `${API_PREFIX}/auth/login`,
-  AUTH_SIGNUP: `${API_PREFIX}/auth/signup`,
-  AUTH_ME: `${API_PREFIX}/auth/me`,
-  FORGOT_PASSWORD: `${API_PREFIX}/forgot-password`,
-  RESET_PASSWORD: `${API_PREFIX}/reset-password`,
+  AUTH_LOGIN: '/api/auth/login',
+  AUTH_SIGNUP: '/api/auth/signup',
+  AUTH_ME: '/api/auth/me',
+  FORGOT_PASSWORD: '/api/forgot-password',
+  RESET_PASSWORD: '/api/reset-password',
   
   // Profile
-  PROFILE_UPDATE: `${API_PREFIX}/profile/update`,
+  PROFILE_UPDATE: '/api/profile/update',
   
   // Hierarchy
-  EXAMS: `${API_PREFIX}/exams`,
-  SUBJECTS: `${API_PREFIX}/subjects`,
-  CHAPTERS: `${API_PREFIX}/chapters`,
-  TOPICS: `${API_PREFIX}/topics`,
-  SUB_TOPICS: `${API_PREFIX}/sub-topics`,
-  SECTIONS: `${API_PREFIX}/sections`,
-  SUB_SECTIONS: `${API_PREFIX}/sub-sections`,
+  EXAMS: '/api/exams',
+  SUBJECTS: '/api/subjects',
+  CHAPTERS: '/api/chapters',
+  TOPICS: '/api/topics',
+  SUB_TOPICS: '/api/sub-topics',
+  SECTIONS: '/api/sections',
+  SUB_SECTIONS: '/api/sub-sections',
   
   // Questions
-  QUESTIONS: `${API_PREFIX}/questions`,
-  QUESTIONS_FILTERED: `${API_PREFIX}/questions/filtered`,
+  QUESTIONS: '/api/questions',
+  QUESTIONS_FILTERED: '/api/questions/filtered',
   
   // Search
-  SEARCH: `${API_PREFIX}/search`,
+  SEARCH: '/api/search',
   
   // Tests
-  TESTS_SUBMIT: `${API_PREFIX}/tests/submit`,
-  TESTS_HISTORY: `${API_PREFIX}/tests/history`,
+  TESTS_SUBMIT: '/api/tests/submit',
+  TESTS_HISTORY: '/api/tests/history',
   
   // Bookmarks
-  BOOKMARKS: `${API_PREFIX}/bookmarks`,
-  BOOKMARKS_BATCH: `${API_PREFIX}/bookmarks/batch`,
+  BOOKMARKS: '/api/bookmarks',
+  BOOKMARKS_BATCH: '/api/bookmarks/batch',
   
   // Analytics
-  ANALYTICS_PERFORMANCE: `${API_PREFIX}/analytics/performance`,
-  ANALYTICS_DIFFICULTY: `${API_PREFIX}/analytics/difficulty-breakdown`,
-  RECOMMENDATIONS: `${API_PREFIX}/recommendations/tests`,
+  ANALYTICS_PERFORMANCE: '/api/analytics/performance',
+  ANALYTICS_DIFFICULTY: '/api/analytics/difficulty-breakdown',
+  RECOMMENDATIONS: '/api/recommendations/tests',
   
   // Leaderboard
-  LEADERBOARD: `${API_PREFIX}/leaderboard`,
-  LEADERBOARD_FILTERED: `${API_PREFIX}/leaderboard/filtered`,
+  LEADERBOARD: '/api/leaderboard',
+  LEADERBOARD_FILTERED: '/api/leaderboard/filtered',
 };
