@@ -904,7 +904,7 @@ async def bulk_upload_questions(file: UploadFile = File(...), admin: dict = Depe
         contents = await file.read()
         df = pd.read_csv(io.BytesIO(contents))
         
-        # Expected CSV columns: sub_section_id, question_text, option1, option2, option3, option4, correct_answer, difficulty, tags, explanation
+        # Expected CSV columns: sub_section_id, question_text, option1, option2, option3, option4, correct_answer, difficulty, tags, explanation, hint, solution, code_snippet, image_url, formula
         required_columns = ["sub_section_id", "question_text", "option1", "option2", "option3", "option4", "correct_answer", "difficulty"]
         if not all(col in df.columns for col in required_columns):
             raise HTTPException(status_code=400, detail=f"CSV must contain columns: {required_columns}")
@@ -923,6 +923,11 @@ async def bulk_upload_questions(file: UploadFile = File(...), admin: dict = Depe
                 "difficulty": row["difficulty"],
                 "tags": tags,
                 "explanation": row.get("explanation", ""),
+                "hint": row.get("hint", ""),
+                "solution": row.get("solution", ""),
+                "code_snippet": row.get("code_snippet", ""),
+                "image_url": row.get("image_url", ""),
+                "formula": row.get("formula", ""),
                 "created_at": datetime.utcnow()
             }
             questions.append(question_dict)
