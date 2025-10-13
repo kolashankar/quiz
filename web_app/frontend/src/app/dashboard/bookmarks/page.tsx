@@ -97,9 +97,9 @@ export default function BookmarksPage() {
 
     try {
       // Delete bookmarks using batch operation
-      await quizService.batchBookmarkOperation(
-        Array.from(selectedBookmarks),
-        'remove'
+      await quizService.batchBookmarks(
+        'remove',
+        Array.from(selectedBookmarks)
       );
       
       setBookmarks(bookmarks.filter((b) => !selectedBookmarks.has(b.id)));
