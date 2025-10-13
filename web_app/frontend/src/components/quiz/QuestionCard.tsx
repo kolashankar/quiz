@@ -1,10 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Question } from '@/types';
 import { Card } from '../common';
-import { BookmarkIcon } from '@heroicons/react/24/outline';
+import { BookmarkIcon, LightBulbIcon } from '@heroicons/react/24/outline';
 import { BookmarkIcon as BookmarkSolidIcon } from '@heroicons/react/24/solid';
+import { renderLatex } from '@/lib/latex-renderer';
+import { renderCodeBlocks, renderInlineCode } from './CodeBlock';
 
 interface QuestionCardProps {
   question: Question;
