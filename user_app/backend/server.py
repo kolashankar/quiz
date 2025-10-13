@@ -833,6 +833,11 @@ async def create_question(question: QuestionCreate, admin: dict = Depends(get_ad
         difficulty=question_dict["difficulty"],
         tags=question_dict["tags"],
         explanation=question_dict["explanation"],
+        hint=question_dict.get("hint", ""),
+        solution=question_dict.get("solution", ""),
+        code_snippet=question_dict.get("code_snippet", ""),
+        image_url=question_dict.get("image_url", ""),
+        formula=question_dict.get("formula", ""),
         created_at=question_dict["created_at"]
     )
 
