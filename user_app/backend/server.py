@@ -177,6 +177,11 @@ class QuestionCreate(BaseModel):
     difficulty: str  # "easy", "medium", "hard"
     tags: List[str] = []
     explanation: str = ""
+    hint: str = ""  # Hint for solving the question
+    solution: str = ""  # Detailed solution
+    code_snippet: str = ""  # Code example for DSA questions
+    image_url: str = ""  # Image URL or base64
+    formula: str = ""  # Mathematical formula (LaTeX format)
 
 class QuestionResponse(BaseModel):
     id: str
@@ -187,6 +192,11 @@ class QuestionResponse(BaseModel):
     difficulty: str
     tags: List[str]
     explanation: str
+    hint: str
+    solution: str
+    code_snippet: str
+    image_url: str
+    formula: str
     created_at: datetime
 
 # Test Models
