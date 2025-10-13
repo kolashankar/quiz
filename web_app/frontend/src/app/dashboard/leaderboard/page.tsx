@@ -104,6 +104,12 @@ export default function LeaderboardPage() {
     toast.success('Leaderboard refreshed!');
   };
 
+  const handleScopeChange = (newScope: Scope) => {
+    setScope(newScope);
+    setSelectedExam('');
+    setSelectedSubject('');
+  };
+
   if (loading) {
     return <Loading text="Loading leaderboard..." />;
   }
@@ -111,19 +117,196 @@ export default function LeaderboardPage() {
   const top3 = leaderboard.slice(0, 3);
   const remaining = leaderboard.slice(3);
 
+  // Find current user's rank
+  const currentUserEntry = leaderboard.find((entry) => entry.user_email === user?.email);
+  const nearbyUsers = currentUserEntry
+    ? leaderboard.slice(
+        Math.max(0, (currentUserEntry.rank || 0) - 3),
+        Math.min(leaderboard.length, (currentUserEntry.rank || 0) + 2)
+      )
+    : [];
+
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
-      <div className="flex items-center justify-between mb-8">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Leaderboard</h1>
           <p className="text-gray-600 mt-2">Compete with top learners</p>
         </div>
-        <button
-          onClick={handleRefresh}
-          className="px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary-dark transition"
-        >
-          Refresh
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+          >
+            <FunnelIcon className="w-5 h-5" />
+            Filters
+          </button>
+          <button
+            onClick={handleRefresh}
+            className="px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary-dark transition"
+          >
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      {/* Filters Panel */}
+      {showFilters && (
+        <Card className="mb-6">
+          <h3 className="font-semibold text-gray-900 mb-4">Filter Options</h3>
+          
+          {/* Time Period Filter */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Time Period</label>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setPeriod('all_time')}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  period === 'all_time'
+                    ? 'bg-primary text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                All Time
+              </button>
+              <button
+                onClick={() => setPeriod('weekly')}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  period === 'weekly'
+                    ? 'bg-primary text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                This Week
+              </button>
+              <button
+                onClick={() => setPeriod('monthly')}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  period === 'monthly'
+                    ? 'bg-primary text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                This Month
+              </button>
+            </div>
+          </div>
+
+          {/* Scope Filter */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Scope</label>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => handleScopeChange('global')}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  scope === 'global'
+                    ? 'bg-primary text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Global
+              </button>
+              <button
+                onClick={() => handleScopeChange('exam')}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  scope === 'exam'
+                    ? 'bg-primary text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                By Exam
+              </button>
+              <button
+                onClick={() => handleScopeChange('subject')}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  scope === 'subject'
+                    ? 'bg-primary text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                By Subject
+              </button>
+            </div>
+          </div>
+
+          {/* Exam Filter (when scope is exam or subject) */}
+          {(scope === 'exam' || scope === 'subject') && (
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Select Exam</label>
+              <select
+                value={selectedExam}
+                onChange={(e) => setSelectedExam(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              >
+                <option value="">All Exams</option>
+                {exams.map((exam) => (
+                  <option key={exam.id} value={exam.id}>
+                    {exam.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {/* Subject Filter (when scope is subject) */}
+          {scope === 'subject' && (
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Select Subject</label>
+              <select
+                value={selectedSubject}
+                onChange={(e) => setSelectedSubject(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              >
+                <option value="">All Subjects</option>
+                {subjects.map((subject) => (
+                  <option key={subject.id} value={subject.id}>
+                    {subject.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </Card>
+      )}
+
+      {/* Statistics Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <Card>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+              <UsersIcon className="w-6 h-6 text-primary" />
+            </div>
+            <div>
+              <div className="text-sm text-gray-600">Total Participants</div>
+              <div className="text-2xl font-bold text-gray-900">{stats.totalParticipants}</div>
+            </div>
+          </div>
+        </Card>
+        <Card>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-success/10 flex items-center justify-center">
+              <ChartBarIcon className="w-6 h-6 text-success" />
+            </div>
+            <div>
+              <div className="text-sm text-gray-600">Average Score</div>
+              <div className="text-2xl font-bold text-gray-900">{stats.averageScore.toFixed(1)}%</div>
+            </div>
+          </div>
+        </Card>
+        <Card>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center">
+              <TrophyIcon className="w-6 h-6 text-warning" />
+            </div>
+            <div>
+              <div className="text-sm text-gray-600">Your Rank</div>
+              <div className="text-2xl font-bold text-gray-900">
+                {currentUserEntry ? `#${currentUserEntry.rank}` : 'N/A'}
+              </div>
+            </div>
+          </div>
+        </Card>
       </div>
 
       {/* Top 3 Podium */}
