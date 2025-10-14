@@ -17,6 +17,69 @@ import { Card, Loading, Button } from '../../src/components/common';
 import { quizService } from '../../src/services/api/quiz';
 import { Analytics, TestResult } from '../../src/types';
 
+const createStyles = (colors: any) => ({
+  userName: {
+    fontSize: 20,
+    fontWeight: 'bold' as 'bold',
+    color: colors.text,
+  },
+  userEmail: {
+    fontSize: 14,
+    color: colors.textSecondary,
+    marginTop: 2,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600' as '600',
+    color: colors.text,
+    marginBottom: 12,
+  },
+  statLabel: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    marginTop: 4,
+  },
+  subsectionTitle: {
+    fontSize: 16,
+    fontWeight: '600' as '600',
+    color: colors.text,
+    marginBottom: 8,
+    marginTop: 16,
+  },
+  topicName: {
+    fontSize: 14,
+    fontWeight: '500' as '500',
+    color: colors.text,
+  },
+  topicStats: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    marginTop: 2,
+  },
+  suggestionText: {
+    fontSize: 14,
+    color: colors.text,
+    marginLeft: 8,
+    flex: 1,
+  },
+  testDate: {
+    fontSize: 14,
+    fontWeight: '500' as '500',
+    color: colors.text,
+  },
+  testStats: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    marginTop: 2,
+  },
+  actionText: {
+    fontSize: 16,
+    color: colors.text,
+    marginLeft: 12,
+    flex: 1,
+  },
+});
+
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
   const { theme, toggleTheme, colors } = useTheme();
