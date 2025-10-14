@@ -73,6 +73,7 @@ app.use('/api/admin/notifications', authMiddleware, notificationRoutes);
 app.use('/api/admin/bulk-operations', authMiddleware, bulkOperationsRoutes);
 app.use('/api/admin/question-quality', authMiddleware, questionQualityRoutes);
 app.use('/api/admin/communication', authMiddleware, communicationRoutes);
+app.use('/api/admin/csv-generator', authMiddleware, csvGeneratorRoutes);
 
 // Error handling middleware
 app.use(errorHandler);
