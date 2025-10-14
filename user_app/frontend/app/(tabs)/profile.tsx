@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
+import { useTheme } from '../../src/contexts/ThemeContext';
 import { Card, Loading, Button } from '../../src/components/common';
 import { quizService } from '../../src/services/api/quiz';
 import { Analytics, TestResult } from '../../src/types';
