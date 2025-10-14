@@ -232,6 +232,7 @@ curl -X POST http://localhost:8001/api/admin/questions/bulk-upload \
 - 📊 Dashboard with analytics
 - 🧭 8-level quiz navigation
 - ⏱️ Timed quizzes
+- 🎯 Practice mode (no timer, instant feedback)
 - 📈 Results with explanations
 - 🔖 Bookmarks
 - 🏆 Leaderboards
@@ -240,15 +241,18 @@ curl -X POST http://localhost:8001/api/admin/questions/bulk-upload \
 
 ### Web App (Next.js) - Fully Responsive
 - ✅ All mobile app features
+- ✅ Practice mode with exam/subject/chapter filters
 - 📱 Mobile & Desktop responsive
 - ⚡ Server-side rendering
 - 🎨 Modern UI with Tailwind
 - 📊 Interactive charts
+- 📝 LaTeX formula rendering
+- 💻 Code syntax highlighting
 
 ### Admin Dashboard
-- 📝 Question management
-- 📤 CSV bulk upload
-- 🤖 AI question generation
+- 📝 Question management (24-column CSV support)
+- 📤 CSV bulk upload (legacy & new format)
+- 🤖 AI CSV generation with shortcuts & tricks
 - 📊 Analytics dashboard
 - 👥 User management
 
