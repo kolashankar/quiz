@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import {
   HomeIcon,
   AcademicCapIcon,
@@ -24,8 +25,8 @@ import {
 export default function Sidebar() {
   const pathname = usePathname();
   const { logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   const navigation = [
     { name: 'Home', href: '/dashboard', icon: HomeIcon },
