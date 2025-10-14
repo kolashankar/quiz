@@ -769,6 +769,190 @@ yarn add next-image-export-optimizer
 
 ---
 
+## 📦 Package Dependencies & Updates (2025)
+
+### Web App Frontend Dependencies
+
+#### Core Framework & Build Tools
+```json
+{
+  "next": "^14.1.0",
+  "react": "^18.2.0",
+  "react-dom": "^18.2.0",
+  "typescript": "^5.9.3"
+}
+```
+
+#### UI & Styling
+```json
+{
+  "tailwindcss": "^3.4.1",
+  "@headlessui/react": "^1.7.18",
+  "@heroicons/react": "^2.0.18",
+  "clsx": "^2.1.0",
+  "tailwind-merge": "^2.2.1",
+  "framer-motion": "^11.0.5",
+  "lucide-react": "^0.323.0"
+}
+```
+
+#### API & State Management
+```json
+{
+  "axios": "^1.6.7",
+  "zustand": "^5.0.8"
+}
+```
+
+#### Form Handling & Validation
+```json
+{
+  "react-hook-form": "^7.49.3",
+  "@hookform/resolvers": "^5.2.2",
+  "zod": "^4.1.12"
+}
+```
+
+#### Rich Content Rendering
+```json
+{
+  "react-markdown": "^10.1.0",
+  "remark-gfm": "^4.0.1",
+  "remark-math": "^6.0.0",
+  "rehype-katex": "^7.0.1",
+  "katex": "^0.16.25",
+  "react-syntax-highlighter": "^15.6.6",
+  "@types/react-syntax-highlighter": "^15.5.13"
+}
+```
+
+#### Data Visualization
+```json
+{
+  "recharts": "^2.10.4",
+  "@types/recharts": "^2.x.x"
+}
+```
+
+#### Utilities & Helpers
+```json
+{
+  "react-hot-toast": "^2.4.1",
+  "@emailjs/browser": "^4.4.1"
+}
+```
+
+### Mobile App Frontend Dependencies
+
+#### Core Expo & React Native
+```json
+{
+  "expo": "~52.0.11",
+  "react": "19.0.0",
+  "react-native": "0.79.5"
+}
+```
+
+#### Navigation & Routing
+```json
+{
+  "expo-router": "~6.0.12",
+  "react-native-screens": "~4.16.0",
+  "react-native-safe-area-context": "~5.6.0"
+}
+```
+
+#### UI Components
+```json
+{
+  "react-native-reanimated": "~4.1.1",
+  "react-native-gesture-handler": "~2.28.0",
+  "@shopify/flash-list": "latest"
+}
+```
+
+### Backend Dependencies
+
+#### Core Framework
+```python
+fastapi==0.109.2
+uvicorn==0.25.0
+python-dotenv==1.0.1
+pydantic==2.6.0
+```
+
+#### Database
+```python
+pymongo==4.6.1
+motor==3.3.2  # Async MongoDB driver
+```
+
+#### Authentication & Security
+```python
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+```
+
+#### AI Integration
+```python
+google-generativeai==0.3.2  # Gemini AI
+```
+
+#### Utilities
+```python
+pandas==2.2.0
+openpyxl==3.1.2
+python-dateutil==2.8.2
+```
+
+### Key Package Features Utilized
+
+#### 1. KaTeX (katex ^0.16.25)
+- **Purpose**: LaTeX mathematical formula rendering
+- **Usage**: Renders inline (`$...$`) and display (`$$...$$`) math
+- **Features Used**: 
+  - Full LaTeX syntax support
+  - Error handling with fallback
+  - Custom styling support
+
+#### 2. React Syntax Highlighter (^15.6.6)
+- **Purpose**: Code syntax highlighting
+- **Usage**: Highlights code blocks in questions, hints, and solutions
+- **Features Used**:
+  - Prism-based syntax highlighting
+  - VS Code Dark Plus theme
+  - Multi-language support (JavaScript, Python, Java, C++, etc.)
+  - Line number display
+
+#### 3. Recharts (^2.10.4)
+- **Purpose**: Data visualization and charts
+- **Usage**: Performance analytics, difficulty breakdown, progress tracking
+- **Components Used**:
+  - BarChart for difficulty breakdown
+  - PieChart for question distribution
+  - LineChart for performance over time
+  - ResponsiveContainer for responsive charts
+
+#### 4. Zustand (^5.0.8)
+- **Purpose**: Lightweight state management
+- **Usage**: Quiz state, user preferences, theme management
+- **Features Used**:
+  - Simple store creation
+  - TypeScript support
+  - Persistent state with localStorage
+
+#### 5. React Hook Form + Zod (^7.49.3 + ^4.1.12)
+- **Purpose**: Form handling and validation
+- **Usage**: Login, signup, profile update forms
+- **Features Used**:
+  - Schema-based validation
+  - Type-safe forms
+  - Error handling
+  - Performance optimization
+
+---
+
 ## 📝 Notes & Considerations
 
 ### Technical Debt
