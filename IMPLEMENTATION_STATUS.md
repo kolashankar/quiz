@@ -5,6 +5,113 @@
 
 ---
 
+## 🔥 NEW FEATURE: PDF-to-CSV Pipeline & AI Exam CSV Generator (2025)
+
+### ✅ Completed Implementation
+
+#### 1. Python Microservice (Port 8003)
+Located at: `/app/admin_dashboard/backend/python_services/`
+
+**Features Implemented:**
+- [x] **PDF Extraction Service** (`pdf_extractor.py`)
+  - OCR support using PyMuPDF + Tesseract
+  - Question and option extraction from PDFs
+  - Answer key matching
+  - Image extraction from PDFs
+  - Confidence scoring
+  - Multiple question pattern recognition
+
+- [x] **CSV Generator** (`csv_generator.py`)
+  - AI-powered question generation using Gemini (Emergent LLM Key)
+  - Support for 5 exams: JEE, GATE, UPSC, NEET, NMMS
+  - 3 subjects per exam, 40 questions per subject (120 per exam)
+  - Complete 24-column CSV schema implementation
+  - Metadata JSON generation
+  - Processing reports
+
+- [x] **UploadThing Integration** (`uploadthing_client.py`)
+  - File upload to UploadThing CDN
+  - Base64 image upload support
+  - Image URL generation for CSV
+  - File deletion support
+
+- [x] **FastAPI Microservice** (`main.py`)
+  - REST API endpoints
+  - Background job processing
+  - Job status tracking
+  - File download endpoints
+  - Health check endpoint
+
+**CSV Schema (24 Columns):**
+```
+UID, Exam, Year, Subject, Chapter, Topic, QuestionType, QuestionText,
+OptionA, OptionB, OptionC, OptionD, CorrectAnswer, AnswerChoicesCount,
+Marks, NegativeMarks, TimeLimitSeconds, Difficulty, Tags, FormulaLaTeX,
+ImageUploadThingURL, ImageAltText, Explanation, ConfidenceScore, SourceNotes
+```
+
+#### 2. Node.js Backend Integration (Port 8002)
+Located at: `/app/admin_dashboard/backend/src/routes/csv-generator/`
+
+**API Endpoints:**
+- [x] `POST /api/admin/csv-generator/generate-exam` - Generate CSV for an exam
+- [x] `POST /api/admin/csv-generator/pdf-to-csv` - Convert PDF to CSV
+- [x] `GET /api/admin/csv-generator/job-status/:job_id` - Check job status
+- [x] `GET /api/admin/csv-generator/download/:filename` - Download files
+- [x] `GET /api/admin/csv-generator/files` - List generated files
+- [x] `GET /api/admin/csv-generator/health` - Health check
+
+#### 3. Admin Dashboard UI
+Located at: `/app/admin_dashboard/frontend/src/app/dashboard/csv-generator/`
+
+**Features:**
+- [x] AI-powered CSV generation interface
+  - Exam selection dropdown
+  - Questions per subject configuration
+  - Real-time progress tracking
+  - Success/failure notifications
+  - Download generated CSVs
+
+- [x] PDF to CSV converter interface
+  - Drag-drop file upload
+  - Exam/year/subject configuration
+  - Answer key upload (optional)
+  - Real-time conversion progress
+  - Warning display for extraction issues
+  - Download CSV and reports
+
+- [x] Generated files manager
+  - List all generated files
+  - File size display
+  - Creation timestamp
+  - Download functionality
+
+#### 4. Dependencies Installed
+
+**Python Packages:**
+```
+PyMuPDF==1.24.0
+pytesseract==0.3.10
+pdfplumber==0.11.0
+google-generativeai==0.3.2
+requests==2.31.0
+pandas==2.2.0
+fastapi==0.109.2
+uvicorn==0.27.0
+```
+
+**System Packages:**
+```
+tesseract-ocr
+```
+
+**Configuration:**
+- UploadThing credentials configured
+- Emergent LLM Key integrated
+- Environment variables set
+
+---
+
 ## 📊 Overall Progress
 
 | Component | Status | Progress | Priority |
