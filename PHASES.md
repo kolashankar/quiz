@@ -197,10 +197,8 @@ const colors = {
 
 ---
 
-## Phase 6: Admin Dashboard CSV Generator UI (MEDIUM PRIORITY)
+## Phase 6: Admin Dashboard CSV Generator UI 
 
-**Estimated Time:** 1-2 days  
-**Priority:** MEDIUM  
 **Status:** Partially Complete (PDF-to-CSV exists)
 
 ### 6.1 AI CSV Generator Interface
@@ -315,10 +313,10 @@ const colors = {
 
 ---
 
-## Phase 9: Mobile App Polish & Bug Fixes (MEDIUM PRIORITY)
+## Phase 9: Mobile App Polish & Bug Fixes 
 
 **Estimated Time:** 1-2 days  
-**Priority:** MEDIUM  
+
 **Status:** Not Started
 
 ### 9.1 UI/UX Improvements
