@@ -299,11 +299,13 @@ NEXT_PUBLIC_API_URL=http://localhost:8001/api
 | Authentication | ✅ | ✅ | ✅ |
 | Quiz Navigation | ✅ | ✅ | ✅ |
 | Take Quizzes | ✅ | ✅ | ❌ |
+| Practice Mode | 🔄 | ✅ | ❌ |
 | Analytics | ✅ | ✅ | ✅ |
 | Bookmarks | ✅ | ✅ | ❌ |
 | Leaderboard | ✅ | ✅ | ✅ |
 | Question Mgmt | ❌ | ❌ | ✅ |
 | CSV Upload | ❌ | ❌ | ✅ |
+| AI CSV Generator | ❌ | ❌ | ✅ |
 | AI Features | ✅ | ✅ | ✅ |
 | Responsive | Mobile | All | Desktop |
 
