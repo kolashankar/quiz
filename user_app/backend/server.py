@@ -936,37 +936,121 @@ async def bulk_upload_questions(file: UploadFile = File(...), admin: dict = Depe
         contents = await file.read()
         df = pd.read_csv(io.BytesIO(contents))
         
-        # Expected CSV columns: sub_section_id, question_text, option1, option2, option3, option4, correct_answer, difficulty, tags, explanation, hint, solution, code_snippet, image_url, formula
-        required_columns = ["sub_section_id", "question_text", "option1", "option2", "option3", "option4", "correct_answer", "difficulty"]
-        if not all(col in df.columns for col in required_columns):
-            raise HTTPException(status_code=400, detail=f"CSV must contain columns: {required_columns}")
+        # Check for 24-column format (new format) or legacy format
+        is_new_format = "UID" in df.columns and "QuestionText" in df.columns
         
-        questions = []
-        for _, row in df.iterrows():
-            options = [row["option1"], row["option2"], row["option3"], row["option4"]]
-            tags = row.get("tags", "").split(",") if pd.notna(row.get("tags")) else []
-            tags = [tag.strip() for tag in tags if tag.strip()]
+        if is_new_format:
+            # New 24-column CSV format
+            required_columns = ["UID", "Exam", "Subject", "QuestionType", "QuestionText", "OptionA", "OptionB", "CorrectAnswer"]
+            if not all(col in df.columns for col in required_columns):
+                raise HTTPException(status_code=400, detail=f"New CSV format must contain columns: {required_columns}")
             
-            question_dict = {
-                "sub_section_id": str(row["sub_section_id"]),
-                "question_text": row["question_text"],
-                "options": options,
-                "correct_answer": int(row["correct_answer"]),
-                "difficulty": row["difficulty"],
-                "tags": tags,
-                "explanation": row.get("explanation", ""),
-                "hint": row.get("hint", ""),
-                "solution": row.get("solution", ""),
-                "code_snippet": row.get("code_snippet", ""),
-                "image_url": row.get("image_url", ""),
-                "formula": row.get("formula", ""),
-                "created_at": datetime.utcnow()
-            }
-            questions.append(question_dict)
+            questions = []
+            for _, row in df.iterrows():
+                # Build options array based on AnswerChoicesCount
+                answer_choices = int(row.get("AnswerChoicesCount", 4))
+                options = []
+                for i in range(answer_choices):
+                    option_key = f"Option{chr(65+i)}"  # OptionA, OptionB, OptionC, OptionD
+                    if option_key in df.columns and pd.notna(row.get(option_key)):
+                        options.append(str(row[option_key]))
+                
+                # Convert CorrectAnswer (A/B/C/D) to index (0/1/2/3)
+                correct_answer_letter = str(row["CorrectAnswer"]).upper()
+                correct_answer_index = ord(correct_answer_letter) - ord('A') if correct_answer_letter in 'ABCD' else 0
+                
+                # Parse tags
+                tags_str = row.get("Tags", "")
+                tags = [tag.strip() for tag in str(tags_str).split(",") if tag.strip()] if pd.notna(tags_str) else []
+                
+                # Map difficulty
+                difficulty = str(row.get("Difficulty", "medium")).lower()
+                
+                question_dict = {
+                    "sub_section_id": str(row.get("Subject", "")),  # Map to existing field
+                    "question_text": str(row["QuestionText"]),
+                    "options": options,
+                    "correct_answer": correct_answer_index,
+                    "difficulty": difficulty,
+                    "tags": tags,
+                    "explanation": str(row.get("Explanation", "")),
+                    "hint": "",  # Not in 24-column format, use solution
+                    "solution": str(row.get("Explanation", "")),  # Use explanation as solution
+                    "code_snippet": "",
+                    "image_url": str(row.get("ImageUploadThingURL", "")),
+                    "formula": str(row.get("FormulaLaTeX", "")),
+                    # Extended fields
+                    "uid": str(row.get("UID", "")),
+                    "exam": str(row.get("Exam", "")),
+                    "year": str(row.get("Year", "")),
+                    "subject": str(row.get("Subject", "")),
+                    "chapter": str(row.get("Chapter", "")),
+                    "topic": str(row.get("Topic", "")),
+                    "question_type": str(row.get("QuestionType", "MCQ-SC")),
+                    "answer_choices_count": answer_choices,
+                    "marks": float(row.get("Marks", 1.0)),
+                    "negative_marks": float(row.get("NegativeMarks", 0.0)),
+                    "time_limit_seconds": int(row.get("TimeLimitSeconds", 120)),
+                    "formula_latex": str(row.get("FormulaLaTeX", "")),
+                    "image_alt_text": str(row.get("ImageAltText", "")),
+                    "confidence_score": float(row.get("ConfidenceScore", 1.0)),
+                    "source_notes": str(row.get("SourceNotes", "")),
+                    "created_at": datetime.utcnow()
+                }
+                questions.append(question_dict)
+        
+        else:
+            # Legacy format
+            required_columns = ["sub_section_id", "question_text", "option1", "option2", "option3", "option4", "correct_answer", "difficulty"]
+            if not all(col in df.columns for col in required_columns):
+                raise HTTPException(status_code=400, detail=f"CSV must contain columns: {required_columns}")
+            
+            questions = []
+            for _, row in df.iterrows():
+                options = [row["option1"], row["option2"], row["option3"], row["option4"]]
+                tags = row.get("tags", "").split(",") if pd.notna(row.get("tags")) else []
+                tags = [tag.strip() for tag in tags if tag.strip()]
+                
+                question_dict = {
+                    "sub_section_id": str(row["sub_section_id"]),
+                    "question_text": row["question_text"],
+                    "options": options,
+                    "correct_answer": int(row["correct_answer"]),
+                    "difficulty": row["difficulty"],
+                    "tags": tags,
+                    "explanation": row.get("explanation", ""),
+                    "hint": row.get("hint", ""),
+                    "solution": row.get("solution", ""),
+                    "code_snippet": row.get("code_snippet", ""),
+                    "image_url": row.get("image_url", ""),
+                    "formula": row.get("formula", ""),
+                    # Default extended fields
+                    "uid": "",
+                    "exam": "",
+                    "year": "",
+                    "subject": "",
+                    "chapter": "",
+                    "topic": "",
+                    "question_type": "MCQ-SC",
+                    "answer_choices_count": 4,
+                    "marks": 1.0,
+                    "negative_marks": 0.0,
+                    "time_limit_seconds": 120,
+                    "formula_latex": row.get("formula", ""),
+                    "image_alt_text": "",
+                    "confidence_score": 1.0,
+                    "source_notes": "",
+                    "created_at": datetime.utcnow()
+                }
+                questions.append(question_dict)
         
         if questions:
             result = await db.questions.insert_many(questions)
-            return {"message": f"Successfully uploaded {len(result.inserted_ids)} questions"}
+            return {
+                "message": f"Successfully uploaded {len(result.inserted_ids)} questions",
+                "format": "new_24_column" if is_new_format else "legacy",
+                "count": len(result.inserted_ids)
+            }
         else:
             raise HTTPException(status_code=400, detail="No valid questions found in CSV")
     
