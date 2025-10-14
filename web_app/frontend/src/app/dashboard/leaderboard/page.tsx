@@ -131,13 +131,13 @@ export default function LeaderboardPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Leaderboard</h1>
-          <p className="text-gray-600 mt-2">Compete with top learners</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100">Leaderboard</h1>
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-2">Compete with top learners</p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 dark:text-gray-600 hover:bg-gray-200 dark:bg-gray-700 transition"
           >
             <FunnelIcon className="w-5 h-5" />
             Filters
@@ -154,11 +154,11 @@ export default function LeaderboardPage() {
       {/* Filters Panel */}
       {showFilters && (
         <Card className="mb-6">
-          <h3 className="font-semibold text-gray-900 mb-4">Filter Options</h3>
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">Filter Options</h3>
           
           {/* Time Period Filter */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Time Period</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">Time Period</label>
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setPeriod('all_time')}
@@ -195,7 +195,7 @@ export default function LeaderboardPage() {
 
           {/* Scope Filter */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Scope</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">Scope</label>
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => handleScopeChange('global')}
@@ -233,11 +233,11 @@ export default function LeaderboardPage() {
           {/* Exam Filter (when scope is exam or subject) */}
           {(scope === 'exam' || scope === 'subject') && (
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Select Exam</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">Select Exam</label>
               <select
                 value={selectedExam}
                 onChange={(e) => setSelectedExam(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
               >
                 <option value="">All Exams</option>
                 {exams.map((exam) => (
@@ -252,11 +252,11 @@ export default function LeaderboardPage() {
           {/* Subject Filter (when scope is subject) */}
           {scope === 'subject' && (
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Select Subject</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">Select Subject</label>
               <select
                 value={selectedSubject}
                 onChange={(e) => setSelectedSubject(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
               >
                 <option value="">All Subjects</option>
                 {subjects.map((subject) => (
@@ -278,8 +278,8 @@ export default function LeaderboardPage() {
               <UsersIcon className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <div className="text-sm text-gray-600">Total Participants</div>
-              <div className="text-2xl font-bold text-gray-900">{stats.totalParticipants}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Total Participants</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{stats.totalParticipants}</div>
             </div>
           </div>
         </Card>
@@ -289,8 +289,8 @@ export default function LeaderboardPage() {
               <ChartBarIcon className="w-6 h-6 text-success" />
             </div>
             <div>
-              <div className="text-sm text-gray-600">Average Score</div>
-              <div className="text-2xl font-bold text-gray-900">{stats.averageScore.toFixed(1)}%</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Average Score</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{stats.averageScore.toFixed(1)}%</div>
             </div>
           </div>
         </Card>
@@ -300,8 +300,8 @@ export default function LeaderboardPage() {
               <TrophyIcon className="w-6 h-6 text-warning" />
             </div>
             <div>
-              <div className="text-sm text-gray-600">Your Rank</div>
-              <div className="text-2xl font-bold text-gray-900">
+              <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Your Rank</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                 {currentUserEntry ? `#${currentUserEntry.rank}` : 'N/A'}
               </div>
             </div>
@@ -315,15 +315,15 @@ export default function LeaderboardPage() {
           {/* 2nd Place */}
           <Card className="text-center pt-12 pb-6 bg-gradient-to-b from-gray-100">
             <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center mx-auto mb-3">
-              <span className="text-3xl font-bold text-gray-700">2</span>
+              <span className="text-3xl font-bold text-gray-700 dark:text-gray-300 dark:text-gray-600">2</span>
             </div>
-            <div className="text-lg font-bold text-gray-900 truncate px-2">
+            <div className="text-lg font-bold text-gray-900 dark:text-gray-100 truncate px-2">
               {top3[1]?.user_email}
             </div>
             <div className="text-2xl font-bold text-primary mt-2">
               {top3[1]?.average_score.toFixed(1)}%
             </div>
-            <div className="text-sm text-gray-600 mt-1">
+            <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
               {top3[1]?.total_tests} tests
             </div>
           </Card>
@@ -334,13 +334,13 @@ export default function LeaderboardPage() {
             <div className="w-24 h-24 rounded-full bg-warning flex items-center justify-center mx-auto mb-3">
               <span className="text-4xl font-bold text-white">1</span>
             </div>
-            <div className="text-xl font-bold text-gray-900 truncate px-2">
+            <div className="text-xl font-bold text-gray-900 dark:text-gray-100 truncate px-2">
               {top3[0]?.user_email}
             </div>
             <div className="text-3xl font-bold text-warning mt-2">
               {top3[0]?.average_score.toFixed(1)}%
             </div>
-            <div className="text-sm text-gray-600 mt-1">
+            <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
               {top3[0]?.total_tests} tests
             </div>
           </Card>
@@ -350,13 +350,13 @@ export default function LeaderboardPage() {
             <div className="w-20 h-20 rounded-full bg-orange-300 flex items-center justify-center mx-auto mb-3">
               <span className="text-3xl font-bold text-orange-700">3</span>
             </div>
-            <div className="text-lg font-bold text-gray-900 truncate px-2">
+            <div className="text-lg font-bold text-gray-900 dark:text-gray-100 truncate px-2">
               {top3[2]?.user_email}
             </div>
             <div className="text-2xl font-bold text-primary mt-2">
               {top3[2]?.average_score.toFixed(1)}%
             </div>
-            <div className="text-sm text-gray-600 mt-1">
+            <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
               {top3[2]?.total_tests} tests
             </div>
           </Card>
@@ -365,8 +365,8 @@ export default function LeaderboardPage() {
 
       {/* Nearby Rankings (for current user) */}
       {currentUserEntry && nearbyUsers.length > 0 && (
-        <Card className="mb-6 bg-blue-50 border-blue-200">
-          <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+        <Card className="mb-6 bg-blue-50 dark:bg-blue-900/20 border-blue-200">
+          <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
             <StarIcon className="w-5 h-5 text-primary" />
             Your Position
           </h2>
@@ -390,7 +390,7 @@ export default function LeaderboardPage() {
                       <div className={`font-semibold ${isCurrentUser ? 'text-white' : 'text-gray-900'}`}>
                         {entry.user_email}
                         {isCurrentUser && (
-                          <span className="ml-2 text-xs bg-white text-primary px-2 py-1 rounded">
+                          <span className="ml-2 text-xs bg-white dark:bg-gray-800 text-primary px-2 py-1 rounded">
                             You
                           </span>
                         )}
@@ -414,7 +414,7 @@ export default function LeaderboardPage() {
 
       {/* All Rankings */}
       <Card>
-        <h2 className="text-xl font-bold text-gray-900 mb-4">All Rankings</h2>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">All Rankings</h2>
         <div className="space-y-2">
           {leaderboard.map((entry) => {
             const isCurrentUser = entry.user_email === user?.email;
@@ -432,7 +432,7 @@ export default function LeaderboardPage() {
                     {entry.rank}
                   </div>
                   <div>
-                    <div className="font-semibold text-gray-900">
+                    <div className="font-semibold text-gray-900 dark:text-gray-100">
                       {entry.user_email}
                       {isCurrentUser && (
                         <span className="ml-2 text-xs bg-primary text-white px-2 py-1 rounded">
@@ -440,14 +440,14 @@ export default function LeaderboardPage() {
                         </span>
                       )}
                     </div>
-                    <div className="text-sm text-gray-600">{entry.total_tests} tests taken</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">{entry.total_tests} tests taken</div>
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="text-2xl font-bold text-primary">
                     {entry.average_score.toFixed(1)}%
                   </div>
-                  <div className="text-xs text-gray-600">Avg Score</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 dark:text-gray-500">Avg Score</div>
                 </div>
               </div>
             );
@@ -456,9 +456,9 @@ export default function LeaderboardPage() {
 
         {leaderboard.length === 0 && (
           <div className="text-center py-12">
-            <TrophyIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Rankings Yet</h3>
-            <p className="text-gray-600">Take a quiz to appear on the leaderboard!</p>
+            <TrophyIcon className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">No Rankings Yet</h3>
+            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Take a quiz to appear on the leaderboard!</p>
           </div>
         )}
       </Card>

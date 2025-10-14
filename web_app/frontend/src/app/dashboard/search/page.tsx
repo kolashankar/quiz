@@ -87,26 +87,26 @@ export default function SearchPage() {
 
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
-      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Search</h1>
+      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6">Search</h1>
 
       {/* Search Bar */}
       <Card className="mb-6">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1 relative">
-            <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+            <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 dark:text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search exams, subjects, topics, or questions..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-lg"
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-lg"
             />
           </div>
           <div className="flex gap-2">
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="px-4 py-3 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition flex items-center gap-2"
+              className="px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 dark:text-gray-600 hover:bg-gray-200 dark:bg-gray-700 transition flex items-center gap-2"
             >
               <FunnelIcon className="w-5 h-5" />
               <span className="hidden md:inline">Filters</span>
@@ -123,7 +123,7 @@ export default function SearchPage() {
 
         {/* Filters */}
         {showFilters && (
-          <div className="mt-4 pt-4 border-t border-gray-200">
+          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setLevel('all')}
@@ -194,10 +194,10 @@ export default function SearchPage() {
       {recentSearches.length > 0 && !query && (
         <Card className="mb-6">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="font-semibold text-gray-900">Recent Searches</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100">Recent Searches</h3>
             <button
               onClick={clearRecentSearches}
-              className="text-sm text-gray-600 hover:text-gray-900"
+              className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:text-gray-100"
             >
               Clear
             </button>
@@ -210,7 +210,7 @@ export default function SearchPage() {
                   setQuery(search);
                   setTimeout(handleSearch, 100);
                 }}
-                className="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition text-sm"
+                className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 dark:text-gray-600 rounded-lg hover:bg-gray-200 dark:bg-gray-700 transition text-sm"
               >
                 {search}
               </button>
@@ -226,7 +226,7 @@ export default function SearchPage() {
       {!loading && query && totalResults > 0 && (
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
               Found {totalResults} result{totalResults !== 1 ? 's' : ''}
             </h2>
           </div>
@@ -236,7 +236,7 @@ export default function SearchPage() {
             <Card>
               <div className="flex items-center gap-2 mb-4">
                 <AcademicCapIcon className="w-5 h-5 text-primary" />
-                <h3 className="text-lg font-bold text-gray-900">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
                   Exams ({results.exams.length})
                 </h3>
               </div>
@@ -245,11 +245,11 @@ export default function SearchPage() {
                   <Link
                     key={exam.id}
                     href={`/dashboard/quiz/hierarchy?exam_id=${exam.id}`}
-                    className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
+                    className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:bg-gray-800 transition"
                   >
-                    <div className="font-semibold text-gray-900">{exam.name}</div>
+                    <div className="font-semibold text-gray-900 dark:text-gray-100">{exam.name}</div>
                     {exam.description && (
-                      <div className="text-sm text-gray-600 mt-1">{exam.description}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">{exam.description}</div>
                     )}
                   </Link>
                 ))}
@@ -262,7 +262,7 @@ export default function SearchPage() {
             <Card>
               <div className="flex items-center gap-2 mb-4">
                 <BookOpenIcon className="w-5 h-5 text-primary" />
-                <h3 className="text-lg font-bold text-gray-900">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
                   Subjects ({results.subjects.length})
                 </h3>
               </div>
@@ -271,11 +271,11 @@ export default function SearchPage() {
                   <Link
                     key={subject.id}
                     href={`/dashboard/quiz/hierarchy?subject_id=${subject.id}`}
-                    className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
+                    className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:bg-gray-800 transition"
                   >
-                    <div className="font-semibold text-gray-900">{subject.name}</div>
+                    <div className="font-semibold text-gray-900 dark:text-gray-100">{subject.name}</div>
                     {subject.description && (
-                      <div className="text-sm text-gray-600 mt-1">{subject.description}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">{subject.description}</div>
                     )}
                   </Link>
                 ))}
@@ -288,7 +288,7 @@ export default function SearchPage() {
             <Card>
               <div className="flex items-center gap-2 mb-4">
                 <DocumentTextIcon className="w-5 h-5 text-primary" />
-                <h3 className="text-lg font-bold text-gray-900">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
                   Chapters ({results.chapters.length})
                 </h3>
               </div>
@@ -297,9 +297,9 @@ export default function SearchPage() {
                   <Link
                     key={chapter.id}
                     href={`/dashboard/quiz/hierarchy?chapter_id=${chapter.id}`}
-                    className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
+                    className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:bg-gray-800 transition"
                   >
-                    <div className="font-semibold text-gray-900">{chapter.name}</div>
+                    <div className="font-semibold text-gray-900 dark:text-gray-100">{chapter.name}</div>
                   </Link>
                 ))}
               </div>
@@ -311,7 +311,7 @@ export default function SearchPage() {
             <Card>
               <div className="flex items-center gap-2 mb-4">
                 <DocumentTextIcon className="w-5 h-5 text-primary" />
-                <h3 className="text-lg font-bold text-gray-900">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
                   Topics ({results.topics.length})
                 </h3>
               </div>
@@ -320,9 +320,9 @@ export default function SearchPage() {
                   <Link
                     key={topic.id}
                     href={`/dashboard/quiz/hierarchy?topic_id=${topic.id}`}
-                    className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
+                    className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:bg-gray-800 transition"
                   >
-                    <div className="font-semibold text-gray-900">{topic.name}</div>
+                    <div className="font-semibold text-gray-900 dark:text-gray-100">{topic.name}</div>
                   </Link>
                 ))}
               </div>
@@ -334,14 +334,14 @@ export default function SearchPage() {
             <Card>
               <div className="flex items-center gap-2 mb-4">
                 <DocumentTextIcon className="w-5 h-5 text-primary" />
-                <h3 className="text-lg font-bold text-gray-900">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
                   Questions ({results.questions.length})
                 </h3>
               </div>
               <div className="space-y-3">
                 {results.questions.map((question: any, index: number) => (
-                  <div key={question.id || index} className="p-4 bg-gray-50 rounded-lg">
-                    <div className="text-gray-900 mb-2 line-clamp-2">
+                  <div key={question.id || index} className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div className="text-gray-900 dark:text-gray-100 mb-2 line-clamp-2">
                       {question.question_text}
                     </div>
                     {question.difficulty && (
@@ -368,18 +368,18 @@ export default function SearchPage() {
       {/* No Results */}
       {!loading && query && totalResults === 0 && (
         <Card className="text-center py-12">
-          <MagnifyingGlassIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No results found</h3>
-          <p className="text-gray-600">Try adjusting your search query or filters</p>
+          <MagnifyingGlassIcon className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">No results found</h3>
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Try adjusting your search query or filters</p>
         </Card>
       )}
 
       {/* Empty State */}
       {!loading && !query && recentSearches.length === 0 && (
         <Card className="text-center py-12">
-          <MagnifyingGlassIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Start Searching</h3>
-          <p className="text-gray-600">
+          <MagnifyingGlassIcon className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Start Searching</h3>
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
             Search for exams, subjects, chapters, topics, or questions
           </p>
         </Card>

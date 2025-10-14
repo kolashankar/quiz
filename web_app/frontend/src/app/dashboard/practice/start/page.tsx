@@ -139,17 +139,17 @@ export default function PracticeStartPage() {
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
           Start Practice Session
         </h1>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
           Configure your practice session - no timer, review anytime
         </p>
       </div>
 
       {/* Filter Mode Selection */}
       <Card className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
           <FunnelIcon className="w-5 h-5 mr-2" />
           Practice Mode
         </h3>
@@ -162,9 +162,9 @@ export default function PracticeStartPage() {
                 : 'border-gray-200 hover:border-gray-300'
             }`}
           >
-            <AcademicCapIcon className="w-8 h-8 mx-auto mb-2 text-blue-600" />
+            <AcademicCapIcon className="w-8 h-8 mx-auto mb-2 text-blue-600 dark:text-blue-400" />
             <div className="font-semibold">Exam-wise</div>
-            <div className="text-sm text-gray-600">Practice by exam with subject selection</div>
+            <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Practice by exam with subject selection</div>
           </button>
 
           <button
@@ -177,7 +177,7 @@ export default function PracticeStartPage() {
           >
             <BookOpenIcon className="w-8 h-8 mx-auto mb-2 text-green-600" />
             <div className="font-semibold">Subject-wise</div>
-            <div className="text-sm text-gray-600">Practice by subjects with chapter selection</div>
+            <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Practice by subjects with chapter selection</div>
           </button>
 
           <button
@@ -188,16 +188,16 @@ export default function PracticeStartPage() {
                 : 'border-gray-200 hover:border-gray-300'
             }`}
           >
-            <DocumentTextIcon className="w-8 h-8 mx-auto mb-2 text-purple-600" />
+            <DocumentTextIcon className="w-8 h-8 mx-auto mb-2 text-purple-600 dark:text-purple-400" />
             <div className="font-semibold">Chapter-wise</div>
-            <div className="text-sm text-gray-600">Practice specific chapters</div>
+            <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Practice specific chapters</div>
           </button>
         </div>
       </Card>
 
       {/* Exam Selection */}
       <Card className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Select Exam</h3>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Select Exam</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {exams.map(exam => (
             <button
@@ -209,8 +209,8 @@ export default function PracticeStartPage() {
                   : 'border-gray-200 hover:border-gray-300'
               }`}
             >
-              <div className="font-semibold text-gray-900">{exam.name}</div>
-              <div className="text-sm text-gray-600 mt-1">{exam.description}</div>
+              <div className="font-semibold text-gray-900 dark:text-gray-100">{exam.name}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">{exam.description}</div>
             </button>
           ))}
         </div>
@@ -220,7 +220,7 @@ export default function PracticeStartPage() {
       {selectedExam && (filterMode === 'exam' || filterMode === 'subject') && (
         <Card className="mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
               Select Subjects {filterMode === 'exam' && '(All selected by default)'}
             </h3>
             <div className="flex gap-2">
@@ -256,7 +256,7 @@ export default function PracticeStartPage() {
                   onChange={() => toggleSubject(subject._id)}
                   className="mr-2"
                 />
-                <span className="font-medium text-gray-900">{subject.name}</span>
+                <span className="font-medium text-gray-900 dark:text-gray-100">{subject.name}</span>
               </label>
             ))}
           </div>
@@ -267,7 +267,7 @@ export default function PracticeStartPage() {
       {selectedSubjects.length > 0 && (filterMode === 'subject' || filterMode === 'chapter') && (
         <Card className="mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
               Select Chapters (All selected by default)
             </h3>
             <div className="flex gap-2">
@@ -303,7 +303,7 @@ export default function PracticeStartPage() {
                   onChange={() => toggleChapter(chapter._id)}
                   className="mr-2"
                 />
-                <span className="font-medium text-gray-900 text-sm">{chapter.name}</span>
+                <span className="font-medium text-gray-900 dark:text-gray-100 text-sm">{chapter.name}</span>
               </label>
             ))}
           </div>
@@ -312,10 +312,10 @@ export default function PracticeStartPage() {
 
       {/* Configuration */}
       <Card className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Practice Configuration</h3>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Practice Configuration</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">
               Number of Questions
             </label>
             <input
@@ -324,18 +324,18 @@ export default function PracticeStartPage() {
               max="100"
               value={questionCount}
               onChange={e => setQuestionCount(parseInt(e.target.value) || 20)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">
               Difficulty Level
             </label>
             <select
               value={difficulty}
               onChange={e => setDifficulty(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="all">All Levels</option>
               <option value="easy">Easy</option>

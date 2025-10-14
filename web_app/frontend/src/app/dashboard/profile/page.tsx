@@ -137,10 +137,10 @@ export default function ProfilePage() {
 
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
-      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Profile & Analytics</h1>
+      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6">Profile & Analytics</h1>
 
       {/* Tab Navigation */}
-      <div className="flex gap-2 mb-6 border-b border-gray-200">
+      <div className="flex gap-2 mb-6 border-b border-gray-200 dark:border-gray-700">
         <button
           onClick={() => setActiveTab('overview')}
           className={`px-4 py-2 font-medium transition ${
@@ -224,11 +224,11 @@ export default function ProfilePage() {
                   </div>
                 ) : (
                   <>
-                    <h2 className="text-xl font-bold text-gray-900 mb-1">
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">
                       {user?.name || user?.email}
                     </h2>
-                    <p className="text-sm text-gray-600 mb-1">{user?.email}</p>
-                    <p className="text-sm text-gray-600 mb-4 capitalize">{user?.role}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">{user?.email}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-4 capitalize">{user?.role}</p>
                     <div className="space-y-2">
                       <Button
                         onClick={() => setEditing(true)}
@@ -306,38 +306,38 @@ export default function ProfilePage() {
           {/* Performance Overview */}
           <div className="lg:col-span-2">
             <Card>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Performance Overview</h3>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Performance Overview</h3>
               {analytics ? (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center p-4 bg-blue-50 rounded-lg">
+                  <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                     <TrophyIcon className="w-8 h-8 text-primary mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-gray-900">{analytics.total_tests}</div>
-                    <div className="text-sm text-gray-600">Tests Taken</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{analytics.total_tests}</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Tests Taken</div>
                   </div>
                   <div className="text-center p-4 bg-success/10 rounded-lg">
                     <ChartBarIcon className="w-8 h-8 text-success mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                       {analytics.average_score.toFixed(1)}%
                     </div>
-                    <div className="text-sm text-gray-600">Avg Score</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Avg Score</div>
                   </div>
                   <div className="text-center p-4 bg-warning/10 rounded-lg">
                     <FireIcon className="w-8 h-8 text-warning mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                       {analytics.strong_topics.length}
                     </div>
-                    <div className="text-sm text-gray-600">Strong Topics</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Strong Topics</div>
                   </div>
                   <div className="text-center p-4 bg-danger/10 rounded-lg">
                     <SparklesIcon className="w-8 h-8 text-danger mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                       {analytics.weak_topics.length}
                     </div>
-                    <div className="text-sm text-gray-600">Needs Work</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Needs Work</div>
                   </div>
                 </div>
               ) : (
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
                   No analytics available yet. Take a quiz to see your performance!
                 </p>
               )}
@@ -346,7 +346,7 @@ export default function ProfilePage() {
             {/* Strong Topics */}
             {analytics && analytics.strong_topics.length > 0 && (
               <Card className="mt-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
                   <FireIcon className="w-5 h-5 text-warning" />
                   Strong Topics
                 </h3>
@@ -357,8 +357,8 @@ export default function ProfilePage() {
                       className="flex items-center justify-between p-2 bg-success/5 rounded-lg"
                     >
                       <div>
-                        <div className="font-medium text-gray-900 text-sm">{topic.topic_name}</div>
-                        <div className="text-xs text-gray-600">
+                        <div className="font-medium text-gray-900 dark:text-gray-100 text-sm">{topic.topic_name}</div>
+                        <div className="text-xs text-gray-600 dark:text-gray-400 dark:text-gray-500">
                           {topic.correct} / {topic.total} correct
                         </div>
                       </div>
@@ -374,7 +374,7 @@ export default function ProfilePage() {
             {/* Weak Topics */}
             {analytics && analytics.weak_topics.length > 0 && (
               <Card className="mt-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
                   <SparklesIcon className="w-5 h-5 text-danger" />
                   Topics to Improve
                 </h3>
@@ -385,8 +385,8 @@ export default function ProfilePage() {
                       className="flex items-center justify-between p-2 bg-danger/5 rounded-lg"
                     >
                       <div>
-                        <div className="font-medium text-gray-900 text-sm">{topic.topic_name}</div>
-                        <div className="text-xs text-gray-600">
+                        <div className="font-medium text-gray-900 dark:text-gray-100 text-sm">{topic.topic_name}</div>
+                        <div className="text-xs text-gray-600 dark:text-gray-400 dark:text-gray-500">
                           {topic.correct} / {topic.total} correct
                         </div>
                       </div>
@@ -404,15 +404,15 @@ export default function ProfilePage() {
           {analytics && analytics.improvement_suggestions.length > 0 && (
             <div className="lg:col-span-3">
               <Card>
-                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <SparklesIcon className="w-6 h-6 text-purple-600" />
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+                  <SparklesIcon className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                   AI Study Recommendations
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {analytics.improvement_suggestions.map((suggestion, index) => (
-                    <div key={index} className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg">
-                      <SparklesIcon className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
-                      <p className="text-sm text-gray-900">{suggestion}</p>
+                    <div key={index} className="flex items-start gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                      <SparklesIcon className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
+                      <p className="text-sm text-gray-900 dark:text-gray-100">{suggestion}</p>
                     </div>
                   ))}
                 </div>
@@ -428,7 +428,7 @@ export default function ProfilePage() {
           {/* Performance Over Time Chart */}
           {performanceData.length > 0 && (
             <Card>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Performance Over Time</h3>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Performance Over Time</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={performanceData}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -452,7 +452,7 @@ export default function ProfilePage() {
             {/* Difficulty Breakdown Pie Chart */}
             {pieData.length > 0 && (
               <Card>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                   Difficulty-wise Performance
                 </h3>
                 <ResponsiveContainer width="100%" height={300}>
@@ -482,9 +482,9 @@ export default function ProfilePage() {
                           className="w-3 h-3 rounded-full"
                           style={{ backgroundColor: COLORS[index % COLORS.length] }}
                         />
-                        <span className="text-gray-700">{item.name}</span>
+                        <span className="text-gray-700 dark:text-gray-300 dark:text-gray-600">{item.name}</span>
                       </div>
-                      <span className="text-gray-900 font-medium">
+                      <span className="text-gray-900 dark:text-gray-100 font-medium">
                         {item.correct}/{item.total} ({item.value.toFixed(0)}%)
                       </span>
                     </div>
@@ -496,7 +496,7 @@ export default function ProfilePage() {
             {/* Performance Bar Chart */}
             {difficultyBreakdown.length > 0 && (
               <Card>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Accuracy by Difficulty</h3>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Accuracy by Difficulty</h3>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={difficultyBreakdown}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -516,37 +516,37 @@ export default function ProfilePage() {
       {/* Test History Tab */}
       {activeTab === 'history' && (
         <Card>
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Test History</h3>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Test History</h3>
           {testHistory.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 font-semibold text-gray-700">Date</th>
-                    <th className="text-left py-3 px-4 font-semibold text-gray-700">Topic</th>
-                    <th className="text-center py-3 px-4 font-semibold text-gray-700">Score</th>
-                    <th className="text-center py-3 px-4 font-semibold text-gray-700">
+                  <tr className="border-b border-gray-200 dark:border-gray-700">
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700 dark:text-gray-300 dark:text-gray-600">Date</th>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700 dark:text-gray-300 dark:text-gray-600">Topic</th>
+                    <th className="text-center py-3 px-4 font-semibold text-gray-700 dark:text-gray-300 dark:text-gray-600">Score</th>
+                    <th className="text-center py-3 px-4 font-semibold text-gray-700 dark:text-gray-300 dark:text-gray-600">
                       Correct
                     </th>
-                    <th className="text-center py-3 px-4 font-semibold text-gray-700">Time</th>
-                    <th className="text-center py-3 px-4 font-semibold text-gray-700">
+                    <th className="text-center py-3 px-4 font-semibold text-gray-700 dark:text-gray-300 dark:text-gray-600">Time</th>
+                    <th className="text-center py-3 px-4 font-semibold text-gray-700 dark:text-gray-300 dark:text-gray-600">
                       Percentile
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {testHistory.map((test, index) => (
-                    <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
+                    <tr key={index} className="border-b border-gray-100 hover:bg-gray-50 dark:bg-gray-800">
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-2">
-                          <CalendarIcon className="w-4 h-4 text-gray-400" />
-                          <span className="text-sm text-gray-900">
+                          <CalendarIcon className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                          <span className="text-sm text-gray-900 dark:text-gray-100">
                             {new Date(test.submitted_at).toLocaleDateString()}
                           </span>
                         </div>
                       </td>
                       <td className="py-3 px-4">
-                        <span className="text-sm text-gray-900">{test.topic_id || 'N/A'}</span>
+                        <span className="text-sm text-gray-900 dark:text-gray-100">{test.topic_id || 'N/A'}</span>
                       </td>
                       <td className="py-3 px-4 text-center">
                         <span
@@ -562,14 +562,14 @@ export default function ProfilePage() {
                         </span>
                       </td>
                       <td className="py-3 px-4 text-center">
-                        <span className="text-sm text-gray-900">
+                        <span className="text-sm text-gray-900 dark:text-gray-100">
                           {test.correct_count}/{test.total_questions}
                         </span>
                       </td>
                       <td className="py-3 px-4 text-center">
                         <div className="flex items-center justify-center gap-1">
-                          <ClockIcon className="w-4 h-4 text-gray-400" />
-                          <span className="text-sm text-gray-900">
+                          <ClockIcon className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                          <span className="text-sm text-gray-900 dark:text-gray-100">
                             {Math.floor(test.time_taken / 60)}m {test.time_taken % 60}s
                           </span>
                         </div>
@@ -586,9 +586,9 @@ export default function ProfilePage() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <TrophyIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Tests Taken Yet</h3>
-              <p className="text-gray-600">Start taking quizzes to see your history!</p>
+              <TrophyIcon className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">No Tests Taken Yet</h3>
+              <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Start taking quizzes to see your history!</p>
             </div>
           )}
         </Card>

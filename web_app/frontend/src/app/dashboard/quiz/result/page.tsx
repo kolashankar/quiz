@@ -96,9 +96,9 @@ export default function ResultPage() {
     return (
       <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
         <Card className="text-center py-12">
-          <XCircleIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
-          <p className="text-gray-600 mb-6">Unable to load test results.</p>
+          <XCircleIcon className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">No Results Found</h3>
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">Unable to load test results.</p>
           <Link href="/dashboard/quiz">
             <Button variant="primary">Take Another Quiz</Button>
           </Link>
@@ -132,10 +132,10 @@ export default function ResultPage() {
         <div className="text-center">
           <div className="mb-6">
             <TrophyIcon className={`w-20 h-20 mx-auto mb-4`} style={{ color: scoreColor }} />
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
               {isPassed ? 'Congratulations!' : 'Keep Practicing!'}
             </h1>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
               {isPassed
                 ? "You've passed the test with flying colors!"
                 : "You're making progress. Keep going!"}
@@ -167,8 +167,8 @@ export default function ResultPage() {
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <div className="text-5xl font-bold text-gray-900">{scorePercentage.toFixed(0)}%</div>
-                <div className="text-sm text-gray-600">Score</div>
+                <div className="text-5xl font-bold text-gray-900 dark:text-gray-100">{scorePercentage.toFixed(0)}%</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Score</div>
               </div>
             </div>
           </div>
@@ -177,17 +177,17 @@ export default function ResultPage() {
           <div className="grid grid-cols-3 gap-4 mb-6">
             <div className="text-center">
               <div className="text-2xl font-bold text-success">{result.correct_answers}</div>
-              <div className="text-sm text-gray-600 mt-1">Correct</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">Correct</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-danger">
                 {result.total_questions - result.correct_answers}
               </div>
-              <div className="text-sm text-gray-600 mt-1">Incorrect</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">Incorrect</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-primary">{result.percentile}th</div>
-              <div className="text-sm text-gray-600 mt-1">Percentile</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">Percentile</div>
             </div>
           </div>
 
@@ -217,7 +217,7 @@ export default function ResultPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {/* Difficulty Breakdown Bar Chart */}
           <Card>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Performance by Difficulty</h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Performance by Difficulty</h2>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={difficultyChartData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -228,7 +228,7 @@ export default function ResultPage() {
                     if (active && payload && payload.length) {
                       const data = payload[0].payload;
                       return (
-                        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
+                        <div className="bg-white dark:bg-gray-800 p-3 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg">
                           <p className="font-semibold">{data.difficulty}</p>
                           <p className="text-sm">Score: {data.percentage.toFixed(1)}%</p>
                           <p className="text-sm">Correct: {data.correct}/{data.total}</p>
@@ -245,7 +245,7 @@ export default function ResultPage() {
 
           {/* Difficulty Breakdown Pie Chart */}
           <Card>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Question Distribution</h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Question Distribution</h2>
             <ResponsiveContainer width="100%" height={250}>
               <PieChart>
                 <Pie
@@ -289,10 +289,10 @@ export default function ResultPage() {
               }`}>
                 {item.difficulty}
               </div>
-              <div className="text-3xl font-bold text-gray-900 mb-1">
+              <div className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">
                 {item.percentage.toFixed(0)}%
               </div>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
                 {item.correct} / {item.total} correct
               </div>
             </div>
@@ -303,15 +303,15 @@ export default function ResultPage() {
       {/* Question Review */}
       {result.questions && result.questions.length > 0 && (
         <Card>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Question Review</h2>
-          <p className="text-gray-600 mb-6">Review your answers and learn from explanations</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Question Review</h2>
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">Review your answers and learn from explanations</p>
           
           <div className="space-y-4">
             {result.questions.map((question, index) => (
-              <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
+              <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
                 <button
                   onClick={() => toggleQuestionExpanded(index)}
-                  className="w-full p-4 flex items-center justify-between hover:bg-gray-50 transition"
+                  className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:bg-gray-800 transition"
                 >
                   <div className="flex items-center gap-3 flex-1">
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
@@ -324,22 +324,22 @@ export default function ResultPage() {
                       )}
                     </div>
                     <div className="text-left flex-1">
-                      <div className="font-semibold text-gray-900">Question {index + 1}</div>
-                      <div className="text-sm text-gray-600 line-clamp-1">{question.question_text}</div>
+                      <div className="font-semibold text-gray-900 dark:text-gray-100">Question {index + 1}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 line-clamp-1">{question.question_text}</div>
                     </div>
                   </div>
                   {expandedQuestions.has(index) ? (
-                    <ChevronUpIcon className="w-5 h-5 text-gray-400" />
+                    <ChevronUpIcon className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                   ) : (
-                    <ChevronDownIcon className="w-5 h-5 text-gray-400" />
+                    <ChevronDownIcon className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                   )}
                 </button>
 
                 {expandedQuestions.has(index) && (
-                  <div className="p-6 bg-gray-50 border-t border-gray-200">
+                  <div className="p-6 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
                     {/* Question Text */}
                     <div className="mb-4">
-                      <div className="text-lg font-medium text-gray-900 mb-2">
+                      <div className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
                         {renderFormattedText(question.question_text)}
                       </div>
                       {question.difficulty && (
@@ -361,7 +361,7 @@ export default function ResultPage() {
                         <img
                           src={question.image}
                           alt="Question"
-                          className="max-w-full h-auto rounded-lg border border-gray-200"
+                          className="max-w-full h-auto rounded-lg border border-gray-200 dark:border-gray-700"
                         />
                       </div>
                     )}
@@ -397,12 +397,12 @@ export default function ResultPage() {
 
                     {/* Hint */}
                     {question.hint && (
-                      <div className="mb-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg">
+                      <div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 rounded-r-lg">
                         <div className="flex items-start gap-2">
                           <LightBulbIcon className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
                           <div>
                             <div className="font-semibold text-yellow-800 mb-1">Hint:</div>
-                            <div className="text-sm text-gray-800">{renderFormattedText(question.hint)}</div>
+                            <div className="text-sm text-gray-800 dark:text-gray-200">{renderFormattedText(question.hint)}</div>
                           </div>
                         </div>
                       </div>
@@ -410,12 +410,12 @@ export default function ResultPage() {
 
                     {/* Explanation */}
                     {question.explanation && (
-                      <div className="p-4 bg-blue-50 border-l-4 border-primary rounded-r-lg">
+                      <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-primary rounded-r-lg">
                         <div className="flex items-start gap-2">
                           <AcademicCapIcon className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                           <div>
                             <div className="font-semibold text-primary mb-1">Explanation:</div>
-                            <div className="text-sm text-gray-800">{renderFormattedText(question.explanation)}</div>
+                            <div className="text-sm text-gray-800 dark:text-gray-200">{renderFormattedText(question.explanation)}</div>
                           </div>
                         </div>
                       </div>
@@ -424,7 +424,7 @@ export default function ResultPage() {
                     {/* Code Snippet */}
                     {question.code_snippet && (
                       <div className="mt-4">
-                        <div className="text-sm font-semibold text-gray-700 mb-2">Code Reference:</div>
+                        <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">Code Reference:</div>
                         {renderCodeBlocks(`\`\`\`${question.code_language || 'javascript'}\n${question.code_snippet}\n\`\`\``)}
                       </div>
                     )}

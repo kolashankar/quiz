@@ -45,9 +45,9 @@ export default function AnalyticsPage() {
     return (
       <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
         <Card className="text-center py-12">
-          <ChartBarIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No Analytics Available</h3>
-          <p className="text-gray-600">Take a quiz to see your detailed performance analytics.</p>
+          <ChartBarIcon className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">No Analytics Available</h3>
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Take a quiz to see your detailed performance analytics.</p>
         </Card>
       </div>
     );
@@ -55,7 +55,7 @@ export default function AnalyticsPage() {
 
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
-      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Detailed Analytics</h1>
+      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-8">Detailed Analytics</h1>
 
       {/* Overview Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -65,8 +65,8 @@ export default function AnalyticsPage() {
               <TrophyIcon className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <div className="text-2xl font-bold text-gray-900">{analytics.total_tests}</div>
-              <div className="text-sm text-gray-600">Total Tests</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{analytics.total_tests}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Total Tests</div>
             </div>
           </div>
         </Card>
@@ -77,8 +77,8 @@ export default function AnalyticsPage() {
               <ChartBarIcon className="w-6 h-6 text-success" />
             </div>
             <div>
-              <div className="text-2xl font-bold text-gray-900">{analytics.average_score.toFixed(1)}%</div>
-              <div className="text-sm text-gray-600">Average Score</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{analytics.average_score.toFixed(1)}%</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Average Score</div>
             </div>
           </div>
         </Card>
@@ -89,8 +89,8 @@ export default function AnalyticsPage() {
               <FireIcon className="w-6 h-6 text-warning" />
             </div>
             <div>
-              <div className="text-2xl font-bold text-gray-900">{analytics.strong_topics.length}</div>
-              <div className="text-sm text-gray-600">Strong Topics</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{analytics.strong_topics.length}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Strong Topics</div>
             </div>
           </div>
         </Card>
@@ -99,7 +99,7 @@ export default function AnalyticsPage() {
       {/* Difficulty Breakdown */}
       {difficultyBreakdown.length > 0 && (
         <Card className="mb-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Performance by Difficulty</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Performance by Difficulty</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {difficultyBreakdown.map((item) => (
               <div
@@ -122,10 +122,10 @@ export default function AnalyticsPage() {
                   }`}>
                     {item.difficulty}
                   </div>
-                  <div className="text-3xl font-bold text-gray-900 mb-1">
+                  <div className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">
                     {item.percentage.toFixed(0)}%
                   </div>
-                  <div className="text-sm text-gray-600">
+                  <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
                     {item.correct} / {item.total} correct
                   </div>
                 </div>
@@ -138,7 +138,7 @@ export default function AnalyticsPage() {
       {/* Strong Topics */}
       {analytics.strong_topics.length > 0 && (
         <Card className="mb-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
             <FireIcon className="w-6 h-6 text-success" />
             Your Strong Topics
           </h2>
@@ -146,8 +146,8 @@ export default function AnalyticsPage() {
             {analytics.strong_topics.map((topic, index) => (
               <div key={index} className="flex items-center justify-between p-3 bg-success/5 rounded-lg">
                 <div className="flex-1">
-                  <div className="font-semibold text-gray-900">{topic.topic_name}</div>
-                  <div className="text-sm text-gray-600 mt-1">
+                  <div className="font-semibold text-gray-900 dark:text-gray-100">{topic.topic_name}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
                     {topic.correct} out of {topic.total} questions answered correctly
                   </div>
                 </div>
@@ -163,7 +163,7 @@ export default function AnalyticsPage() {
       {/* Weak Topics */}
       {analytics.weak_topics.length > 0 && (
         <Card className="mb-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
             <LightBulbIcon className="w-6 h-6 text-warning" />
             Topics That Need Practice
           </h2>
@@ -171,8 +171,8 @@ export default function AnalyticsPage() {
             {analytics.weak_topics.map((topic, index) => (
               <div key={index} className="flex items-center justify-between p-3 bg-warning/5 rounded-lg">
                 <div className="flex-1">
-                  <div className="font-semibold text-gray-900">{topic.topic_name}</div>
-                  <div className="text-sm text-gray-600 mt-1">
+                  <div className="font-semibold text-gray-900 dark:text-gray-100">{topic.topic_name}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
                     {topic.correct} out of {topic.total} questions answered correctly
                   </div>
                 </div>

@@ -153,8 +153,8 @@ export default function BookmarksPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Bookmarks</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100">Bookmarks</h1>
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-2">
             {filteredBookmarks.length} question{filteredBookmarks.length !== 1 ? 's' : ''} saved
           </p>
         </div>
@@ -174,13 +174,13 @@ export default function BookmarksPage() {
           {/* Search */}
           <div className="flex-1">
             <div className="relative">
-              <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+              <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 dark:text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search bookmarks..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
               />
             </div>
           </div>
@@ -214,7 +214,7 @@ export default function BookmarksPage() {
           {/* Filters Toggle */}
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 dark:text-gray-600 hover:bg-gray-200 dark:bg-gray-700 transition"
           >
             <FunnelIcon className="w-5 h-5" />
             Filters
@@ -223,7 +223,7 @@ export default function BookmarksPage() {
 
         {/* Filters Panel */}
         {showFilters && (
-          <div className="mt-4 pt-4 border-t border-gray-200">
+          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setDifficultyFilter('all')}
@@ -272,10 +272,10 @@ export default function BookmarksPage() {
 
       {/* Batch Actions */}
       {selectedBookmarks.size > 0 && (
-        <Card className="mb-6 bg-blue-50 border-blue-200">
+        <Card className="mb-6 bg-blue-50 dark:bg-blue-900/20 border-blue-200">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <span className="font-semibold text-gray-900">
+              <span className="font-semibold text-gray-900 dark:text-gray-100">
                 {selectedBookmarks.size} bookmark(s) selected
               </span>
               <button
@@ -310,7 +310,7 @@ export default function BookmarksPage() {
                   type="checkbox"
                   checked={selectedBookmarks.has(bookmark.id)}
                   onChange={() => toggleBookmarkSelection(bookmark.id)}
-                  className="w-5 h-5 text-primary rounded border-gray-300 focus:ring-primary cursor-pointer"
+                  className="w-5 h-5 text-primary rounded border-gray-300 dark:border-gray-600 focus:ring-primary cursor-pointer"
                 />
               </div>
 
@@ -319,13 +319,13 @@ export default function BookmarksPage() {
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <BookmarkIcon className="w-5 h-5 text-warning" />
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
                       {new Date(bookmark.created_at).toLocaleDateString()}
                     </span>
                   </div>
                   <button
                     onClick={() => handleDeleteBookmark(bookmark.id)}
-                    className="p-2 rounded-lg hover:bg-red-50 text-red-600 transition"
+                    className="p-2 rounded-lg hover:bg-red-50 dark:bg-red-900/20 text-red-600 transition"
                     title="Remove bookmark"
                   >
                     <TrashIcon className="w-5 h-5" />
@@ -335,7 +335,7 @@ export default function BookmarksPage() {
                 {/* Question Content */}
                 {bookmark.question ? (
                   <div>
-                    <div className="text-gray-900 font-medium mb-3 line-clamp-3">
+                    <div className="text-gray-900 dark:text-gray-100 font-medium mb-3 line-clamp-3">
                       {renderFormattedText(bookmark.question.question_text)}
                     </div>
 
@@ -377,9 +377,9 @@ export default function BookmarksPage() {
 
                     {/* Explanation Preview */}
                     {bookmark.question.explanation && viewMode === 'list' && (
-                      <div className="p-3 bg-blue-50 border-l-4 border-primary rounded-r-lg text-sm">
+                      <div className="p-3 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-primary rounded-r-lg text-sm">
                         <div className="font-semibold text-primary mb-1">Explanation:</div>
-                        <div className="text-gray-700 line-clamp-2">
+                        <div className="text-gray-700 dark:text-gray-300 dark:text-gray-600 line-clamp-2">
                           {bookmark.question.explanation}
                         </div>
                       </div>
@@ -391,13 +391,13 @@ export default function BookmarksPage() {
                         {bookmark.question.tags.slice(0, 3).map((tag: string, index: number) => (
                           <span
                             key={index}
-                            className="px-2 py-1 bg-blue-50 text-blue-600 text-xs rounded"
+                            className="px-2 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs rounded"
                           >
                             {tag}
                           </span>
                         ))}
                         {bookmark.question.tags.length > 3 && (
-                          <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
+                          <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 dark:text-gray-500 text-xs rounded">
                             +{bookmark.question.tags.length - 3}
                           </span>
                         )}
@@ -405,7 +405,7 @@ export default function BookmarksPage() {
                     )}
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2 text-gray-500">
+                  <div className="flex items-center gap-2 text-gray-500 dark:text-gray-500">
                     <FolderOpenIcon className="w-5 h-5" />
                     <span className="text-sm">Question details unavailable</span>
                   </div>
@@ -416,13 +416,13 @@ export default function BookmarksPage() {
         </div>
       ) : (
         <Card className="text-center py-12">
-          <FolderOpenIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <FolderOpenIcon className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
             {searchQuery || difficultyFilter !== 'all'
               ? 'No bookmarks found'
               : 'No Bookmarks Yet'}
           </h3>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
             {searchQuery || difficultyFilter !== 'all'
               ? 'Try adjusting your filters'
               : 'Start bookmarking questions during quizzes to save them for later review.'}

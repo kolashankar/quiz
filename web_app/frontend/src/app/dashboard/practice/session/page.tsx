@@ -176,8 +176,8 @@ function PracticeSessionContent() {
   if (questions.length === 0) {
     return (
       <div className="p-8 text-center">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">No Questions Found</h2>
-        <p className="text-gray-600 mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">No Questions Found</h2>
+        <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
           No questions available for the selected criteria.
         </p>
         <Button onClick={() => router.push('/dashboard/practice/start')}>
@@ -195,26 +195,26 @@ function PracticeSessionContent() {
     return (
       <div className="p-4 md:p-6 lg:p-8 max-w-4xl mx-auto">
         <Card className="p-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">
             Practice Session Summary
           </h2>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div className="bg-blue-50 p-4 rounded-lg text-center">
-              <div className="text-3xl font-bold text-blue-600">{stats.total}</div>
-              <div className="text-sm text-gray-600">Total Questions</div>
+            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg text-center">
+              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{stats.total}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Total Questions</div>
             </div>
-            <div className="bg-green-50 p-4 rounded-lg text-center">
+            <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg text-center">
               <div className="text-3xl font-bold text-green-600">{stats.correct}</div>
-              <div className="text-sm text-gray-600">Correct</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Correct</div>
             </div>
-            <div className="bg-red-50 p-4 rounded-lg text-center">
+            <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg text-center">
               <div className="text-3xl font-bold text-red-600">{stats.incorrect}</div>
-              <div className="text-sm text-gray-600">Incorrect</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Incorrect</div>
             </div>
-            <div className="bg-purple-50 p-4 rounded-lg text-center">
-              <div className="text-3xl font-bold text-purple-600">{stats.accuracy}%</div>
-              <div className="text-sm text-gray-600">Accuracy</div>
+            <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg text-center">
+              <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">{stats.accuracy}%</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Accuracy</div>
             </div>
           </div>
 
@@ -248,18 +248,18 @@ function PracticeSessionContent() {
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Practice Mode</h1>
-          <p className="text-gray-600">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Practice Mode</h1>
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
             Question {currentIndex + 1} of {questions.length} • No timer
           </p>
         </div>
         <div className="flex gap-2">
-          <div className="bg-green-50 px-4 py-2 rounded-lg">
+          <div className="bg-green-50 dark:bg-green-900/20 px-4 py-2 rounded-lg">
             <span className="text-sm font-medium text-green-700">
               Correct: {stats.correct}
             </span>
           </div>
-          <div className="bg-blue-50 px-4 py-2 rounded-lg">
+          <div className="bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-lg">
             <span className="text-sm font-medium text-blue-700">
               Answered: {stats.answered}/{stats.total}
             </span>
@@ -268,7 +268,7 @@ function PracticeSessionContent() {
       </div>
 
       {/* Progress Bar */}
-      <div className="mb-6 bg-gray-200 rounded-full h-2">
+      <div className="mb-6 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
         <div
           className="bg-blue-600 h-2 rounded-full transition-all"
           style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
@@ -290,7 +290,7 @@ function PracticeSessionContent() {
           {currentQuestion.tags && currentQuestion.tags.length > 0 && (
             <div className="flex gap-2">
               {currentQuestion.tags.slice(0, 2).map((tag, idx) => (
-                <span key={idx} className="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">
+                <span key={idx} className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
                   {tag}
                 </span>
               ))}
@@ -300,13 +300,13 @@ function PracticeSessionContent() {
 
         {/* Question Text */}
         <div className="mb-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
             {currentQuestion.question_text}
           </h3>
           
           {/* Formula */}
           {currentQuestion.formula && (
-            <div className="my-4 p-4 bg-gray-50 rounded-lg">
+            <div className="my-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkMath]}
                 rehypePlugins={[rehypeKatex]}
@@ -357,7 +357,7 @@ function PracticeSessionContent() {
                 }`}
               >
                 <div className="flex items-center">
-                  <span className="font-semibold mr-3 text-gray-700">
+                  <span className="font-semibold mr-3 text-gray-700 dark:text-gray-300 dark:text-gray-600">
                     {String.fromCharCode(65 + index)}.
                   </span>
                   <span className="flex-1">{option}</span>
@@ -386,10 +386,10 @@ function PracticeSessionContent() {
 
         {/* Explanation Section */}
         {currentAnswer?.showAnswer && (
-          <div className="space-y-4 mt-6 pt-6 border-t border-gray-200">
+          <div className="space-y-4 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
             {/* Hint */}
             {currentQuestion.hint && (
-              <div className="bg-yellow-50 p-4 rounded-lg">
+              <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
                 <div className="flex items-start">
                   <LightBulbIcon className="w-5 h-5 text-yellow-600 mr-2 mt-1 flex-shrink-0" />
                   <div>
@@ -402,9 +402,9 @@ function PracticeSessionContent() {
 
             {/* Explanation */}
             {currentQuestion.explanation && (
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
                 <div className="flex items-start">
-                  <BookOpenIcon className="w-5 h-5 text-blue-600 mr-2 mt-1 flex-shrink-0" />
+                  <BookOpenIcon className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-2 mt-1 flex-shrink-0" />
                   <div className="flex-1">
                     <h4 className="font-semibold text-blue-900 mb-2">Explanation</h4>
                     <div className="text-blue-800 prose prose-sm max-w-none">
@@ -422,7 +422,7 @@ function PracticeSessionContent() {
 
             {/* Solution */}
             {currentQuestion.solution && (
-              <div className="bg-green-50 p-4 rounded-lg">
+              <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
                 <div>
                   <h4 className="font-semibold text-green-900 mb-2">Detailed Solution</h4>
                   <div className="text-green-800 prose prose-sm max-w-none">
@@ -467,7 +467,7 @@ function PracticeSessionContent() {
 
       {/* Question Palette */}
       <Card className="mt-6 p-4">
-        <h4 className="font-semibold text-gray-900 mb-3">Question Palette</h4>
+        <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">Question Palette</h4>
         <div className="grid grid-cols-8 md:grid-cols-12 gap-2">
           {questions.map((q, idx) => {
             const answer = userAnswers.get(q._id);
@@ -504,7 +504,7 @@ function PracticeSessionContent() {
             <span>Incorrect</span>
           </div>
           <div className="flex items-center">
-            <div className="w-4 h-4 bg-gray-200 rounded mr-2"></div>
+            <div className="w-4 h-4 bg-gray-200 dark:bg-gray-700 rounded mr-2"></div>
             <span>Not Attempted</span>
           </div>
         </div>

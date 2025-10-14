@@ -215,20 +215,20 @@ export default function TestPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
                 onClick={handleExitTest}
-                className="p-2 rounded-lg hover:bg-gray-100 transition"
+                className="p-2 rounded-lg hover:bg-gray-100 dark:bg-gray-800 transition"
                 title="Exit Test"
               >
-                <XMarkIcon className="w-6 h-6 text-gray-600" />
+                <XMarkIcon className="w-6 h-6 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
               </button>
               <div>
-                <div className="text-sm text-gray-600">Progress</div>
-                <div className="text-lg font-semibold text-gray-900">
+                <div className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">Progress</div>
+                <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                   {answeredCount} / {questions.length}
                 </div>
               </div>
@@ -247,7 +247,7 @@ export default function TestPage() {
           </div>
 
           {/* Progress Bar */}
-          <div className="mt-4 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div className="mt-4 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-300"
               style={{ width: `${progress}%` }}
@@ -256,7 +256,7 @@ export default function TestPage() {
         </div>
 
         {/* Question Navigation Bar */}
-        <div className="border-t border-gray-200 bg-gray-50 px-4 py-3">
+        <div className="border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-4 py-3">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center gap-2 overflow-x-auto pb-2">
               {questions.map((_, index) => {
@@ -290,19 +290,19 @@ export default function TestPage() {
             <div className="flex flex-wrap gap-4 mt-3 text-xs">
               <div className="flex items-center gap-1.5">
                 <div className="w-3 h-3 rounded-full bg-success"></div>
-                <span className="text-gray-600">Answered</span>
+                <span className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Answered</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-3 h-3 rounded-full bg-warning"></div>
-                <span className="text-gray-600">Review</span>
+                <span className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Review</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-3 h-3 rounded-full bg-danger"></div>
-                <span className="text-gray-600">Visited</span>
+                <span className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Visited</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-3 h-3 rounded-full bg-gray-300"></div>
-                <span className="text-gray-600">Not Visited</span>
+                <span className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Not Visited</span>
               </div>
             </div>
           </div>
@@ -380,7 +380,7 @@ export default function TestPage() {
           {/* Question Navigation Sidebar */}
           <div className="lg:col-span-1">
             <Card>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Questions</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Questions</h3>
               <div className="grid grid-cols-5 lg:grid-cols-4 gap-2">
                 {questions.map((_, index) => {
                   const status = getQuestionStatus(index);
@@ -409,44 +409,44 @@ export default function TestPage() {
                 })}
               </div>
 
-              <div className="mt-4 pt-4 border-t border-gray-200 space-y-2 text-sm">
+              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2 text-sm">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded bg-success"></div>
-                  <span className="text-gray-700">Answered</span>
+                  <span className="text-gray-700 dark:text-gray-300 dark:text-gray-600">Answered</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded bg-warning"></div>
-                  <span className="text-gray-700">Review</span>
+                  <span className="text-gray-700 dark:text-gray-300 dark:text-gray-600">Review</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded bg-danger"></div>
-                  <span className="text-gray-700">Visited</span>
+                  <span className="text-gray-700 dark:text-gray-300 dark:text-gray-600">Visited</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded bg-gray-200"></div>
-                  <span className="text-gray-700">Not Visited</span>
+                  <div className="w-4 h-4 rounded bg-gray-200 dark:bg-gray-700"></div>
+                  <span className="text-gray-700 dark:text-gray-300 dark:text-gray-600">Not Visited</span>
                 </div>
               </div>
             </Card>
 
             {/* Test Stats */}
             <Card className="mt-4">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Test Stats</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">Test Stats</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Total:</span>
+                  <span className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Total:</span>
                   <span className="font-semibold">{questions.length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Answered:</span>
+                  <span className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Answered:</span>
                   <span className="font-semibold text-success">{answeredCount}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Not Answered:</span>
+                  <span className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Not Answered:</span>
                   <span className="font-semibold text-danger">{questions.length - answeredCount}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Marked:</span>
+                  <span className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Marked:</span>
                   <span className="font-semibold text-warning">{markedForReview.size}</span>
                 </div>
               </div>
