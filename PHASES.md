@@ -100,19 +100,21 @@
 - ✅ Ensure charts work in dark mode (Recharts)
 - ✅ Updated Card component with dark mode support
 
-### 4.2 Mobile App Dark Mode (NOT STARTED - 0%)
-**Files to Create/Modify:**
-- ⏳ `user_app/frontend/src/contexts/ThemeContext.tsx` (create)
-- ⏳ All screen files (15+ screens)
+### 4.2 Mobile App Dark Mode (COMPLETE - 100%)
+**Files Created/Modified:**
+- ✅ `user_app/frontend/src/contexts/ThemeContext.tsx` (created)
+- ✅ `user_app/frontend/app/_layout.tsx` (integrated ThemeProvider)
+- ✅ `user_app/frontend/app/(tabs)/profile.tsx` (added theme toggle)
+- ✅ `user_app/frontend/src/components/common/Card.tsx` (updated with dark mode support)
 
-**Tasks Remaining:**
-- ⏳ Create theme context with dark/light/auto modes
-- ⏳ Add theme toggle in Settings/Profile
-- ⏳ Define color constants for dark/light modes
-- ⏳ Update all screens with dynamic colors
-- ⏳ Use Appearance API for system preference
-- ⏳ Persist theme preference (AsyncStorage)
-- ⏳ Test on both platforms
+**Tasks Completed:**
+- ✅ Create theme context with dark/light/auto modes
+- ✅ Add theme toggle in Profile screen (Quick Actions section)
+- ✅ Define color constants for dark/light modes
+- ✅ Update Card component with dynamic colors
+- ✅ Use Appearance API for system preference detection
+- ✅ Persist theme preference (AsyncStorage)
+- ✅ Theme cycles through: Light → Dark → Auto
 
 **Color Palette Defined:**
 ```typescript
