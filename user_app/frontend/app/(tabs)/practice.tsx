@@ -35,11 +35,8 @@ export default function PracticeMode() {
     }
   };
 
-  const handleStartPractice = (examId: string) => {
-    router.push({
-      pathname: '/(tabs)/quiz/hierarchy',
-      params: { mode: 'practice', examId },
-    } as any);
+  const handleStartPractice = () => {
+    router.push('/(tabs)/practice/configure' as any);
   };
 
   if (loading) {
