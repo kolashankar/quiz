@@ -87,17 +87,18 @@
 - ✅ Theme persistence (localStorage)
 - ✅ System preference detection working
 
-**Tasks Remaining:**
-- ⏳ Add dark mode classes to all pages:
-  - ⏳ Dashboard
-  - ⏳ Quiz pages (hierarchy, test, result)
-  - ⏳ Practice pages (start, session)
-  - ⏳ Bookmarks
-  - ⏳ Leaderboard
-  - ⏳ Profile
-  - ⏳ Analytics
-  - ⏳ Search
-- ⏳ Ensure charts work in dark mode (Recharts)
+**Tasks Completed:**
+- ✅ Add dark mode classes to all pages:
+  - ✅ Dashboard
+  - ✅ Quiz pages (hierarchy, test, result)
+  - ✅ Practice pages (start, session)
+  - ✅ Bookmarks
+  - ✅ Leaderboard
+  - ✅ Profile
+  - ✅ Analytics
+  - ✅ Search
+- ✅ Ensure charts work in dark mode (Recharts)
+- ✅ Updated Card component with dark mode support
 
 ### 4.2 Mobile App Dark Mode (NOT STARTED - 0%)
 **Files to Create/Modify:**
