@@ -101,7 +101,7 @@ export default function Sidebar() {
                   className={`flex items-center px-4 py-3 rounded-lg transition ${
                     isActive
                       ? 'bg-gradient-to-r from-primary/10 to-secondary/10 text-primary font-semibold'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                   }`}
                 >
                   <Icon className="w-5 h-5 mr-3" />
@@ -112,11 +112,11 @@ export default function Sidebar() {
           </nav>
 
           {/* Logout */}
-          <div className="p-4 border-t border-gray-200 space-y-2">
+          <div className="p-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
             {/* WhatsApp Community Button */}
             <button
               onClick={handleWhatsAppCommunity}
-              className="flex items-center justify-between w-full px-4 py-3 rounded-lg bg-green-50 text-green-700 hover:bg-green-100 transition"
+              className="flex items-center justify-between w-full px-4 py-3 rounded-lg bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/50 transition"
             >
               <div className="flex items-center">
                 <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 24 24">
@@ -129,7 +129,7 @@ export default function Sidebar() {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="flex items-center justify-between w-full px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition"
+              className="flex items-center justify-between w-full px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
             >
               <div className="flex items-center">
                 {theme === 'light' ? (
@@ -147,7 +147,7 @@ export default function Sidebar() {
                 logout();
                 setIsOpen(false);
               }}
-              className="flex items-center w-full px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition"
+              className="flex items-center w-full px-4 py-3 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition"
             >
               <ArrowRightOnRectangleIcon className="w-5 h-5 mr-3" />
               Logout
