@@ -1,5 +1,7 @@
-// LaTeX Rendering Utility for Math Formulas
+// LaTeX Rendering Utility for Math Formulas using KaTeX
 import React from 'react';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 interface LatexProps {
   content: string;
@@ -7,8 +9,6 @@ interface LatexProps {
 }
 
 export function renderLatex(text: string): React.ReactNode[] {
-  // Simple LaTeX parser for common patterns
-  // In production, you'd use a library like KaTeX or MathJax
   const parts: React.ReactNode[] = [];
   
   // Pattern for inline math: $...$
@@ -31,24 +31,37 @@ export function renderLatex(text: string): React.ReactNode[] {
     const formula = match[1] || match[2];
     const isDisplay = !!match[1];
     
-    parts.push(
-      <span 
-        key={`latex-${key++}`}
-        className={`latex-formula ${isDisplay ? 'display' : 'inline'}`}
-        style={{
-          fontFamily: 'serif',
-          fontStyle: 'italic',
-          display: isDisplay ? 'block' : 'inline',
-          margin: isDisplay ? '1rem 0' : '0 0.2rem',
-          padding: isDisplay ? '0.5rem' : '0',
-          textAlign: isDisplay ? 'center' : 'left',
-          fontSize: isDisplay ? '1.2em' : '1em',
-        }}
-        title={`LaTeX: ${formula}`}
-      >
-        {formatLatex(formula)}
-      </span>
-    );
+    try {
+      const html = katex.renderToString(formula, {
+        throwOnError: false,
+        displayMode: isDisplay,
+        output: 'html',
+      });
+      
+      parts.push(
+        <span 
+          key={`latex-${key++}`}
+          className={`latex-formula ${isDisplay ? 'display' : 'inline'}`}
+          dangerouslySetInnerHTML={{ __html: html }}
+          style={{
+            display: isDisplay ? 'block' : 'inline',
+            margin: isDisplay ? '1rem 0' : '0',
+            textAlign: isDisplay ? 'center' : 'left',
+          }}
+        />
+      );
+    } catch (error) {
+      // Fallback to plain text if KaTeX fails
+      parts.push(
+        <span 
+          key={`latex-${key++}`}
+          className="latex-error text-red-600 italic"
+          title={`LaTeX Error: ${error}`}
+        >
+          {formula}
+        </span>
+      );
+    }
     
     lastIndex = match.index + match[0].length;
   }
