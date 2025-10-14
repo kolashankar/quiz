@@ -80,8 +80,10 @@ export default function ProfileScreen() {
     return <Loading text="Loading profile..." />;
   }
 
+  const dynamicStyles = createStyles(colors);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView
         style={styles.scrollView}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
