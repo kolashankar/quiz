@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 """
-Enhanced Admin Dashboard Backend API Testing
-Testing comprehensive admin dashboard with 7-level nested folder structure
+Comprehensive Backend API Testing for Web App
+Testing all endpoints with focus on new fields verification
 """
 
 import requests
 import json
-import time
-import csv
-import io
-import base64
-from typing import Dict, List, Any, Optional
+import sys
+from datetime import datetime
 
-class AdminDashboardTester:
+# Backend URL from web_app frontend .env
+BASE_URL = "https://quizcraft-77.preview.emergentagent.com/api"
+
+class BackendTester:
     def __init__(self):
         # Backend URL - Admin Dashboard runs on port 8003
         self.base_url = "http://localhost:8003/api"
