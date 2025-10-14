@@ -264,20 +264,26 @@ export default function PracticeConfigureScreen() {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Number of Questions: {questionCount}</Text>
-          <Slider
-            style={styles.slider}
-            minimumValue={5}
-            maximumValue={50}
-            step={5}
-            value={questionCount}
-            onValueChange={setQuestionCount}
-            minimumTrackTintColor="#007AFF"
-            maximumTrackTintColor="#E5E5E7"
-            thumbTintColor="#007AFF"
-          />
-          <View style={styles.sliderLabels}>
-            <Text style={styles.sliderLabel}>5</Text>
-            <Text style={styles.sliderLabel}>50</Text>
+          <View style={styles.questionCountButtons}>
+            {[5, 10, 15, 20, 30, 40, 50].map((count) => (
+              <TouchableOpacity
+                key={count}
+                style={[
+                  styles.countButton,
+                  questionCount === count && styles.countButtonSelected,
+                ]}
+                onPress={() => setQuestionCount(count)}
+              >
+                <Text
+                  style={[
+                    styles.countButtonText,
+                    questionCount === count && styles.countButtonTextSelected,
+                  ]}
+                >
+                  {count}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
 
