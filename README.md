@@ -108,22 +108,41 @@ Exam → Subject → Chapter → Topic → Sub-Topic → Section → Sub-Section
 - **bookmarks**: User bookmarks
 - **password_resets, push_tokens, syllabuses**: Supporting data
 
-### Question Schema (Enhanced for DSA):
+### Question Schema (Extended - 24 Column CSV Support):
 ```javascript
 {
+  // Core fields
   sub_section_id: String,
   question_text: String,
-  options: [String],  // 4 options
+  options: [String],  // 2-4 options
   correct_answer: Number,  // 0-3
   difficulty: String,  // easy/medium/hard
   tags: [String],
   explanation: String,
-  // NEW FIELDS:
+  
+  // Enhanced fields
   hint: String,
   solution: String,
-  code_snippet: String,  // For DSA questions
-  image_url: String,  // base64 or URL
-  formula: String  // LaTeX format
+  code_snippet: String,
+  image_url: String,
+  formula: String,  // LaTeX format
+  
+  // Extended fields (24-column CSV format)
+  uid: String,  // Unique ID
+  exam: String,  // JEE, GATE, UPSC, NEET, NMMS
+  year: String,  // Question year
+  subject: String,
+  chapter: String,
+  topic: String,  // Optional
+  question_type: String,  // MCQ-SC, MCQ-MC, Integer, TrueFalse, Match, AssertionReason
+  answer_choices_count: Number,
+  marks: Number,
+  negative_marks: Number,
+  time_limit_seconds: Number,
+  formula_latex: String,
+  image_alt_text: String,
+  confidence_score: Number,  // 0.0-1.0
+  source_notes: String
 }
 ```
 
