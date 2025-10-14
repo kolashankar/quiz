@@ -1,7 +1,52 @@
 # 🚀 Implementation Status & Next Steps
 
-**Last Updated:** 2025  
+**Last Updated:** October 2025  
 **Project:** Quiz Application (Mobile + Web + Admin)
+
+---
+
+## 🆕 Latest Updates (October 2025)
+
+### ✅ Phase 1 & 2 Complete
+
+#### Backend Enhancements
+1. **Extended Question Schema (24-Column CSV)**
+   - Added 16 new fields: `uid`, `exam`, `year`, `subject`, `chapter`, `topic`, `question_type`, `answer_choices_count`, `marks`, `negative_marks`, `time_limit_seconds`, `formula_latex`, `image_alt_text`, `confidence_score`, `source_notes`
+   - Backward compatible with legacy format
+   - Supports all question types: MCQ-SC, MCQ-MC, Integer, TrueFalse, Match, AssertionReason
+
+2. **Enhanced CSV Bulk Upload**
+   - Auto-detects format (legacy vs 24-column)
+   - Converts CorrectAnswer (A/B/C/D) to index
+   - Handles variable option counts (2-4)
+   - Returns format type in response
+
+3. **NEW: AI CSV Generator** (`/api/admin/ai/generate-csv`)
+   - Uses Gemini 2.0 Flash with Emergent LLM key
+   - Generates questions with **shortcuts, tips & tricks**
+   - Previous years style (2018-2024)
+   - Proper difficulty distribution (30% Easy, 50% Medium, 20% Hard)
+   - LaTeX formula support
+   - Configurable: exam, subjects, questions per subject
+
+#### Web App - Practice Mode Complete ✅
+1. **Configuration Page** (`/dashboard/practice/start`)
+   - 3 filter modes: Exam-wise, Subject-wise, Chapter-wise
+   - Smart defaults: Auto-select all subjects/chapters
+   - Configurable: question count (5-100), difficulty filter
+
+2. **Session Page** (`/dashboard/practice/session`)
+   - **No timer** - Practice at your own pace
+   - **Instant feedback** - See answers immediately
+   - Question palette with color coding
+   - Full navigation (prev/next, jump to any question)
+   - Complete explanations with hints & solutions
+   - LaTeX & image support
+   - Summary statistics
+
+#### Topic Field Now Optional
+- Backend accepts empty topic field
+- Works with simplified hierarchy (Exam → Subject → Chapter)
 
 ---
 
