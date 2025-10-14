@@ -157,7 +157,8 @@ Exam → Subject → Chapter → Topic → Sub-Topic → Section → Sub-Section
 
 ### Admin APIs (require admin role)
 - CRUD for all 8 levels: `/api/admin/exams`, `/api/admin/subjects`, etc.
-- POST `/api/admin/questions/bulk-upload` - CSV upload
+- POST `/api/admin/questions/bulk-upload` - CSV upload (supports legacy & 24-column format)
+- POST `/api/admin/ai/generate-csv` - AI-powered CSV generation with tips & tricks
 - GET `/api/admin/analytics/dashboard`
 
 ### User APIs
