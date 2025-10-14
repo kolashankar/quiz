@@ -75,22 +75,21 @@ export default function PracticeMode() {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Select Exam to Practice</Text>
-        {exams.map((exam: any) => (
-          <TouchableOpacity
-            key={exam.id}
-            style={styles.examCard}
-            onPress={() => handleStartPractice(exam.id)}
-          >
-            <View style={styles.examIcon}>
-              <Ionicons name="school" size={32} color="#007AFF" />
-            </View>
-            <View style={styles.examInfo}>
-              <Text style={styles.examName}>{exam.name}</Text>
-              <Text style={styles.examDescription}>{exam.description}</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={24} color="#8E8E93" />
-          </TouchableOpacity>
-        ))}
+        <TouchableOpacity
+          style={styles.examCard}
+          onPress={handleStartPractice}
+        >
+          <View style={styles.examIcon}>
+            <Ionicons name="fitness" size={32} color="#007AFF" />
+          </View>
+          <View style={styles.examInfo}>
+            <Text style={styles.examName}>Configure Practice Session</Text>
+            <Text style={styles.examDescription}>
+              Choose subjects, chapters, and difficulty level
+            </Text>
+          </View>
+          <Ionicons name="chevron-forward" size={24} color="#8E8E93" />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.infoBox}>
