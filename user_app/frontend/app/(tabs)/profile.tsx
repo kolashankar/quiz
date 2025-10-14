@@ -19,6 +19,7 @@ import { Analytics, TestResult } from '../../src/types';
 
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme, colors } = useTheme();
   const [analytics, setAnalytics] = useState<Analytics | null>(null);
   const [testHistory, setTestHistory] = useState<TestResult[]>([]);
   const [loading, setLoading] = useState(true);
