@@ -2454,6 +2454,142 @@ async def get_detailed_admin_analytics(
         }
     }
 
+# ==================== AI CSV GENERATION ====================
+
+@api_router.post("/admin/ai/generate-csv")
+async def generate_questions_csv_ai(
+    exam: str,
+    subjects: List[str],
+    questions_per_subject: int = 40,
+    admin: dict = Depends(get_admin_user)
+):
+    """Generate questions in 24-column CSV format using Gemini AI with tips and tricks"""
+    try:
+        import uuid
+        import json
+        
+        model = genai.GenerativeModel('gemini-2.0-flash-exp')
+        
+        all_questions = []
+        
+        # Subject-specific chapter mappings for realistic questions
+        subject_chapters = {
+            "Physics": ["Mechanics", "Thermodynamics", "Optics", "Electromagnetism"],
+            "Chemistry": ["Organic Chemistry", "Inorganic Chemistry", "Physical Chemistry"],
+            "Mathematics": ["Calculus", "Algebra", "Trigonometry", "Coordinate Geometry"],
+            "History": ["Ancient History", "Medieval History", "Modern History"],
+            "Geography": ["Physical Geography", "Human Geography", "Economic Geography"],
+            "Biology": ["Cell Biology", "Genetics", "Ecology", "Human Physiology"],
+            "Electrical": ["Circuit Theory", "Power Systems", "Control Systems", "Machines"],
+            "Computer Science": ["Data Structures", "Algorithms", "DBMS", "Operating Systems"],
+            "General Studies": ["Polity", "Economy", "Environment", "Current Affairs"]
+        }
+        
+        for subject in subjects:
+            chapters = subject_chapters.get(subject, ["Core Concepts", "Advanced Topics", "Applications"])
+            
+            # Distribute questions across chapters
+            questions_per_chapter = questions_per_subject // len(chapters)
+            
+            for chapter in chapters:
+                prompt = f"""
+                Generate {questions_per_chapter} competitive exam questions for {exam} - {subject} - {chapter}.
+                
+                Requirements:
+                1. Mix of difficulty: 30% Easy, 50% Medium, 20% Hard
+                2. Use previous years' question style (2018-2024)
+                3. Include SHORT explanations with TIME-SAVING TRICKS and SHORTCUTS
+                4. Add LaTeX formulas where applicable (use $...$ or $$...$$)
+                5. Each question must be realistic and exam-worthy
+                
+                Return ONLY a valid JSON array with this exact structure (no markdown, no extra text):
+                [
+                  {{
+                    "question_text": "The question text here",
+                    "option_a": "First option",
+                    "option_b": "Second option", 
+                    "option_c": "Third option",
+                    "option_d": "Fourth option",
+                    "correct_answer": "A",
+                    "difficulty": "easy",
+                    "explanation": "Short explanation with TRICK: [mention shortcut/tip]",
+                    "formula_latex": "$formula here$",
+                    "year": "2023",
+                    "topic": "Specific topic name",
+                    "tags": "tag1,tag2"
+                  }}
+                ]
+                """
+                
+                response = model.generate_content(prompt)
+                response_text = response.text.strip()
+                
+                # Clean response - remove markdown code blocks if present
+                if response_text.startswith("```"):
+                    response_text = response_text.split("```")[1]
+                    if response_text.startswith("json"):
+                        response_text = response_text[4:]
+                response_text = response_text.strip()
+                
+                try:
+                    questions_data = json.loads(response_text)
+                except json.JSONDecodeError:
+                    # Fallback: try to extract JSON array
+                    import re
+                    json_match = re.search(r'\[.*\]', response_text, re.DOTALL)
+                    if json_match:
+                        questions_data = json.loads(json_match.group())
+                    else:
+                        continue
+                
+                # Convert to 24-column format
+                for q in questions_data:
+                    question_dict = {
+                        "UID": str(uuid.uuid4()),
+                        "Exam": exam,
+                        "Year": q.get("year", "2023"),
+                        "Subject": subject,
+                        "Chapter": chapter,
+                        "Topic": q.get("topic", chapter),
+                        "QuestionType": "MCQ-SC",
+                        "QuestionText": q.get("question_text", ""),
+                        "OptionA": q.get("option_a", ""),
+                        "OptionB": q.get("option_b", ""),
+                        "OptionC": q.get("option_c", ""),
+                        "OptionD": q.get("option_d", ""),
+                        "CorrectAnswer": q.get("correct_answer", "A"),
+                        "AnswerChoicesCount": 4,
+                        "Marks": 4.0 if exam in ["JEE", "GATE"] else 2.0,
+                        "NegativeMarks": 1.0 if exam in ["JEE", "GATE"] else 0.0,
+                        "TimeLimitSeconds": 180 if q.get("difficulty") == "hard" else 120,
+                        "Difficulty": q.get("difficulty", "medium"),
+                        "Tags": q.get("tags", f"{exam},{subject}"),
+                        "FormulaLaTeX": q.get("formula_latex", ""),
+                        "ImageUploadThingURL": "",
+                        "ImageAltText": "",
+                        "Explanation": q.get("explanation", ""),
+                        "ConfidenceScore": 0.95,
+                        "SourceNotes": f"AI-generated for {exam} {subject}"
+                    }
+                    all_questions.append(question_dict)
+        
+        # Create DataFrame and CSV
+        df = pd.DataFrame(all_questions)
+        csv_buffer = io.StringIO()
+        df.to_csv(csv_buffer, index=False)
+        csv_content = csv_buffer.getvalue()
+        
+        return {
+            "success": True,
+            "exam": exam,
+            "total_questions": len(all_questions),
+            "csv_content": csv_content,
+            "message": f"Generated {len(all_questions)} questions for {exam}"
+        }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"AI CSV generation failed: {str(e)}")
+
 # ==================== PUSH NOTIFICATIONS ====================
 
 # Update user's push token
