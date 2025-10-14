@@ -1,4 +1,6 @@
 import React from 'react';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface CodeBlockProps {
   code: string;
@@ -6,12 +8,6 @@ interface CodeBlockProps {
 }
 
 export function CodeBlock({ code, language = 'javascript' }: CodeBlockProps) {
-  // Basic syntax highlighting (in production, use a library like Prism.js or highlight.js)
-  const highlightCode = (code: string, lang: string) => {
-    // For now, return formatted code with basic styling
-    return code;
-  };
-
   return (
     <div className="code-block-container my-4">
       {language && (
@@ -19,11 +15,18 @@ export function CodeBlock({ code, language = 'javascript' }: CodeBlockProps) {
           {language}
         </div>
       )}
-      <pre className="bg-gray-900 text-gray-100 p-4 rounded-b-lg overflow-x-auto">
-        <code className={`language-${language} text-sm font-mono`}>
-          {code}
-        </code>
-      </pre>
+      <SyntaxHighlighter
+        language={language}
+        style={vscDarkPlus}
+        customStyle={{
+          margin: 0,
+          borderRadius: language ? '0 0 0.5rem 0.5rem' : '0.5rem',
+          fontSize: '0.875rem',
+        }}
+        showLineNumbers
+      >
+        {code}
+      </SyntaxHighlighter>
     </div>
   );
 }
