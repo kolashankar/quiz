@@ -248,6 +248,18 @@ export default function ProfileScreen() {
         <Card style={styles.actionsCard}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
           
+          <TouchableOpacity style={styles.actionItem} onPress={toggleTheme}>
+            <Ionicons 
+              name={theme === 'dark' ? 'moon' : theme === 'light' ? 'sunny' : 'contrast'} 
+              size={20} 
+              color="#007AFF" 
+            />
+            <Text style={styles.actionText}>
+              Theme: {theme === 'auto' ? 'Auto' : theme === 'dark' ? 'Dark' : 'Light'}
+            </Text>
+            <Ionicons name="chevron-forward" size={16} color="#8E8E93" />
+          </TouchableOpacity>
+          
           <TouchableOpacity style={styles.actionItem}>
             <Ionicons name="analytics" size={20} color="#007AFF" />
             <Text style={styles.actionText}>View Detailed Analytics</Text>
