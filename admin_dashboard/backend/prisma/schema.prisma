@@ -272,3 +272,88 @@ model Notification {
 
   @@map("notifications")
 }
+
+model FlaggedQuestion {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  questionId  String   @db.ObjectId
+  userId      String   @db.ObjectId
+  reason      String
+  description String?
+  status      String   @default("pending") // "pending" | "reviewed" | "resolved" | "rejected"
+  reviewedBy  String?  @db.ObjectId
+  reviewNotes String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("flagged_questions")
+}
+
+model Announcement {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  content     String
+  type        String   @default("info") // "info" | "warning" | "success" | "error"
+  targetUsers String?  // JSON array of user IDs, null = all users
+  examId      String?  @db.ObjectId
+  priority    String   @default("normal") // "low" | "normal" | "high" | "urgent"
+  isActive    Boolean  @default(true)
+  expiresAt   DateTime?
+  createdBy   String   @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("announcements")
+}
+
+model EmailCampaign {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  subject       String
+  htmlContent   String
+  textContent   String?
+  targetUsers   String?  // JSON array of user IDs, null = all users
+  examId        String?  @db.ObjectId
+  status        String   @default("draft") // "draft" | "scheduled" | "sending" | "sent" | "failed"
+  scheduledAt   DateTime?
+  sentAt        DateTime?
+  recipientCount Int     @default(0)
+  successCount  Int      @default(0)
+  failureCount  Int      @default(0)
+  createdBy     String   @db.ObjectId
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("email_campaigns")
+}
+
+model ScheduledNotification {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  body        String
+  data        String?  // JSON string for additional data
+  targetUsers String?  // JSON array of user IDs
+  examId      String?  @db.ObjectId
+  scheduledAt DateTime
+  status      String   @default("scheduled") // "scheduled" | "sent" | "failed" | "cancelled"
+  sentAt      DateTime?
+  sentCount   Int      @default(0)
+  createdBy   String   @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("scheduled_notifications")
+}
+
+model QuestionDifficultyLog {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  questionId    String   @db.ObjectId
+  oldDifficulty String
+  newDifficulty String
+  reason        String
+  successRate   Float?
+  attemptCount  Int?
+  adjustedBy    String   @default("system") // "system" | "admin"
+  createdAt     DateTime @default(now())
+
+  @@map("question_difficulty_logs")
+}
