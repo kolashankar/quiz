@@ -40,8 +40,8 @@ export default function QuizPage() {
     <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Select an Exam</h1>
-          <p className="text-gray-600 mt-2">Choose your competitive exam to start practicing</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100">Select an Exam</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Choose your competitive exam to start practicing</p>
         </div>
         <button
           onClick={handleRefresh}
@@ -56,17 +56,17 @@ export default function QuizPage() {
           <Card key={exam.id} padding="none">
             <Link
               href={`/dashboard/quiz/hierarchy?examId=${exam.id}&examName=${encodeURIComponent(exam.name)}&level=subject`}
-              className="block p-4 hover:bg-gray-50 transition"
+              className="block p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
             >
               <div className="flex items-center">
-                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-4">
                   <AcademicCapIcon className="w-7 h-7 text-primary" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900">{exam.name}</h3>
-                  <p className="text-sm text-gray-600 mt-1">{exam.description}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{exam.name}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{exam.description}</p>
                 </div>
-                <ChevronRightIcon className="w-5 h-5 text-gray-400" />
+                <ChevronRightIcon className="w-5 h-5 text-gray-400 dark:text-gray-500" />
               </div>
             </Link>
           </Card>
@@ -74,9 +74,9 @@ export default function QuizPage() {
 
         {exams.length === 0 && (
           <Card className="text-center py-12">
-            <AcademicCapIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Exams Available</h3>
-            <p className="text-gray-600">Exams will appear here once they are added to the system.</p>
+            <AcademicCapIcon className="w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">No Exams Available</h3>
+            <p className="text-gray-600 dark:text-gray-400">Exams will appear here once they are added to the system.</p>
           </Card>
         )}
       </div>
