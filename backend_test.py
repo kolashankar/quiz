@@ -38,9 +38,10 @@ class BackendTester:
     def test_health_check(self):
         """Test 1: Health Check"""
         try:
-            response = requests.get(f"{self.base_url}/health", timeout=10)
+            # Test with exams endpoint since there's no dedicated health endpoint
+            response = requests.get(f"{self.base_url}/exams", timeout=10)
             if response.status_code == 200:
-                self.log_result("Health Check", True, "Backend is running")
+                self.log_result("Health Check", True, "Backend is running and responding")
                 return True
             else:
                 self.log_result("Health Check", False, f"Unexpected status: {response.status_code}")
