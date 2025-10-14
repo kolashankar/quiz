@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import Slider from '@react-native-community/slider';
+// No slider needed - using buttons instead
 import Constants from 'expo-constants';
 import axios from 'axios';
 import { useAuth } from '../../../src/context/AuthContext';
