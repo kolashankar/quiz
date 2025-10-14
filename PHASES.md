@@ -167,10 +167,21 @@ const colors = {
 **Tasks Status:**
 - ✅ Create admin user in database (handled by existing system)
 - ✅ Script configured for 100 questions
-- ⏳ Generate questions via Gemini AI (RUNNING)
-- ⏳ Save to database (RUNNING)
-- ⏳ Verify questions in database (PENDING)
+- ✅ Generate questions via Gemini AI (COMPLETED - 154 questions generated)
+- ✅ Save to database (COMPLETED)
+- ✅ Verify questions in database (VERIFIED - 154 questions in database)
 - ✅ Create hierarchy in database (automated in script)
+
+**Database Statistics:**
+- Total Questions Generated: **154 questions**
+- Exams: 5 (JEE, GATE, UPSC, NEET, NMMS)
+- Subjects: 15 (3 per exam)
+- Breakdown:
+  - JEE: 42 questions
+  - GATE: 42 questions
+  - UPSC: 28 questions
+  - NEET: 21 questions
+  - NMMS: 21 questions
 
 ### 5.2 Database Setup Script (INTEGRATED - 100%)
 **File:** Integrated into `/app/scripts/generate_sample_questions.py`
