@@ -23,6 +23,7 @@ const notificationRoutes = require('./routes/notification/admin');
 const bulkOperationsRoutes = require('./routes/bulk-operations/admin');
 const questionQualityRoutes = require('./routes/question-quality/admin');
 const communicationRoutes = require('./routes/communication/admin');
+const csvGeneratorRoutes = require('./routes/csv-generator/admin');
 
 // Import middleware
 const errorHandler = require('./middleware/error/errorHandler');
