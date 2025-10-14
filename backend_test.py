@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 # Backend URL from web_app frontend .env
-BASE_URL = "https://pdf2csv-wizard.preview.emergentagent.com/api"
+BASE_URL = "https://quizcraft-78.preview.emergentagent.com/api"
 
 class BackendTester:
     def __init__(self):
