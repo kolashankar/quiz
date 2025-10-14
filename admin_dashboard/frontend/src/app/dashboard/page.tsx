@@ -283,6 +283,47 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Advanced Features */}
+        <div className="mb-8">
+          <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-6">
+            Advanced Features
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Link href="/dashboard/advanced-analytics" className="card p-6 hover:shadow-lg transition-shadow bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20">
+              <div className="flex flex-col">
+                <ChartBarIcon className="h-8 w-8 text-blue-600 mb-3" />
+                <h3 className="text-base font-medium text-gray-900 dark:text-white mb-1">Advanced Analytics</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400">User engagement, difficulty analysis, trends</p>
+              </div>
+            </Link>
+
+            <Link href="/dashboard/bulk-operations" className="card p-6 hover:shadow-lg transition-shadow bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20">
+              <div className="flex flex-col">
+                <PlusIcon className="h-8 w-8 text-purple-600 mb-3" />
+                <h3 className="text-base font-medium text-gray-900 dark:text-white mb-1">Bulk Operations</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Bulk edit, delete, export questions</p>
+              </div>
+            </Link>
+
+            <Link href="/dashboard/question-quality" className="card p-6 hover:shadow-lg transition-shadow bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20">
+              <div className="flex flex-col">
+                <QuestionMarkCircleIcon className="h-8 w-8 text-green-600 mb-3" />
+                <h3 className="text-base font-medium text-gray-900 dark:text-white mb-1">Question Quality</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Review queue, flagging, duplicates</p>
+              </div>
+            </Link>
+
+            <Link href="/dashboard/communication-tools" className="card p-6 hover:shadow-lg transition-shadow bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20">
+              <div className="flex flex-col">
+                <UserGroupIcon className="h-8 w-8 text-orange-600 mb-3" />
+                <h3 className="text-base font-medium text-gray-900 dark:text-white mb-1">Communication</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Announcements, emails, notifications</p>
+              </div>
+            </Link>
+          </div>
+        </div>
+
         {/* Content Structure Overview */}
         <div className="card p-6">
           <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-6">
