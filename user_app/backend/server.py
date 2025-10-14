@@ -182,6 +182,22 @@ class QuestionCreate(BaseModel):
     code_snippet: str = ""  # Code example for DSA questions
     image_url: str = ""  # Image URL or base64
     formula: str = ""  # Mathematical formula (LaTeX format)
+    # Extended fields for 24-column CSV format
+    uid: str = ""  # Unique ID for question
+    exam: str = ""  # Exam name (JEE, GATE, UPSC, NEET, NMMS)
+    year: str = ""  # Question year
+    subject: str = ""  # Subject name
+    chapter: str = ""  # Chapter name
+    topic: str = ""  # Topic name (optional)
+    question_type: str = "MCQ-SC"  # MCQ-SC, MCQ-MC, Integer, TrueFalse, Match, AssertionReason
+    answer_choices_count: int = 4  # Number of options
+    marks: float = 1.0  # Marks for correct answer
+    negative_marks: float = 0.0  # Negative marks for wrong answer
+    time_limit_seconds: int = 120  # Time limit per question
+    formula_latex: str = ""  # LaTeX formula (same as formula)
+    image_alt_text: str = ""  # Alt text for images
+    confidence_score: float = 1.0  # AI confidence score (0.0-1.0)
+    source_notes: str = ""  # Source information
 
 class QuestionResponse(BaseModel):
     id: str
