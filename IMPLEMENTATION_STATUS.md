@@ -199,6 +199,9 @@ tesseract-ocr
 - [x] AI syllabus generation
 - [x] Push notification token registration
 - [x] Admin notification sending
+- [x] **NEW: 24-column CSV format support**
+- [x] **NEW: AI CSV generator endpoint with tips & tricks**
+- [x] **NEW: Backward compatible CSV upload**
 
 ### 🔮 Potential Backend Enhancements
 
