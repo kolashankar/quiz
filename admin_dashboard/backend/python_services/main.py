@@ -11,6 +11,13 @@ import logging
 from datetime import datetime
 import json
 
+import sys
+import uuid
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
 from pdf_extractor import PDFExtractor
 from csv_generator import CSVGenerator
 from uploadthing_client import UploadThingClient
