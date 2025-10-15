@@ -119,7 +119,7 @@ export default function PrivacyPolicyScreen() {
 
         {/* Section 7 */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>7. Children's Privacy</Text>
+          <Text style={styles.sectionTitle}>7. Children&apos;s Privacy</Text>
           <Text style={styles.sectionText}>
             Our service is intended for users aged 13 and above. We do not knowingly collect data from children under 13. If you believe we have collected data from a child, please contact us immediately.
           </Text>
