@@ -107,6 +107,14 @@ export interface QuestionResult {
   correct_answer: number;
   is_correct: boolean;
   explanation: string;
+  hint?: string;
+  solution?: string;
+  code_snippet?: string;
+  code_language?: string;
+  image_url?: string;
+  formula?: string;
+  difficulty?: string;
+  tags?: string[];
 }
 
 export interface TestResult {
