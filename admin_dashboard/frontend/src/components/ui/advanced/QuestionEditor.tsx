@@ -79,7 +79,7 @@ export function QuestionEditor({
         const base64 = e.target?.result as string;
         
         // Insert image into quill editor
-        const quill = quillRef.current?.getEditor();
+        const quill = (quillRef.current as any)?.getEditor?.();
         if (quill) {
           const range = quill.getSelection(true);
           quill.insertEmbed(range.index, 'image', base64);
