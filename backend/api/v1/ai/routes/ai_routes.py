@@ -96,6 +96,9 @@ async def get_test_recommendations(current_user: dict = Depends(get_current_user
         "recommended_topics": [{
             "topic_id": str(t["_id"]),
             "topic_name": t["name"],
+            "reason": "Recommended based on your performance"
+        } for t in topics]
+    }
 
 @router.post("/generate-csv")
 async def generate_questions_csv_ai(
