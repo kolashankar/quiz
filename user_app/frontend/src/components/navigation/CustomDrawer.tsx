@@ -232,7 +232,7 @@ export default function CustomDrawer({ visible, onClose }: DrawerProps) {
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Select Exam</Text>
               <TouchableOpacity onPress={() => setShowExamSwitcher(false)}>
-                <Ionicons name="close" size={24} color="#000000" />
+                <Ionicons name="close" size={24} color={colors.text} />
               </TouchableOpacity>
             </View>
             <ScrollView>
