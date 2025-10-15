@@ -78,16 +78,26 @@ yarn start
 
 ### 3. Web App Setup (web_app/frontend)
 
+⚠️ **Note**: Web app does NOT have its own backend - it uses user_app/backend!
+
 ```bash
 cd web_app/frontend
-yarn install
+npm install  # or yarn install
 
+# Create .env with /api suffix (IMPORTANT!)
+cat > .env << EOF
+NEXT_PUBLIC_API_URL=http://localhost:8001/api
+EOF
+
+# Also create .env.local (takes precedence)
 cat > .env.local << EOF
 NEXT_PUBLIC_API_URL=http://localhost:8001/api
 EOF
 
-yarn dev  # http://localhost:3000
+npm run dev  # Runs on http://localhost:3000
 ```
+
+**✅ Test it:** Open http://localhost:3000 and try signing up
 
 ### 4. Admin Dashboard Setup
 
