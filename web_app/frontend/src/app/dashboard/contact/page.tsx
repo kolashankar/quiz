@@ -153,7 +153,7 @@ export default function ContactPage() {
           <Card>
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Get in Touch</h2>
             <p className="text-gray-600 mb-6">
-              Have questions or feedback? We'd love to hear from you. Reach out to us using the form or contact information below.
+              Have questions or feedback? We&apos;d love to hear from you. Reach out to us using the form or contact information below.
             </p>
 
             <div className="space-y-4">
