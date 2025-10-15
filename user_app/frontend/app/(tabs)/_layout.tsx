@@ -167,6 +167,22 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="practice/configure"
+        options={{
+          href: null,
+          title: 'Configure Practice',
+          headerTitle: 'Configure Practice',
+        }}
+      />
+      <Tabs.Screen
+        name="practice/session"
+        options={{
+          href: null,
+          title: 'Practice Session',
+          headerTitle: 'Practice Session',
+        }}
+      />
+      <Tabs.Screen
         name="profile/edit"
         options={{
           href: null,
