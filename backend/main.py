@@ -78,6 +78,10 @@ async def root():
 app.include_router(auth_router, prefix="/api")
 app.include_router(content_router, prefix="/api")
 app.include_router(questions_router, prefix="/api")
+app.include_router(tests_router, prefix="/api")
+app.include_router(user_router, prefix="/api")
+app.include_router(admin_router, prefix="/api")
+app.include_router(ai_router, prefix="/api")
 
 # For now, include remaining routes from server_old.py
 # TODO: Refactor these into organized modules
