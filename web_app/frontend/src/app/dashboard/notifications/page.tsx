@@ -12,7 +12,7 @@ export default function NotificationsPage() {
       <Card className="text-center py-12">
         <BellIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
         <h3 className="text-lg font-semibold text-gray-900 mb-2">No Notifications</h3>
-        <p className="text-gray-600">You're all caught up! Check back later for updates.</p>
+        <p className="text-gray-600">You&apos;re all caught up! Check back later for updates.</p>
       </Card>
     </div>
   );
