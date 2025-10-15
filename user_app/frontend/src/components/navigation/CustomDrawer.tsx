@@ -406,7 +406,7 @@ const createStyles = (colors: any) => StyleSheet.create({
     color: colors.text,
   },
   themeIndicator: {
-    backgroundColor: '#F0F0F0',
+    backgroundColor: colors.border,
     borderRadius: 12,
     paddingHorizontal: 8,
     paddingVertical: 4,
