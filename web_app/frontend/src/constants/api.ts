@@ -1,46 +1,47 @@
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
+// Base URL already includes /api from env: http://localhost:8001/api
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001/api';
 
 export const API_ENDPOINTS = {
   // Auth
-  AUTH_LOGIN: '/api/auth/login',
-  AUTH_SIGNUP: '/api/auth/signup',
-  AUTH_ME: '/api/auth/me',
-  FORGOT_PASSWORD: '/api/forgot-password',
-  RESET_PASSWORD: '/api/reset-password',
+  AUTH_LOGIN: '/auth/login',
+  AUTH_SIGNUP: '/auth/signup',
+  AUTH_ME: '/auth/me',
+  FORGOT_PASSWORD: '/forgot-password',
+  RESET_PASSWORD: '/reset-password',
   
   // Profile
-  PROFILE_UPDATE: '/api/profile/update',
+  PROFILE_UPDATE: '/profile/update',
   
   // Hierarchy
-  EXAMS: '/api/exams',
-  SUBJECTS: '/api/subjects',
-  CHAPTERS: '/api/chapters',
-  TOPICS: '/api/topics',
-  SUB_TOPICS: '/api/sub-topics',
-  SECTIONS: '/api/sections',
-  SUB_SECTIONS: '/api/sub-sections',
+  EXAMS: '/exams',
+  SUBJECTS: '/subjects',
+  CHAPTERS: '/chapters',
+  TOPICS: '/topics',
+  SUB_TOPICS: '/sub-topics',
+  SECTIONS: '/sections',
+  SUB_SECTIONS: '/sub-sections',
   
   // Questions
-  QUESTIONS: '/api/questions',
-  QUESTIONS_FILTERED: '/api/questions/filtered',
+  QUESTIONS: '/questions',
+  QUESTIONS_FILTERED: '/questions/filtered',
   
   // Search
-  SEARCH: '/api/search',
+  SEARCH: '/search',
   
   // Tests
-  TESTS_SUBMIT: '/api/tests/submit',
-  TESTS_HISTORY: '/api/tests/history',
+  TESTS_SUBMIT: '/tests/submit',
+  TESTS_HISTORY: '/tests/history',
   
   // Bookmarks
-  BOOKMARKS: '/api/bookmarks',
-  BOOKMARKS_BATCH: '/api/bookmarks/batch',
+  BOOKMARKS: '/bookmarks',
+  BOOKMARKS_BATCH: '/bookmarks/batch',
   
   // Analytics
-  ANALYTICS_PERFORMANCE: '/api/analytics/performance',
-  ANALYTICS_DIFFICULTY: '/api/analytics/difficulty-breakdown',
-  RECOMMENDATIONS: '/api/recommendations/tests',
+  ANALYTICS_PERFORMANCE: '/analytics/performance',
+  ANALYTICS_DIFFICULTY: '/analytics/difficulty-breakdown',
+  RECOMMENDATIONS: '/recommendations/tests',
   
   // Leaderboard
-  LEADERBOARD: '/api/leaderboard',
-  LEADERBOARD_FILTERED: '/api/leaderboard/filtered',
+  LEADERBOARD: '/leaderboard',
+  LEADERBOARD_FILTERED: '/leaderboard/filtered',
 };
