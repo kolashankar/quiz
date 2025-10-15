@@ -73,6 +73,7 @@ async def root():
 # Include routers with /api prefix
 app.include_router(auth_router, prefix="/api")
 app.include_router(content_router, prefix="/api")
+app.include_router(questions_router, prefix="/api")
 
 # For now, include remaining routes from server_old.py
 # TODO: Refactor these into organized modules
