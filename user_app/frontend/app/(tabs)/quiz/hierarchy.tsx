@@ -253,7 +253,7 @@ export default function HierarchyScreen() {
               <Ionicons name="folder-outline" size={48} color="#8E8E93" />
               <Text style={styles.emptyTitle}>No {config?.title?.split(' ')[1]}s Available</Text>
               <Text style={styles.emptySubtitle}>
-                Content will appear here once it's added to the system.
+                Content will appear here once it&apos;s added to the system.
               </Text>
             </View>
           </Card>
