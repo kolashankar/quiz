@@ -97,10 +97,10 @@ export function QuestionCard({
       </div>
 
       {/* Question Image (if exists) */}
-      {question.image && (
+      {question.image_url && (
         <div className="mb-6">
           <img
-            src={question.image}
+            src={question.image_url}
             alt="Question illustration"
             className="max-w-full h-auto rounded-lg border border-gray-200"
           />
