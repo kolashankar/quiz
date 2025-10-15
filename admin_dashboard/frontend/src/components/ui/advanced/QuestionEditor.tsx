@@ -98,7 +98,7 @@ export function QuestionEditor({
   const insertFormula = () => {
     if (!formula.trim()) return;
     
-    const quill = quillRef.current?.getEditor();
+    const quill = (quillRef.current as any)?.getEditor?.();
     if (quill) {
       const range = quill.getSelection(true);
       quill.insertEmbed(range.index, 'formula', formula);
