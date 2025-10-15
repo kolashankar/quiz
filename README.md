@@ -1,5 +1,22 @@
 # 📚 Quiz Application - Complete System Documentation
 
+> **🆘 HAVING URL/SETUP ISSUES?** Check [LOCAL_SETUP_GUIDE.md](./LOCAL_SETUP_GUIDE.md) for detailed troubleshooting!
+
+## 🎯 Quick URL Reference
+
+| Component | Port | URL | Notes |
+|-----------|------|-----|-------|
+| **Shared Backend** | 8001 | http://localhost:8001 | Used by mobile + web |
+| **Web App** | 3000 | http://localhost:3000 | Frontend only, no backend |
+| **Mobile App** | Varies | Expo Go | Use your computer's IP |
+| **Admin Frontend** | 3001 | http://localhost:3001 | Separate admin panel |
+| **Admin Backend** | 8002 | http://localhost:8002 | Admin-specific APIs |
+| **MongoDB** | 27017 | mongodb://localhost:27017 | Local database |
+
+**⚠️ Common Mistake**: Web app .env must have `/api` suffix!
+- ✅ Correct: `NEXT_PUBLIC_API_URL=http://localhost:8001/api`
+- ❌ Wrong: `NEXT_PUBLIC_API_URL=http://localhost:8001`
+
 ## 🏗️ System Architecture
 
 Three integrated applications sharing one backend and database:
