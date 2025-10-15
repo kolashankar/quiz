@@ -1,10 +1,14 @@
 from fastapi import APIRouter, HTTPException, Depends
-from typing import Dict, Any
+from typing import Dict, Any, List
 import os
 import google.generativeai as genai
+import pandas as pd
+import io
+import uuid
+import json
 
 from api.v1.ai.models import AIRecommendationRequest
-from core.security import get_current_user
+from core.security import get_current_user, get_admin_user
 from core.database import get_database
 
 router = APIRouter(prefix="/ai", tags=["ai"])
