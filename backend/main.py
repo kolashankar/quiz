@@ -22,6 +22,7 @@ from core.middleware.error_handler import (
 # Import organized routes
 from api.v1.auth.routes import router as auth_router
 from api.v1.content.routes import router as content_router
+from api.v1.questions.routes import router as questions_router
 
 # Configure logging
 logging.basicConfig(
