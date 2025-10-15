@@ -1,7 +1,7 @@
 # Advanced Trading Signal Platform - Master Plan
 ## "Matching 10 World-Class Trading Experts with AI"
 
----
+----
 
 ## 🎯 Project Vision
 
