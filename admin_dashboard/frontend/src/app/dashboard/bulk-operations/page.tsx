@@ -82,7 +82,7 @@ export default function BulkOperationsPage() {
     }
   };
 
-  const handleBulkDelete = async () {
+  const handleBulkDelete = async (): Promise<void> => {
     if (!deleteQuestionIds.trim() && !deleteDifficulty && deleteIsActive === '') {
       setMessage({ type: 'error', text: 'Please provide question IDs or filters' });
       return;
