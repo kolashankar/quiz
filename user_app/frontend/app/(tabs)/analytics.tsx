@@ -49,8 +49,8 @@ export default function Analytics() {
       });
 
       // Save to file
-      const fileUri = (FileSystem.documentDirectory || '') + 'analytics_export.csv';
-      await FileSystem.writeAsStringAsync(fileUri, csvContent);
+      const fileUri = (documentDirectory || '') + 'analytics_export.csv';
+      await writeAsStringAsync(fileUri, csvContent);
 
       // Share the file
       if (await Sharing.isAvailableAsync()) {
