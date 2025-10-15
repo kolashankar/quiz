@@ -401,4 +401,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 16,
   },
+  themeIndicator: {
+    backgroundColor: '#F0F0F0',
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  themeIndicatorText: {
+    fontSize: 16,
+  },
 });
