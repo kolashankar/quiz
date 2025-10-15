@@ -7,7 +7,7 @@ Focus on testing key endpoints and new fields
 import requests
 import json
 
-BASE_URL = "https://quizzy-theme.preview.emergentagent.com/api"
+BASE_URL = "https://quiz-url-update.preview.emergentagent.com/api"
 
 def test_endpoint(name, url, method="GET", data=None, headers=None):
     """Test a single endpoint"""

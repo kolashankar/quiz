@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 # Backend URL from web_app frontend .env
-BASE_URL = "https://quizzy-theme.preview.emergentagent.com/api"
+BASE_URL = "https://quiz-url-update.preview.emergentagent.com/api"
 
 class BackendTester:
     def __init__(self):

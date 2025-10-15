@@ -20,7 +20,7 @@ index 0000000..7843f79
 +class ComprehensiveBackendTester:
 +    def __init__(self):
 +        # Use the backend URL from frontend .env
-+        self.base_url = "https://quizzy-theme.preview.emergentagent.com"
++        self.base_url = "https://quiz-url-update.preview.emergentagent.com"
 +        self.api_url = f"{self.base_url}/api"
 +        self.session = requests.Session()
 +        
@@ -909,7 +909,7 @@ index e419249..85bba07 100644
 --+import requests
 --+import json
 --+
---+BASE_URL = "https://quizzy-theme.preview.emergentagent.com/api"
+--+BASE_URL = "https://quiz-url-update.preview.emergentagent.com/api"
 --+
 --+def test_endpoint(name, url, method="GET", data=None, headers=None):
 --+    """Test a single endpoint"""
