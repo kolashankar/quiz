@@ -49,7 +49,7 @@ export default function Analytics() {
       });
 
       // Save to file
-      const fileUri = FileSystem.documentDirectory + 'analytics_export.csv';
+      const fileUri = (FileSystem.documentDirectory || '') + 'analytics_export.csv';
       await FileSystem.writeAsStringAsync(fileUri, csvContent);
 
       // Share the file
