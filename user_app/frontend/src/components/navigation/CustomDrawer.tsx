@@ -323,7 +323,7 @@ const createStyles = (colors: any) => StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
+    borderBottomColor: colors.border,
   },
   menuText: {
     flex: 1,
@@ -385,7 +385,7 @@ const createStyles = (colors: any) => StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
+    borderBottomColor: colors.border,
   },
   modalTitle: {
     fontSize: 20,
@@ -397,7 +397,7 @@ const createStyles = (colors: any) => StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
+    borderBottomColor: colors.border,
   },
   examName: {
     flex: 1,
