@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 
 class AIRecommendationRequest(BaseModel):
-    user_id: str
+    context: str
     exam_id: Optional[str] = None
     subject_id: Optional[str] = None
 
