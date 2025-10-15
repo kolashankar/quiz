@@ -162,7 +162,11 @@ export default function QuestionsPage() {
     }
   };
 
-  const handleAIGenerate = async (topic: string, difficulty: string, count: number) => {
+  const handleAIGenerate = async (
+    topic: string,
+    difficulty: "easy" | "medium" | "hard",
+    count: number
+  ) => {    
     setAIGenerating(true);
     try {
       const response = await aiService.generateQuestions({ topic, difficulty, count });
@@ -424,7 +428,19 @@ export default function QuestionsPage() {
 
       {/* AI Generate Modal */}
       <Modal isOpen={isAIModalOpen} onClose={() => setIsAIModalOpen(false)} title="AI Generate Questions" size="lg">
-        <form onSubmit={(e) => { e.preventDefault(); const formData = new FormData(e.target as any); handleAIGenerate(formData.get('topic') as string, formData.get('difficulty') as string, parseInt(formData.get('count') as string)); }} className="space-y-4">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.target as any);
+
+              const topic = formData.get('topic') as string;
+              const difficulty = formData.get('difficulty') as 'easy' | 'medium' | 'hard';
+              const count = parseInt(formData.get('count') as string);
+
+              handleAIGenerate(topic, difficulty, count);
+            }}
+            className="space-y-4"
+          >          
           <div>
             <label className="block text-sm font-medium mb-1">Topic</label>
             <input name="topic" className="input w-full" placeholder="e.g., Newton's Laws of Motion" required />
