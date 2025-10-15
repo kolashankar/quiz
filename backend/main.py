@@ -90,7 +90,7 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_event():
     logger.info("👋 Application shutting down...")
-    from core.database import Database
+    from core.database.mongodb import Database
     await Database.close()
     logger.info("✅ Database connections closed")
 
