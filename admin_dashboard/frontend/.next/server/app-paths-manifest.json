@@ -1,1 +1,24 @@
-{}
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/auth/login/page": "app/auth/login/page.js",
+  "/page": "app/page.js",
+  "/dashboard/csv-generator/page": "app/dashboard/csv-generator/page.js",
+  "/dashboard/ai-tools/page": "app/dashboard/ai-tools/page.js",
+  "/dashboard/communication-tools/page": "app/dashboard/communication-tools/page.js",
+  "/dashboard/analytics/page": "app/dashboard/analytics/page.js",
+  "/dashboard/chapters/page": "app/dashboard/chapters/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/notifications/page": "app/dashboard/notifications/page.js",
+  "/dashboard/exams/page": "app/dashboard/exams/page.js",
+  "/dashboard/question-quality/page": "app/dashboard/question-quality/page.js",
+  "/dashboard/subjects/page": "app/dashboard/subjects/page.js",
+  "/dashboard/questions/page": "app/dashboard/questions/page.js",
+  "/dashboard/sections/page": "app/dashboard/sections/page.js",
+  "/dashboard/subsections/page": "app/dashboard/subsections/page.js",
+  "/dashboard/syllabus/page": "app/dashboard/syllabus/page.js",
+  "/dashboard/topics/page": "app/dashboard/topics/page.js",
+  "/dashboard/subtopics/page": "app/dashboard/subtopics/page.js",
+  "/dashboard/advanced-analytics/page": "app/dashboard/advanced-analytics/page.js",
+  "/dashboard/bulk-upload/page": "app/dashboard/bulk-upload/page.js",
+  "/dashboard/bulk-operations/page": "app/dashboard/bulk-operations/page.js"
+}
