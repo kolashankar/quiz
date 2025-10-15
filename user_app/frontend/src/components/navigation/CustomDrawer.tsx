@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   examSwitcherModal: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     maxHeight: '60%',
