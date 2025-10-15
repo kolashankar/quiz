@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
   menuText: {
     flex: 1,
     fontSize: 16,
-    color: '#000000',
+    color: colors.text,
     marginLeft: 16,
   },
   logoutText: {
