@@ -116,7 +116,7 @@ export default function ContactScreen() {
           <Ionicons name="chatbubbles" size={48} color="#007AFF" />
           <Text style={styles.infoTitle}>Get in Touch</Text>
           <Text style={styles.infoText}>
-            Have questions or feedback? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+            Have questions or feedback? We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
           </Text>
         </View>
 
