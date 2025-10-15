@@ -278,6 +278,17 @@ export const aiService = {
     });
     return response.data;
   },
+
+  async generateCSV(exam: string, subjects: string[], questionsPerSubject: number = 40): Promise<{ success: boolean; csv_content: string; total_questions: number; message: string }> {
+    const response = await api.post('/ai/generate-csv', null, {
+      params: {
+        exam,
+        subjects: subjects.join(','),
+        questions_per_subject: questionsPerSubject
+      }
+    });
+    return response.data;
+  },
 };
 
 // Analytics API
