@@ -176,7 +176,7 @@ export default function PrivacyPage() {
       </Card>
 
       <Card className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Children's Privacy</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Children&apos;s Privacy</h2>
         <p className="text-gray-700 text-sm">
           Our services are intended for users aged 13 and above. We do not knowingly collect personal information from children under 13. If you believe we have collected such information, please contact us immediately.
         </p>
