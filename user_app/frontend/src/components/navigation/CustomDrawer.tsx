@@ -160,6 +160,26 @@ export default function CustomDrawer({ visible, onClose }: DrawerProps) {
 
               <View style={styles.divider} />
 
+              {/* Theme Toggle */}
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={toggleTheme}
+              >
+                <Ionicons 
+                  name={theme === 'light' ? 'sunny' : theme === 'dark' ? 'moon' : 'contrast'} 
+                  size={24} 
+                  color="#007AFF" 
+                />
+                <Text style={styles.menuText}>
+                  Theme: {theme === 'light' ? 'Light' : theme === 'dark' ? 'Dark' : 'Auto'}
+                </Text>
+                <View style={styles.themeIndicator}>
+                  <Text style={styles.themeIndicatorText}>
+                    {actualTheme === 'dark' ? '🌙' : '☀️'}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
               {/* WhatsApp Community */}
               <TouchableOpacity
                 style={[styles.menuItem, styles.whatsappItem]}
