@@ -234,6 +234,3 @@ async def generate_questions_csv_ai(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"AI CSV generation failed: {str(e)}")
 
-            "reason": "Recommended based on your performance"
-        } for t in topics]
-    }
