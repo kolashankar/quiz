@@ -61,9 +61,9 @@ export default function CustomDrawer({ visible, onClose }: DrawerProps) {
         onRequestClose={onClose}
       >
         <Pressable style={styles.overlay} onPress={onClose}>
-          <Pressable style={styles.drawer} onPress={(e) => e.stopPropagation()}>
+          <Pressable style={[styles.drawer, { backgroundColor: colors.background }]} onPress={(e) => e.stopPropagation()}>
             {/* Header */}
-            <View style={styles.header}>
+            <View style={[styles.header, { backgroundColor: colors.primary }]}>
               <View style={styles.headerContent}>
                 <View style={styles.avatar}>
                   <Ionicons name="person" size={32} color="#FFFFFF" />
