@@ -75,7 +75,7 @@ export default function Notifications() {
           <Ionicons name="notifications-off" size={64} color="#8E8E93" />
           <Text style={styles.emptyText}>No notifications yet</Text>
           <Text style={styles.emptySubtext}>
-            You'll receive important updates here
+            You&apos;ll receive important updates here
           </Text>
         </View>
       ) : (
