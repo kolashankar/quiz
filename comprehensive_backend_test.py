@@ -14,7 +14,7 @@ from typing import Dict, Any, Optional, List
 class ComprehensiveBackendTester:
     def __init__(self):
         # Use the backend URL from frontend .env
-        self.base_url = "https://quiz-url-update.preview.emergentagent.com"
+        self.base_url = "https://quiz-trio-repair.preview.emergentagent.com"
         self.api_url = f"{self.base_url}/api"
         self.session = requests.Session()
         
