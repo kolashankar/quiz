@@ -34,7 +34,11 @@ quiz-app/
 
 ## 🚀 Quick Start
 
-### 1. Backend Setup (user_app/backend)
+> **📘 For detailed setup instructions with troubleshooting, see [LOCAL_SETUP_GUIDE.md](./LOCAL_SETUP_GUIDE.md)**
+
+### 1. Backend Setup (user_app/backend) - SHARED BY ALL APPS
+
+⚠️ **IMPORTANT**: This backend serves BOTH mobile and web apps!
 
 ```bash
 cd user_app/backend
@@ -43,13 +47,18 @@ pip install -r requirements.txt
 # Create .env
 cat > .env << EOF
 MONGO_URL=mongodb://localhost:27017
-DB_NAME=quiz_app
-JWT_SECRET=your_secret_key
+DB_NAME=quiz_app_db
+JWT_SECRET=your_secret_key_change_in_production
+JWT_ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=1440
 GEMINI_API_KEY=AIzaSyAP3N0jTzOMpLTRyy9d77Osq2gwpxZned4
 EOF
 
+# Start backend on port 8001
 uvicorn server:app --reload --host 0.0.0.0 --port 8001
 ```
+
+**✅ Test it:** Open http://localhost:8001/docs
 
 ### 2. Mobile App Setup (user_app/frontend)
 
