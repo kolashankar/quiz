@@ -236,7 +236,7 @@ export default function HierarchyPage() {
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
                 No {config?.title?.split(' ')[1]}s Available
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Content will appear here once it's added to the system.</p>
+              <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Content will appear here once it&apos;s added to the system.</p>
             </Card>
           )}
         </div>
