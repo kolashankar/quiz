@@ -24,6 +24,8 @@ export default function CustomDrawer({ visible, onClose }: DrawerProps) {
   const { theme, actualTheme, colors, toggleTheme } = useTheme();
   const router = useRouter();
   const [showExamSwitcher, setShowExamSwitcher] = useState(false);
+  
+  const styles = createStyles(colors);
 
   const exams = [
     { id: 'upsc', name: 'UPSC Civil Services', icon: 'school' },
