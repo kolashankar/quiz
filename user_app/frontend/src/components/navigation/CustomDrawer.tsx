@@ -21,6 +21,7 @@ interface DrawerProps {
 
 export default function CustomDrawer({ visible, onClose }: DrawerProps) {
   const { user, logout } = useAuth();
+  const { theme, actualTheme, colors, toggleTheme } = useTheme();
   const router = useRouter();
   const [showExamSwitcher, setShowExamSwitcher] = useState(false);
 
