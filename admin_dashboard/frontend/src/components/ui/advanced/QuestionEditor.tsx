@@ -113,7 +113,7 @@ export function QuestionEditor({
   const insertCodeSnippet = () => {
     if (!codeSnippet.trim()) return;
     
-    const quill = quillRef.current?.getEditor();
+    const quill = (quillRef.current as any)?.getEditor?.();
     if (quill) {
       const range = quill.getSelection(true);
       const codeWithLanguage = `\`\`\`${codeLanguage}\n${codeSnippet}\n\`\`\``;
