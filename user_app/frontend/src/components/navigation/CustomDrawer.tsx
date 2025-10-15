@@ -401,6 +401,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     marginLeft: 16,
+    color: colors.text,
   },
   themeIndicator: {
     backgroundColor: '#F0F0F0',
