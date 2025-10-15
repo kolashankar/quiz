@@ -92,11 +92,11 @@ export default function CustomDrawer({ visible, onClose }: DrawerProps) {
 
               {/* Syllabus */}
               <TouchableOpacity
-                style={styles.menuItem}
+                style={[styles.menuItem, { borderBottomColor: colors.border }]}
                 onPress={() => handleNavigation('/(tabs)/syllabus')}
               >
-                <Ionicons name="book" size={24} color="#007AFF" />
-                <Text style={styles.menuText}>Exam Syllabus</Text>
+                <Ionicons name="book" size={24} color={colors.primary} />
+                <Text style={[styles.menuText, { color: colors.text }]}>Exam Syllabus</Text>
               </TouchableOpacity>
 
               {/* Notifications */}
