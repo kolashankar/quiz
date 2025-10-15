@@ -215,16 +215,17 @@ export function QuestionEditor({
       )}
 
       {/* Main Editor */}
-      <ReactQuill
-        ref={quillRef}
-        theme="snow"
-        value={value}
-        onChange={onChange}
-        modules={modules}
-        formats={formats}
-        placeholder={placeholder}
-        className="bg-white"
-      />
+      <div ref={quillRef}>
+        <ReactQuill
+          theme="snow"
+          value={value}
+          onChange={onChange}
+          modules={modules}
+          formats={formats}
+          placeholder={placeholder}
+          className="bg-white"
+        />
+      </div>
 
       {/* Formula Modal */}
       {showFormulaModal && (
