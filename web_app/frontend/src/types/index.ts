@@ -84,6 +84,13 @@ export interface Question {
   difficulty: string;
   tags: string[];
   explanation: string;
+  hint?: string;
+  solution?: string;
+  code_snippet?: string;
+  code_language?: string;
+  image?: string;
+  image_url?: string;
+  formula?: string;
   created_at: string;
 }
 
