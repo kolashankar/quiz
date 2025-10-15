@@ -88,7 +88,8 @@ export default function BulkOperationsPage() {
       return;
     }
 
-    if (!confirm('Are you sure you want to delete these questions? This action cannot be undone.')) {
+    const confirmed = window.confirm('Are you sure you want to delete these questions? This action cannot be undone.');
+    if (!confirmed) {
       return;
     }
 
