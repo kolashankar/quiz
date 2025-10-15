@@ -357,7 +357,7 @@ const createStyles = (colors: any) => StyleSheet.create({
   },
   divider: {
     height: 8,
-    backgroundColor: '#F8F8F8',
+    backgroundColor: colors.border,
   },
   footer: {
     padding: 20,
