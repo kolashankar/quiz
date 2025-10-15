@@ -129,7 +129,7 @@ export default function PrivacyPolicyScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>8. Changes to This Policy</Text>
           <Text style={styles.sectionText}>
-            We may update this privacy policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the "Last Updated" date.
+            We may update this privacy policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the &quot;Last Updated&quot; date.
           </Text>
         </View>
 
