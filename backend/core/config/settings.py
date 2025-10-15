@@ -27,7 +27,11 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str = os.getenv('GEMINI_API_KEY', '')
     
     # CORS
-    ALLOWED_ORIGINS: list = ["http://localhost:3000", "http://localhost:3001", "http://localhost:19006"]
+    ALLOWED_ORIGINS: str = "http://localhost:3000,http://localhost:3001,http://localhost:19006"
+    
+    def get_cors_origins(self) -> list:
+        """Convert comma-separated origins to list"""
+        return [origin.strip() for origin in self.ALLOWED_ORIGINS.split(",")]
     
     # Server
     PORT: int = int(os.getenv('PORT', 8001))
