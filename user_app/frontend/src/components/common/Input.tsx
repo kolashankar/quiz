@@ -25,13 +25,13 @@ export const Input: React.FC<InputProps> = ({
           styles.input,
           {
             borderColor: colors.border,
-            backgroundColor: colors.card,
-            color: colors.text,
+            backgroundColor: actualTheme === 'dark' ? colors.card : '#FFFFFF',
+            color: actualTheme === 'dark' ? colors.text : '#333333',
           },
           error && { borderColor: colors.danger },
           style,
         ]}
-        placeholderTextColor={colors.textSecondary}
+        placeholderTextColor={actualTheme === 'dark' ? colors.textSecondary : '#999999'}
         {...props}
       />
       {error && <Text style={[styles.error, { color: colors.danger }]}>{error}</Text>}
