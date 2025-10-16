@@ -23,29 +23,31 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider>
           <AuthProvider>
-            {children}
-            <Toaster
-              position="top-right"
-              toastOptions={{
-                duration: 3000,
-                style: {
-                  background: '#fff',
-                  color: '#1D1D1F',
-                },
-                success: {
-                  iconTheme: {
-                    primary: '#48bb78',
-                    secondary: '#fff',
+            <ExamProvider>
+              {children}
+              <Toaster
+                position="top-right"
+                toastOptions={{
+                  duration: 3000,
+                  style: {
+                    background: '#fff',
+                    color: '#1D1D1F',
                   },
-                },
-                error: {
-                  iconTheme: {
-                    primary: '#f56565',
-                    secondary: '#fff',
+                  success: {
+                    iconTheme: {
+                      primary: '#48bb78',
+                      secondary: '#fff',
+                    },
                   },
-                },
-              }}
-            />
+                  error: {
+                    iconTheme: {
+                      primary: '#f56565',
+                      secondary: '#fff',
+                    },
+                  },
+                }}
+              />
+            </ExamProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>
