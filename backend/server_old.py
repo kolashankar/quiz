@@ -20,13 +20,18 @@ try:
 except ImportError:
     GENAI_AVAILABLE = False
     genai = None
-from exponent_server_sdk import (
-    DeviceNotRegisteredError,
-    PushClient,
-    PushMessage,
-    PushServerError,
-    PushTicketError,
-)
+
+try:
+    from exponent_server_sdk import (
+        DeviceNotRegisteredError,
+        PushClient,
+        PushMessage,
+        PushServerError,
+        PushTicketError,
+    )
+    PUSH_NOTIFICATIONS_AVAILABLE = True
+except ImportError:
+    PUSH_NOTIFICATIONS_AVAILABLE = False
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
