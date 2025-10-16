@@ -92,9 +92,11 @@ export default function LeaderboardPage() {
     if (scope === 'exam' && selectedExam) {
       fetchSubjects(selectedExam);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedExam]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     fetchLeaderboard();
   }, [period, scope, selectedExam, selectedSubject]);
 

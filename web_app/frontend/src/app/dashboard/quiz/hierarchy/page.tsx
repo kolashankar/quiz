@@ -76,6 +76,7 @@ export default function HierarchyPage() {
   useEffect(() => {
     buildNavigation();
     fetchItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   const buildNavigation = () => {

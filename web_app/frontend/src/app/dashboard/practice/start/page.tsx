@@ -56,6 +56,7 @@ export default function PracticeStartPage() {
         setSelectedSubjects(subjects.map(s => s._id));
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedExam]);
 
   useEffect(() => {

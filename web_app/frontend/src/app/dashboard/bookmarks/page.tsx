@@ -37,6 +37,7 @@ export default function BookmarksPage() {
 
   useEffect(() => {
     applyFilters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookmarks, searchQuery, difficultyFilter]);
 
   const fetchBookmarks = async () => {

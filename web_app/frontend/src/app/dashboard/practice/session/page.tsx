@@ -56,6 +56,7 @@ function PracticeSessionContent() {
 
   useEffect(() => {
     fetchQuestions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchQuestions = async () => {

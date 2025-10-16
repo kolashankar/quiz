@@ -39,6 +39,7 @@ export default function TestPage() {
 
   useEffect(() => {
     fetchQuestions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleTimeUp() {
