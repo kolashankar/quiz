@@ -128,12 +128,12 @@ export default function ProfilePage() {
     }));
 
   // Prepare difficulty breakdown pie chart data
-  const pieData = difficultyBreakdown.map((item) => ({
+  const pieData = Array.isArray(difficultyBreakdown) ? difficultyBreakdown.map((item) => ({
     name: item.difficulty.charAt(0).toUpperCase() + item.difficulty.slice(1),
     value: item.percentage,
     correct: item.correct,
     total: item.total,
-  }));
+  })) : [];
 
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
