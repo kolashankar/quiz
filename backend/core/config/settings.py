@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str = os.getenv('GEMINI_API_KEY', '')
     
     # CORS
-    ALLOWED_ORIGINS: str = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
+    ALLOWED_ORIGINS: str = os.getenv("ALLOWED_ORIGINS", '')
 
     
     def get_cors_origins(self) -> list:
