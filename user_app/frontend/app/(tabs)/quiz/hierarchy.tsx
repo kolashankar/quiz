@@ -71,10 +71,8 @@ export default function HierarchyScreen() {
 
   useEffect(() => {
     buildNavigation();
-    fetchItems();
+    fetchItems().finally(() => setLoading(false));
   }, [params]);
-
-  const buildNavigation = () => {
     const nav: HierarchyNavigation = {};
     
     if (params.examId) {
