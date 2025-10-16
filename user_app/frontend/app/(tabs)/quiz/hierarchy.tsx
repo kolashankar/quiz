@@ -69,10 +69,7 @@ export default function HierarchyScreen() {
     },
   };
 
-  useEffect(() => {
-    buildNavigation();
-    fetchItems().finally(() => setLoading(false));
-  }, [params]);
+  const buildNavigation = () => {
     const nav: HierarchyNavigation = {};
     
     if (params.examId) {
@@ -99,6 +96,11 @@ export default function HierarchyScreen() {
 
     setNavigation(nav);
   };
+
+  useEffect(() => {
+    buildNavigation();
+    fetchItems().finally(() => setLoading(false));
+  }, [params]);
 
   const fetchItems = async () => {
     try {
