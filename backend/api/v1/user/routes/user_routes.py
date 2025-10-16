@@ -165,6 +165,77 @@ async def get_leaderboard(limit: int = 50):
     
     return {"leaderboard": leaderboard}
 
+# ==================== RECOMMENDATIONS ====================
+
+@router.get("/recommendations/tests")
+async def get_test_recommendations(current_user: dict = Depends(get_current_user)):
+    """Get test recommendations based on user performance"""
+    db = get_database()
+    
+    # Get user's test results
+    results = await db.test_results.find({"user_id": str(current_user["_id"])}).to_list(100)
+    
+    if not results:
+        # If no history, recommend popular topics
+        popular_topics = await db.topics.find().limit(5).to_list(5)
+        return {
+            "message": "Get started with these popular topics",
+            "recommended_topics": [
+                {
+                    "topic_id": str(t["_id"]),
+                    "topic_name": t["name"],
+                    "reason": "Popular among students"
+                } for t in popular_topics
+            ]
+        }
+    
+    # Analyze weak areas
+    topic_performance = {}
+    for result in results:
+        for q in result.get("questions", []):
+            question = await db.questions.find_one({"_id": ObjectId(q["question_id"])})
+            if question and question.get("topic_id"):
+                topic_id = question["topic_id"]
+                if topic_id not in topic_performance:
+                    topic_performance[topic_id] = {"correct": 0, "total": 0}
+                
+                topic_performance[topic_id]["total"] += 1
+                if q.get("is_correct"):
+                    topic_performance[topic_id]["correct"] += 1
+    
+    # Calculate percentages and identify weak topics
+    topic_scores = []
+    for topic_id, performance in topic_performance.items():
+        percentage = (performance["correct"] / performance["total"]) * 100
+        topic = await db.topics.find_one({"_id": ObjectId(topic_id)})
+        
+        if topic:
+            topic_scores.append({
+                "topic_id": topic_id,
+                "topic_name": topic["name"],
+                "percentage": percentage,
+                "correct": performance["correct"],
+                "total": performance["total"]
+            })
+    
+    topic_scores.sort(key=lambda x: x["percentage"])
+    weak_topics = topic_scores[:3]  # Get 3 weakest topics
+    
+    recommendations = []
+    for weak_topic in weak_topics:
+        recommendations.append({
+            "topic_id": weak_topic["topic_id"],
+            "topic_name": weak_topic["topic_name"],
+            "reason": f"Practice needed - Current accuracy: {weak_topic['percentage']:.1f}%",
+            "current_performance": weak_topic["percentage"]
+        })
+    
+    return {
+        "message": "Based on your performance, we recommend focusing on these topics",
+        "recommended_topics": recommendations
+    }
+
+
 # ==================== PROFILE MANAGEMENT ====================
 
 @router.get("/profile", response_model=UserProfileResponse)
