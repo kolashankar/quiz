@@ -28,10 +28,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const checkAuth = async () => {
     try {
+      const token = storage.getToken();
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+      
       const userData = await authService.getCurrentUser();
       setUser(userData);
-    } catch (error) {
-      authService.logout();
+    } catch (error: any) {
+      console.error('Auth check failed:', error);
+      // Only clear auth if it's a 401 error (unauthorized)
+      if (error?.response?.status === 401) {
+        authService.logout();
+        setUser(null);
+      }
     } finally {
       setLoading(false);
     }
