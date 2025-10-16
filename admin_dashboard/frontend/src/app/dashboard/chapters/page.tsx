@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { DataTable } from '@/components/ui/common/DataTable';
 import { Modal } from '@/components/ui/common/Modal';
@@ -22,20 +22,6 @@ export default function ChaptersPage() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<CreateChapter>();
-
-  useEffect(() => {
-    fetchExams();
-  }, []);
-
-  useEffect(() => {
-    if (filterExamId) {
-      fetchSubjects();
-    }
-  }, [filterExamId]);
-
-  useEffect(() => {
-    fetchChapters();
-  }, [filterSubjectId]);
 
   const fetchExams = async () => {
     try {
