@@ -5,7 +5,7 @@
 
 ---
 
-# 📊 PROJECT 1: CHROME EXTENSION TRADING INTELLIGENCE SYSTEM
+## 📊 PROJECT 1: CHROME EXTENSION TRADING INTELLIGENCE SYSTEM
 
 ## "Real-Time Trading Signals via Smart Chrome Extension"
 
