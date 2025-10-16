@@ -570,7 +570,7 @@ export default function ProfilePage() {
                         <div className="flex items-center justify-center gap-1">
                           <ClockIcon className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                           <span className="text-sm text-gray-900 dark:text-gray-100">
-                            {Math.floor(test.time_taken / 60)}m {test.time_taken % 60}s
+                            N/A
                           </span>
                         </div>
                       </td>
