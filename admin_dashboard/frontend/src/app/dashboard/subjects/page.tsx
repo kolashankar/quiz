@@ -38,7 +38,7 @@ export default function SubjectsPage() {
     }
   };
 
-  const fetchSubjects = async () => {
+  const fetchSubjects = useCallback(async () => {
     try {
       setLoading(true);
       const data = await subjectService.getAll(filterExamId || undefined);
@@ -48,7 +48,9 @@ export default function SubjectsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  };}, []);
+
+  useEffect(() => { fetchSubjects(); }, [fetchSubjects]);
 
   const handleCreate = () => {
     setEditingSubject(null);
