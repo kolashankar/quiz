@@ -563,7 +563,7 @@ export default function ProfilePage() {
                       </td>
                       <td className="py-3 px-4 text-center">
                         <span className="text-sm text-gray-900 dark:text-gray-100">
-                          {test.correct_count}/{test.total_questions}
+                          {test.correct_answers}/{test.total_questions}
                         </span>
                       </td>
                       <td className="py-3 px-4 text-center">
