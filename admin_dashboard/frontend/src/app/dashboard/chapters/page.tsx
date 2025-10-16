@@ -32,16 +32,16 @@ export default function ChaptersPage() {
     }
   };
 
-  const fetchSubjects = async () => {
+  const fetchSubjects = useCallback(async () => {
     try {
       const data = await subjectService.getAll(filterExamId || undefined);
       setSubjects(data);
     } catch (error: any) {
       toast.error('Failed to fetch subjects');
     }
-  };
+  }, [filterExamId]);
 
-  const fetchChapters = async () => {
+  const fetchChapters = useCallback(async () => {
     try {
       setLoading(true);
       const data = await chapterService.getAll(filterSubjectId || undefined);
