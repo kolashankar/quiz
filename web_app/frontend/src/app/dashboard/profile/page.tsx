@@ -124,7 +124,7 @@ export default function ProfilePage() {
     .map((test, index) => ({
       name: `Test ${index + 1}`,
       score: test.score,
-      date: new Date(test.submitted_at).toLocaleDateString(),
+      date: new Date(test.timestamp).toLocaleDateString(),
     }));
 
   // Prepare difficulty breakdown pie chart data
