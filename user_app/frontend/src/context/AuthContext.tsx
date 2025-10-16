@@ -16,6 +16,7 @@ interface AuthContextType {
   signup: (credentials: SignupCredentials) => Promise<void>;
   logout: () => Promise<void>;
   setSelectedExam: (exam: SelectedExam | null) => Promise<void>;
+  refreshUser: () => Promise<void>;
   isAuthenticated: boolean;
 }
 
