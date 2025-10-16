@@ -93,6 +93,75 @@ export default function Sidebar() {
             </button>
           </div>
 
+          {/* Exam Selector */}
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="relative">
+              <button
+                onClick={() => setExamDropdownOpen(!examDropdownOpen)}
+                className="w-full flex items-center justify-between px-4 py-3 rounded-lg bg-gradient-to-r from-primary/10 to-secondary/10 hover:from-primary/20 hover:to-secondary/20 transition"
+                disabled={examLoading || exams.length === 0}
+              >
+                <div className="flex items-center flex-1 min-w-0">
+                  <AcademicCapIcon className="w-5 h-5 text-primary flex-shrink-0 mr-2" />
+                  <div className="flex-1 min-w-0 text-left">
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Current Exam</div>
+                    <div className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
+                      {examLoading ? 'Loading...' : selectedExam ? selectedExam.name : 'No exams available'}
+                    </div>
+                  </div>
+                </div>
+                {exams.length > 0 && (
+                  <ChevronDownIcon 
+                    className={`w-4 h-4 text-gray-600 dark:text-gray-400 flex-shrink-0 ml-2 transition-transform ${
+                      examDropdownOpen ? 'rotate-180' : ''
+                    }`}
+                  />
+                )}
+              </button>
+
+              {/* Dropdown Menu */}
+              {examDropdownOpen && exams.length > 0 && (
+                <>
+                  {/* Backdrop */}
+                  <div 
+                    className="fixed inset-0 z-10" 
+                    onClick={() => setExamDropdownOpen(false)}
+                  />
+                  
+                  {/* Dropdown */}
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 max-h-64 overflow-y-auto z-20">
+                    {exams.map((exam) => (
+                      <button
+                        key={exam.id}
+                        onClick={() => {
+                          setSelectedExam(exam);
+                          setExamDropdownOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition ${
+                          selectedExam?.id === exam.id ? 'bg-primary/5 dark:bg-primary/10' : ''
+                        }`}
+                      >
+                        <div className="flex-1 text-left">
+                          <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                            {exam.name}
+                          </div>
+                          {exam.description && (
+                            <div className="text-xs text-gray-600 dark:text-gray-400 mt-0.5 truncate">
+                              {exam.description}
+                            </div>
+                          )}
+                        </div>
+                        {selectedExam?.id === exam.id && (
+                          <CheckIcon className="w-5 h-5 text-primary flex-shrink-0 ml-2" />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
           {/* Navigation */}
           <nav className="flex-1 overflow-y-auto p-4 space-y-1">
             {navigation.map((item) => {
