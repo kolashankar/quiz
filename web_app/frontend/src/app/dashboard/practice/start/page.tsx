@@ -350,7 +350,7 @@ export default function PracticeStartPage() {
       {/* Start Button */}
       <div className="flex justify-center">
         <Button
-          size="lg"
+          size="large"
           onClick={handleStartPractice}
           disabled={!selectedExam || (filterMode !== 'exam' && selectedSubjects.length === 0)}
           className="px-8"
