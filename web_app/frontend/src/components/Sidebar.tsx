@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useExam } from '@/contexts/ExamContext';
 import {
   HomeIcon,
   AcademicCapIcon,
@@ -20,6 +21,8 @@ import {
   MagnifyingGlassIcon,
   MoonIcon,
   SunIcon,
+  ChevronDownIcon,
+  CheckIcon,
 } from '@heroicons/react/24/outline';
 
 export default function Sidebar() {
