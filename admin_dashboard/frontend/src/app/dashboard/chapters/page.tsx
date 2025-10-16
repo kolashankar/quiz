@@ -51,7 +51,21 @@ export default function ChaptersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filterSubjectId]);
+
+  useEffect(() => {
+    fetchExams();
+  }, []);
+
+  useEffect(() => {
+    if (filterExamId) {
+      fetchSubjects();
+    }
+  }, [filterExamId, fetchSubjects]);
+
+  useEffect(() => {
+    fetchChapters();
+  }, [fetchChapters]);
 
   const handleCreate = () => {
     setEditingChapter(null);
