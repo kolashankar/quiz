@@ -162,6 +162,8 @@ async def get_leaderboard(limit: int = 50):
                 })
         except:
             continue
+    
+    return {"leaderboard": leaderboard}
 
 # ==================== PROFILE MANAGEMENT ====================
 
