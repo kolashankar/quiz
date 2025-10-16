@@ -265,6 +265,3 @@ async def select_exam(exam_selection: ExamSelectionUpdate, current_user: dict = 
         "exam_id": exam_selection.exam_id,
         "exam_name": exam.get("name")
     }
-
-    
-    return {"leaderboard": leaderboard}
