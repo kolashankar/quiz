@@ -25,16 +25,11 @@ export default function TopicsPage() {
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<CreateTopic>();
 
-  useEffect(() => { fetchExams(); }, []);
-  useEffect(() => { if (filterExamId) fetchSubjects(); }, [filterExamId]);
-  useEffect(() => { if (filterSubjectId) fetchChapters(); }, [filterSubjectId]);
-  useEffect(() => { fetchTopics(); }, [filterChapterId]);
-
-  const fetchExams = async () => { try { setExams(await examService.getAll()); } catch { toast.error('Failed to fetch exams'); } };
-  const fetchSubjects = async () => { try { setSubjects(await subjectService.getAll(filterExamId)); } catch { toast.error('Failed to fetch subjects'); } };
-  const fetchChapters = async () => { try { setChapters(await chapterService.getAll(filterSubjectId)); } catch { toast.error('Failed to fetch chapters'); } };
+  const fetchExams = useCallback(async () => { try { setExams(await examService.getAll()); } catch { toast.error('Failed to fetch exams'); } }, []);
+  const fetchSubjects = useCallback(async () => { try { setSubjects(await subjectService.getAll(filterExamId)); } catch { toast.error('Failed to fetch subjects'); } }, [filterExamId]);
+  const fetchChapters = useCallback(async () => { try { setChapters(await chapterService.getAll(filterSubjectId)); } catch { toast.error('Failed to fetch chapters'); } }, [filterSubjectId]);
   
-  const fetchTopics = async () => {
+  const fetchTopics = useCallback(async () => {
     try {
       setLoading(true);
       setTopics(await topicService.getAll(filterChapterId || undefined));
