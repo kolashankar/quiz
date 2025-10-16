@@ -44,7 +44,11 @@ ALGORITHM = os.environ.get('JWT_ALGORITHM', 'HS256')
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ.get('ACCESS_TOKEN_EXPIRE_MINUTES', 1440))
 
 # Configure Gemini
-genai.configure(api_key=os.environ.get('GEMINI_API_KEY'))
+if GENAI_AVAILABLE:
+    try:
+        genai.configure(api_key=os.environ.get('GEMINI_API_KEY'))
+    except Exception as e:
+        print(f"Warning: Could not configure Gemini AI: {e}")
 
 # Create the main app
 app = FastAPI(title="Quiz App API")
