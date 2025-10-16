@@ -14,7 +14,12 @@ from pathlib import Path
 from pydantic import BaseModel, Field, EmailStr
 import pandas as pd
 import io
-import google.generativeai as genai
+try:
+    import google.generativeai as genai
+    GENAI_AVAILABLE = True
+except ImportError:
+    GENAI_AVAILABLE = False
+    genai = None
 from exponent_server_sdk import (
     DeviceNotRegisteredError,
     PushClient,
