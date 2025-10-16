@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { DataTable } from '@/components/ui/common/DataTable';
 import { Modal } from '@/components/ui/common/Modal';
