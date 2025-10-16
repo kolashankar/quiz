@@ -1,15 +1,23 @@
-# Advanced Trading Signal Platform - Master Plan
-## "Matching 10 World-Class Trading Experts with AI"
+# 🚀 DUAL PROJECT MASTER PLAN - 2025
 
-----
+## Project 1: Chrome Extension Trading Intelligence System
+## Project 2: All-in-One AI Automation Platform
+
+---
+
+# 📊 PROJECT 1: CHROME EXTENSION TRADING INTELLIGENCE SYSTEM
+
+## "Real-Time Trading Signals via Smart Chrome Extension"
 
 ### 🎯 Project Vision
 
-Build an AI-powered trading signal platform that continuously analyzes top 5 trading websites, combines signals with 2 AI models (Gemini & Grok), and provides minute-to-minute trading predictions (UP/DOWN) based on:
-- Multi-source consensus (5 websites + 2 AIs = 7 total sources)
-- Advanced analysis: Logical, Analytical, Sentimental, Technical, Fundamental
-- Continuous learning from live data and pattern development
-- Goal: Match expertise of 10 world-class trading experts
+Build a **Chrome Extension + Web Platform** system for real-time trading signal generation that:
+- **NO direct API scraping** = NO IP blocking issues
+- Chrome extension runs on **user's browser** (distributed scraping)
+- Connects to central web platform for signal aggregation
+- AI-powered analysis with 9-model ensemble
+- Continuous learning and pattern recognition
+- Targets **85%+ accuracy** for 1-minute trading signals
 
 ---
 
