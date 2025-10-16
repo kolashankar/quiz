@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { LoginCredentials, RegisterCredentials, AuthResponse, User } from '@/types/auth/auth';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8002/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001/api';
 
 // Create axios instance
 const api = axios.create({
