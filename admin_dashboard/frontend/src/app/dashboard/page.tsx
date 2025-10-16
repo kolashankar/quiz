@@ -366,7 +366,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <div className="flex items-center space-x-4">
                 <span className="text-sm font-medium text-gray-900 dark:text-white">5. Sub-Topics</span>
-                <span className="text-sm text-gray-600 dark:text-gray-400">(Newton's Laws, Work-Energy, etc.)</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">(Newton&apos;s Laws, Work-Energy, etc.)</span>
               </div>
               <span className="text-lg font-bold text-primary-600">{stats?.totalSubtopics || 0}</span>
             </div>
