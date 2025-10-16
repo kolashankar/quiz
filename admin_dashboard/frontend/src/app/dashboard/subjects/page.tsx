@@ -50,9 +50,17 @@ export default function SubjectsPage() {
     } finally {
       setLoading(false);
     }
-  };}, []);
+  }, [filterExamId]);
 
-  useEffect(() => { fetchSubjects(); }, [fetchSubjects]);
+  useEffect(() => {
+    fetchExams();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    fetchSubjects();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterExamId]);
 
   const handleCreate = () => {
     setEditingSubject(null);
