@@ -32,7 +32,10 @@ class Settings(BaseSettings):
     
     def get_cors_origins(self) -> list:
         """Convert comma-separated origins to list"""
-        return [origin.strip() for origin in self.ALLOWED_ORIGINS.split(",")]
+        if not self.ALLOWED_ORIGINS or self.ALLOWED_ORIGINS.strip() == '':
+            # Allow all origins in development if not configured
+            return ["*"]
+        return [origin.strip() for origin in self.ALLOWED_ORIGINS.split(",") if origin.strip()]
     
     # Server
     PORT: int = int(os.getenv('PORT', 8001))
