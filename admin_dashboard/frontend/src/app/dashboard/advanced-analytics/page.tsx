@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { api } from '@/services/auth/authService';
 import { Spinner } from '@/components/ui/common/Spinner';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -25,11 +25,7 @@ export default function AdvancedAnalyticsPage() {
   const [timeTrends, setTimeTrends] = useState<any>(null);
   const [performanceDist, setPerformanceDist] = useState<any>(null);
 
-  useEffect(() => {
-    fetchAllAnalytics();
-  }, [period, groupBy]);
-
-  const fetchAllAnalytics = async () => {
+  const fetchAllAnalytics = useCallback(async () => {
     setLoading(true);
     try {
       const [engagement, difficulty, success, trends, distribution] = await Promise.all([
