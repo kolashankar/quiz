@@ -272,14 +272,14 @@ export default function PracticeStartPage() {
             </h3>
             <div className="flex gap-2">
               <Button
-                size="sm"
+                size="small"
                 variant="outline"
                 onClick={() => setSelectedChapters(chapters.map(c => c._id))}
               >
                 Select All
               </Button>
               <Button
-                size="sm"
+                size="small"
                 variant="outline"
                 onClick={() => setSelectedChapters([])}
               >
