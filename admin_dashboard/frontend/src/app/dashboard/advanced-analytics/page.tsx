@@ -8,7 +8,7 @@ import {
   ChartBarIcon,
   UserGroupIcon,
   ClockIcon,
-  TrendingUpIcon,
+  ArrowTrendingUpIcon,
   AcademicCapIcon
 } from '@heroicons/react/24/outline';
 
@@ -186,7 +186,7 @@ export default function AdvancedAnalyticsPage() {
       {/* Time-Based Trends */}
       <div className="card p-6">
         <h2 className="text-lg font-semibold mb-4 flex items-center">
-          <TrendingUpIcon className="h-6 w-6 mr-2 text-primary-600" />
+          <ArrowTrendingUpIcon className="h-6 w-6 mr-2 text-primary-600" />
           Performance Trends
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
