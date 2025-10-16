@@ -9,6 +9,10 @@ export const API_ENDPOINTS = {
   AUTH_SIGNUP: `${API_PREFIX}/auth/signup`,
   AUTH_ME: `${API_PREFIX}/auth/me`,
   
+  // User Profile
+  USER_PROFILE: `${API_PREFIX}/user/profile`,
+  USER_SELECT_EXAM: `${API_PREFIX}/user/select-exam`,
+  
   // Hierarchy
   EXAMS: `${API_PREFIX}/exams`,
   SUBJECTS: `${API_PREFIX}/subjects`,
