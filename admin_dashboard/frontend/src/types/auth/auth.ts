@@ -5,6 +5,7 @@ export interface User {
   role: 'admin' | 'user';
   avatar?: string;
   createdAt?: string;
+  selected_exam_id?: string;
 }
 
 export interface LoginCredentials {
