@@ -3,6 +3,7 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { User, LoginCredentials, SignupCredentials } from '../types';
 import { authService } from '../lib/auth-service';
+import { storage } from '../lib/storage';
 import { useRouter } from 'next/navigation';
 
 interface AuthContextType {
