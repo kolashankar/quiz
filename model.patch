@@ -738,7 +738,7 @@ index 55d9744..92d9b92 100644
 ------------+class ComprehensiveBackendTester:
 ------------+    def __init__(self):
 ------------+        # Use the backend URL from frontend .env
-------------+        self.base_url = "https://quiz-optimizer.preview.emergentagent.com"
+------------+        self.base_url = "https://quiz-debug-app.preview.emergentagent.com"
 ------------+        self.api_url = f"{self.base_url}/api"
 ------------+        self.session = requests.Session()
 ------------+        
@@ -1627,7 +1627,7 @@ index 55d9744..92d9b92 100644
 --------------+import requests
 --------------+import json
 --------------+
---------------+BASE_URL = "https://quiz-optimizer.preview.emergentagent.com/api"
+--------------+BASE_URL = "https://quiz-debug-app.preview.emergentagent.com/api"
 --------------+
 --------------+def test_endpoint(name, url, method="GET", data=None, headers=None):
 --------------+    """Test a single endpoint"""
