@@ -38,7 +38,12 @@ export default function TopicsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filterChapterId]);
+
+  useEffect(() => { fetchExams(); }, [fetchExams]);
+  useEffect(() => { if (filterExamId) fetchSubjects(); }, [filterExamId, fetchSubjects]);
+  useEffect(() => { if (filterSubjectId) fetchChapters(); }, [filterSubjectId, fetchChapters]);
+  useEffect(() => { fetchTopics(); }, [fetchTopics]);
 
   const handleCreate = () => { setEditingTopic(null); reset({ name: '', code: '', description: '', chapterId: filterChapterId || '', order: 0, isActive: true }); setIsModalOpen(true); };
   const handleEdit = (t: Topic) => { setEditingTopic(t); reset({ name: t.name, code: t.code, description: t.description || '', chapterId: t.chapterId, order: t.order, isActive: t.isActive }); setIsModalOpen(true); };
