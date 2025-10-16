@@ -3,7 +3,7 @@
 
 ----
 
-### 🎯 Project Vision
+## 🎯 Project Vision
 
 Build an AI-powered trading signal platform that continuously analyzes top 5 trading websites, combines signals with 2 AI models (Gemini & Grok), and provides minute-to-minute trading predictions (UP/DOWN) based on:
 - Multi-source consensus (5 websites + 2 AIs = 7 total sources)
