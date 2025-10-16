@@ -546,7 +546,7 @@ export default function ProfilePage() {
                         </div>
                       </td>
                       <td className="py-3 px-4">
-                        <span className="text-sm text-gray-900 dark:text-gray-100">{test.topic_id || 'N/A'}</span>
+                        <span className="text-sm text-gray-900 dark:text-gray-100">N/A</span>
                       </td>
                       <td className="py-3 px-4 text-center">
                         <span
