@@ -23,10 +23,12 @@ export default function SubjectsPage() {
 
   useEffect(() => {
     fetchExams();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     fetchSubjects();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterExamId]);
 
   const fetchExams = async () => {
