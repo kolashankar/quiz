@@ -12,7 +12,7 @@ from api.v1.user.models import (
 from core.security import get_current_user
 from core.database import get_database
 
-router = APIRouter(tags=["user"])
+router = APIRouter(prefix="/user", tags=["user"])
 
 # Configure Gemini AI for recommendations
 gemini_api_key = os.getenv("GEMINI_API_KEY")
