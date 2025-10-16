@@ -464,7 +464,7 @@ async def get_subjects(exam_id: Optional[str] = None, admin: dict = Depends(get_
         exam_id=subject["exam_id"],
         name=subject["name"],
         description=subject["description"],
-        created_at=subject["created_at"]
+        created_at=subject.get("created_at", datetime.utcnow())
     ) for subject in subjects]
 
 @api_router.get("/subjects", response_model=List[SubjectResponse])
