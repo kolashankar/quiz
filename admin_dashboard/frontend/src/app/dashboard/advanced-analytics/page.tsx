@@ -178,7 +178,7 @@ export default function AdvancedAnalyticsPage() {
         </div>
         <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
           <p className="text-sm text-yellow-800 dark:text-yellow-200">
-            <strong>Mismatched Questions:</strong> {questionDifficulty?.mismatchedQuestions || 0} questions have difficulty levels that don't match their actual performance.
+            <strong>Mismatched Questions:</strong> {questionDifficulty?.mismatchedQuestions || 0} questions have difficulty levels that don&apos;t match their actual performance.
           </p>
         </div>
       </div>
