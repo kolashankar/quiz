@@ -476,7 +476,7 @@ async def get_subjects_public(exam_id: Optional[str] = None):
         exam_id=subject["exam_id"],
         name=subject["name"],
         description=subject["description"],
-        created_at=subject["created_at"]
+        created_at=subject.get("created_at", datetime.utcnow())
     ) for subject in subjects]
 
 @api_router.put("/admin/subjects/{subject_id}", response_model=SubjectResponse)
