@@ -77,6 +77,25 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
+  const refreshUser = async () => {
+    try {
+      const token = await storage.getToken();
+      if (token) {
+        const userData = await authService.getCurrentUser();
+        setUser(userData);
+        // Update selected exam state if it changed
+        if (userData.selected_exam_id && userData.selected_exam_name) {
+          setSelectedExamState({
+            id: userData.selected_exam_id,
+            name: userData.selected_exam_name
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error refreshing user:', error);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -87,6 +106,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         signup,
         logout,
         setSelectedExam,
+        refreshUser,
         isAuthenticated: !!user,
       }}
     >
