@@ -183,10 +183,6 @@ export default function HierarchyScreen() {
     }
   };
 
-  useEffect(() => {
-    fetchItems().finally(() => setLoading(false));
-  }, [currentLevel]);
-
   if (loading) {
     return <Loading text={`Loading ${currentLevel}s...`} />;
   }
