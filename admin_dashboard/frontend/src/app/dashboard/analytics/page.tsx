@@ -9,7 +9,7 @@ import {
   AcademicCapIcon,
   UsersIcon,
   QuestionMarkCircleIcon,
-  TrendingUpIcon,
+  ArrowTrendingUpIcon,
   EyeIcon,
   CalendarIcon,
   SparklesIcon
@@ -212,7 +212,7 @@ export default function AnalyticsPage() {
           
           <div className="card p-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white">
             <div className="flex items-center">
-              <TrendingUpIcon className="h-8 w-8" />
+              <ArrowTrendingUpIcon className="h-8 w-8" />
               <div className="ml-4">
                 <p className="text-orange-100">Tests Taken</p>
                 <p className="text-3xl font-bold">{data?.overview.totalTests || 0}</p>
