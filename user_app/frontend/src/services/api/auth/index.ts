@@ -27,7 +27,25 @@ export const authService = {
   },
 
   async getCurrentUser(): Promise<User> {
-    const response = await apiClient.get(API_ENDPOINTS.AUTH_ME);
+    try {
+      // Try to get profile with extended info first
+      const response = await apiClient.get(API_ENDPOINTS.USER_PROFILE);
+      return response.data;
+    } catch (error) {
+      // Fallback to basic auth/me endpoint
+      const response = await apiClient.get(API_ENDPOINTS.AUTH_ME);
+      return response.data;
+    }
+  },
+
+  async updateProfile(data: { name?: string; email?: string; avatar?: string }): Promise<User> {
+    const response = await apiClient.put(API_ENDPOINTS.USER_PROFILE, data);
+    await storage.setUserData(response.data);
+    return response.data;
+  },
+
+  async selectExam(examId: string): Promise<{ success: boolean; exam_name: string }> {
+    const response = await apiClient.put(API_ENDPOINTS.USER_SELECT_EXAM, { exam_id: examId });
     return response.data;
   },
 
