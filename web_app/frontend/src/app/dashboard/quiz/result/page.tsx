@@ -356,10 +356,10 @@ export default function ResultPage() {
                     </div>
 
                     {/* Question Image */}
-                    {question.image && (
+                    {question.image_url && (
                       <div className="mb-4">
                         <img
-                          src={question.image}
+                          src={question.image_url}
                           alt="Question"
                           className="max-w-full h-auto rounded-lg border border-gray-200 dark:border-gray-700"
                         />
