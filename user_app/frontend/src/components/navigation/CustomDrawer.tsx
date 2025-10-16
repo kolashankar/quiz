@@ -68,7 +68,7 @@ export default function CustomDrawer({ visible, onClose }: DrawerProps) {
     setSwitchingExam(true);
     try {
       await authService.selectExam(examId);
-      await authService.getCurrentUser();
+      await refreshUser();
       setShowExamSwitcher(false);
       onClose();
     } catch (error) {
