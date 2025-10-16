@@ -256,9 +256,9 @@ export function QuestionEditor({
                 <p>Examples:</p>
                 <ul className="list-disc list-inside mt-1 space-y-1">
                   <li>E = mc^2</li>
-                  <li>\frac{a}{b}</li>
-                  <li>\sqrt{x + y}</li>
-                  <li>\sum_{i=1}^{n} x_i</li>
+                  <li>{'\\frac{a}{b}'}</li>
+                  <li>{'\\sqrt{x + y}'}</li>
+                  <li>{'\\sum_{i=1}^{n} x_i'}</li>
                 </ul>
               </div>
               
