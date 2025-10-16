@@ -1,3 +1,9 @@
-from .user_models import BookmarkCreate, BookmarkResponse, AnalyticsResponse
+from .user_models import (
+    BookmarkCreate, BookmarkResponse, AnalyticsResponse,
+    ProfileUpdate, ExamSelectionUpdate, UserProfileResponse
+)
 
-__all__ = ['BookmarkCreate', 'BookmarkResponse', 'AnalyticsResponse']
+__all__ = [
+    'BookmarkCreate', 'BookmarkResponse', 'AnalyticsResponse',
+    'ProfileUpdate', 'ExamSelectionUpdate', 'UserProfileResponse'
+]
