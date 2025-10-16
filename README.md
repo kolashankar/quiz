@@ -2,7 +2,7 @@
 
 A full-stack quiz application with a unified FastAPI backend serving three frontends: **Mobile App (Expo)**, **Web App (Next.js)**, and **Admin Dashboard (Next.js)**. Features AI-powered question generation, hierarchical content management, and comprehensive analytics.
 
-## 🏗️ Architecture Overview
+### 🏗️ Architecture Overview
 
 ```
 /app/
