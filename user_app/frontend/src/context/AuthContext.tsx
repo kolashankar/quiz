@@ -24,6 +24,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedExam, setSelectedExamState] = useState<SelectedExam | null>(null);
 
   useEffect(() => {
     checkAuth();
@@ -35,6 +36,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (token) {
         const userData = await authService.getCurrentUser();
         setUser(userData);
+        
+        // Load selected exam from storage
+        const savedExam = await storage.getSelectedExam();
+        if (savedExam) {
+          setSelectedExamState(savedExam);
+        }
       }
     } catch (error) {
       await storage.clearAll();
@@ -56,6 +63,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const logout = async () => {
     await authService.logout();
     setUser(null);
+    setSelectedExamState(null);
+    await storage.removeSelectedExam();
+  };
+
+  const setSelectedExam = async (exam: SelectedExam | null) => {
+    setSelectedExamState(exam);
+    if (exam) {
+      await storage.saveSelectedExam(exam);
+    } else {
+      await storage.removeSelectedExam();
+    }
   };
 
   return (
@@ -63,9 +81,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       value={{
         user,
         loading,
+        selectedExam,
         login,
         signup,
         logout,
+        setSelectedExam,
         isAuthenticated: !!user,
       }}
     >
