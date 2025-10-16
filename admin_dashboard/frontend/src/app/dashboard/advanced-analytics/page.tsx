@@ -46,7 +46,11 @@ export default function AdvancedAnalyticsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [period, groupBy]);
+
+  useEffect(() => {
+    fetchAllAnalytics();
+  }, [fetchAllAnalytics]);
 
   if (loading) {
     return (
