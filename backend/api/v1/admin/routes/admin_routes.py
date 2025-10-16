@@ -17,10 +17,17 @@ async def get_admin_dashboard(admin: dict = Depends(get_admin_user)):
     """Get admin dashboard analytics"""
     db = get_database()
     
+    # Count all entities in the hierarchy
     total_users = await db.users.count_documents({"role": "user"})
     total_questions = await db.questions.count_documents({})
     total_tests = await db.test_results.count_documents({})
     total_exams = await db.exams.count_documents({})
+    total_subjects = await db.subjects.count_documents({})
+    total_chapters = await db.chapters.count_documents({})
+    total_topics = await db.topics.count_documents({})
+    total_subtopics = await db.sub_topics.count_documents({})
+    total_sections = await db.sections.count_documents({})
+    total_subsections = await db.sub_sections.count_documents({})
     
     # Get popular topics
     pipeline = [
@@ -30,12 +37,21 @@ async def get_admin_dashboard(admin: dict = Depends(get_admin_user)):
     ]
     popular_questions = await db.questions.aggregate(pipeline).to_list(5)
     
+    # Return in format expected by frontend
     return {
-        "total_users": total_users,
-        "total_questions": total_questions,
-        "total_tests": total_tests,
-        "total_exams": total_exams,
-        "popular_questions_by_topic": popular_questions
+        "overview": {
+            "totalUsers": total_users,
+            "totalExams": total_exams,
+            "totalSubjects": total_subjects,
+            "totalChapters": total_chapters,
+            "totalTopics": total_topics,
+            "totalSubtopics": total_subtopics,
+            "totalSections": total_sections,
+            "totalSubsections": total_subsections,
+            "totalQuestions": total_questions,
+            "totalTests": total_tests
+        },
+        "popularQuestionsByTopic": popular_questions
     }
 
 # ==================== USER MANAGEMENT ====================
