@@ -21,8 +21,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           const userData = await authService.getCurrentUser();
           setUser(userData);
         } catch (error) {
+          // Token is invalid or expired, clear it
+          console.error('Auth initialization failed:', error);
           localStorage.removeItem('auth_token');
           setToken(null);
+          setUser(null);
         }
       }
       setIsLoading(false);
