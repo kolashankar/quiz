@@ -376,7 +376,7 @@ export default function AIToolsPage() {
                 <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                   <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Tips for Better Results:</h3>
                   <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                    <li>• Be specific with your topic (e.g., "Newton's First Law" vs "Physics")</li>
+                    <li>• Be specific with your topic (e.g., &quot;Newton&apos;s First Law&quot; vs &quot;Physics&quot;)</li>
                     <li>• Choose appropriate difficulty level for your target audience</li>
                     <li>• Start with fewer questions to review quality</li>
                     <li>• Select the correct subsection to maintain content organization</li>
