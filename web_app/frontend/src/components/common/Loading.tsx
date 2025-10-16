@@ -53,3 +53,5 @@ export const Loading: React.FC<LoadingProps> = ({
 
   return <div className="flex items-center justify-center p-5">{content}</div>;
 };
+
+export default Loading;
