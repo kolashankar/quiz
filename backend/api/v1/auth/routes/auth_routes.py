@@ -61,7 +61,7 @@ async def login(credentials: UserLogin):
             id=str(user["_id"]),
             email=user["email"],
             role=user["role"],
-            created_at=user["created_at"]
+            created_at=user.get("created_at", datetime.utcnow())
         )
     }
 
