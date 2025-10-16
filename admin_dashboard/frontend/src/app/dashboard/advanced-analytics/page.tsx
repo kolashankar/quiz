@@ -50,7 +50,7 @@ export default function AdvancedAnalyticsPage() {
 
   useEffect(() => {
     fetchAllAnalytics();
-  }, [fetchAllAnalytics]);
+  }, [period, groupBy, fetchAllAnalytics]);
 
   if (loading) {
     return (
