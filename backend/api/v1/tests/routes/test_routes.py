@@ -7,7 +7,7 @@ from api.v1.tests.models import TestSubmission, TestResultResponse
 from core.security import get_current_user
 from core.database import get_database
 
-router = APIRouter(prefix="/tests", tags=["tests"])
+router = APIRouter(tags=["tests"])
 
 @router.post("/submit", response_model=TestResultResponse)
 async def submit_test(submission: TestSubmission, current_user: dict = Depends(get_current_user)):
