@@ -9,7 +9,7 @@ from core.database import get_database
 
 router = APIRouter(tags=["tests"])
 
-@router.post("/submit", response_model=TestResultResponse)
+@router.post("/tests/submit", response_model=TestResultResponse)
 async def submit_test(submission: TestSubmission, current_user: dict = Depends(get_current_user)):
     """Submit test answers and get results"""
     db = get_database()
