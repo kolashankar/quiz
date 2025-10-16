@@ -409,7 +409,7 @@ async def get_exams_public():
         id=str(exam["_id"]),
         name=exam["name"],
         description=exam["description"],
-        created_at=exam["created_at"]
+        created_at=exam.get("created_at", datetime.utcnow())
     ) for exam in exams]
 
 @api_router.put("/admin/exams/{exam_id}", response_model=ExamResponse)
