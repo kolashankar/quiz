@@ -2,6 +2,10 @@ export interface User {
   id: string;
   email: string;
   role: string;
+  name?: string;
+  avatar?: string;
+  selected_exam_id?: string;
+  selected_exam_name?: string;
   created_at: string;
 }
 
