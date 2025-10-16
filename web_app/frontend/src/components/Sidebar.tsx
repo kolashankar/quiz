@@ -29,7 +29,9 @@ export default function Sidebar() {
   const pathname = usePathname();
   const { logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const { selectedExam, exams, setSelectedExam, loading: examLoading } = useExam();
   const [isOpen, setIsOpen] = useState(false);
+  const [examDropdownOpen, setExamDropdownOpen] = useState(false);
 
   const navigation = [
     { name: 'Home', href: '/dashboard', icon: HomeIcon },
