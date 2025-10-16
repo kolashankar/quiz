@@ -96,8 +96,8 @@ export default function LeaderboardPage() {
   }, [selectedExam]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     fetchLeaderboard();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [period, scope, selectedExam, selectedSubject]);
 
   const handleRefresh = async () => {
