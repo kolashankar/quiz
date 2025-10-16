@@ -76,7 +76,7 @@ async def submit_test(submission: TestSubmission, current_user: dict = Depends(g
         timestamp=result_dict["timestamp"]
     )
 
-@router.get("/history", response_model=List[TestResultResponse])
+@router.get("/tests/history", response_model=List[TestResultResponse])
 async def get_test_history(current_user: dict = Depends(get_current_user)):
     """Get test history for current user"""
     db = get_database()
