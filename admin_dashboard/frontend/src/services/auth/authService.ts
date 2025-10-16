@@ -36,27 +36,56 @@ export const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
       const response = await api.post('/auth/login', credentials);
-      return response.data;
+      // Backend returns { access_token, token_type, user }
+      // Map to frontend format { token, user }
+      const { access_token, user } = response.data;
+      return {
+        token: access_token,
+        user: {
+          id: user.id,
+          email: user.email,
+          role: user.role,
+          createdAt: user.created_at,
+        }
+      };
     } catch (error: any) {
-      throw new Error(error.response?.data?.error || 'Login failed');
+      throw new Error(error.response?.data?.detail || error.response?.data?.error || 'Login failed');
     }
   },
 
   async register(credentials: RegisterCredentials): Promise<AuthResponse> {
     try {
-      const response = await api.post('/auth/register', credentials);
-      return response.data;
+      const response = await api.post('/auth/signup', credentials);
+      // Backend returns { access_token, token_type, user }
+      // Map to frontend format { token, user }
+      const { access_token, user } = response.data;
+      return {
+        token: access_token,
+        user: {
+          id: user.id,
+          email: user.email,
+          role: user.role,
+          createdAt: user.created_at,
+        }
+      };
     } catch (error: any) {
-      throw new Error(error.response?.data?.error || 'Registration failed');
+      throw new Error(error.response?.data?.detail || error.response?.data?.error || 'Registration failed');
     }
   },
 
   async getCurrentUser(): Promise<User> {
     try {
       const response = await api.get('/auth/me');
-      return response.data.user;
+      // Backend returns user object directly
+      const userData = response.data;
+      return {
+        id: userData.id,
+        email: userData.email,
+        role: userData.role,
+        createdAt: userData.created_at,
+      };
     } catch (error: any) {
-      throw new Error(error.response?.data?.error || 'Failed to get user');
+      throw new Error(error.response?.data?.detail || error.response?.data?.error || 'Failed to get user');
     }
   },
 
