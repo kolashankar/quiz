@@ -190,3 +190,18 @@ agent_communication:
   - agent: "testing"
     timestamp: "2025-10-16"
     message: "✅ KEYERROR: 'CREATED_AT' FIX VERIFICATION COMPLETE: Conducted comprehensive testing of authentication endpoints specifically for the KeyError: 'created_at' fix. RESULTS: 1) Login endpoint (POST /api/auth/login) - ✅ WORKING - handles missing created_at field gracefully using .get() method, 2) Get Me endpoint (GET /api/auth/me) - ✅ WORKING - properly applies default datetime.utcnow() when field missing, 3) Tested with both new users and simulated old users without created_at field - ✅ ALL PASSED, 4) No KeyError exceptions thrown in any scenario, 5) All responses include proper created_at field with either actual or default values. The fix is production-ready and handles backward compatibility perfectly."
+  - agent: "main"
+    timestamp: "2025-10-16"
+    message: "✅ NEW FEATURES & FIXES COMPLETED:
+      1. USER APP - Fixed syntax error in hierarchy.tsx (buildNavigation function was missing)
+      2. WEB APP - Enhanced authentication error handling in AuthContext (only logout on 401 errors)
+      3. WEB APP - Added Exam Switching Feature in Sidebar:
+         - Created ExamContext for global exam state management
+         - Added exam selector dropdown in sidebar with beautiful UI
+         - Exam selection persists across sessions using localStorage
+         - Dropdown shows all available exams with descriptions
+         - Currently selected exam highlighted with checkmark
+         - Auto-selects first exam if none selected
+      4. Backend verified working with authentication and exam endpoints
+      5. Web app tested and screenshot confirmed working perfectly
+      All fixes implemented and tested successfully!"
