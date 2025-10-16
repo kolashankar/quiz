@@ -1,8 +1,8 @@
 """
 Backend entry point for supervisor
-Imports the organized FastAPI app from main.py
+Uses server_old.py temporarily
 """
 
-from main import app
+from server_old import app
 
 __all__ = ['app']
