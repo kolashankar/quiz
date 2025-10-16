@@ -19,6 +19,107 @@ gemini_api_key = os.getenv("GEMINI_API_KEY")
 if gemini_api_key:
     genai.configure(api_key=gemini_api_key)
 
+# ==================== USER PROFILE (with /user prefix) ====================
+
+@router.get("/user/profile", response_model=UserProfileResponse)
+async def get_user_profile(current_user: dict = Depends(get_current_user)):
+    """Get user profile with selected exam details"""
+    db = get_database()
+    
+    # Get selected exam name if exists
+    selected_exam_name = None
+    if current_user.get("selected_exam_id"):
+        try:
+            exam = await db.exams.find_one({"_id": ObjectId(current_user["selected_exam_id"])})
+            if exam:
+                selected_exam_name = exam.get("name")
+        except:
+            pass
+    
+    return UserProfileResponse(
+        id=str(current_user["_id"]),
+        email=current_user["email"],
+        role=current_user.get("role", "user"),
+        name=current_user.get("name"),
+        avatar=current_user.get("avatar"),
+        selected_exam_id=current_user.get("selected_exam_id"),
+        selected_exam_name=selected_exam_name,
+        created_at=current_user["created_at"]
+    )
+
+@router.put("/user/profile", response_model=UserProfileResponse)
+async def update_user_profile(profile: ProfileUpdate, current_user: dict = Depends(get_current_user)):
+    """Update user profile"""
+    db = get_database()
+    update_data = {}
+    
+    if profile.name is not None:
+        update_data["name"] = profile.name
+    
+    if profile.email and profile.email != current_user["email"]:
+        # Check if email already exists
+        existing = await db.users.find_one({"email": profile.email})
+        if existing:
+            raise HTTPException(status_code=400, detail="Email already in use")
+        update_data["email"] = profile.email
+    
+    if profile.avatar is not None:
+        update_data["avatar"] = profile.avatar
+    
+    if update_data:
+        update_data["updated_at"] = datetime.utcnow()
+        await db.users.update_one(
+            {"_id": current_user["_id"]},
+            {"$set": update_data}
+        )
+    
+    # Get updated user
+    updated_user = await db.users.find_one({"_id": current_user["_id"]})
+    
+    # Get selected exam name if exists
+    selected_exam_name = None
+    if updated_user.get("selected_exam_id"):
+        try:
+            exam = await db.exams.find_one({"_id": ObjectId(updated_user["selected_exam_id"])})
+            if exam:
+                selected_exam_name = exam.get("name")
+        except:
+            pass
+    
+    return UserProfileResponse(
+        id=str(updated_user["_id"]),
+        email=updated_user["email"],
+        role=updated_user.get("role", "user"),
+        name=updated_user.get("name"),
+        avatar=updated_user.get("avatar"),
+        selected_exam_id=updated_user.get("selected_exam_id"),
+        selected_exam_name=selected_exam_name,
+        created_at=updated_user["created_at"]
+    )
+
+@router.put("/user/select-exam")
+async def select_user_exam(exam_selection: ExamSelectionUpdate, current_user: dict = Depends(get_current_user)):
+    """Update user's selected exam"""
+    db = get_database()
+    
+    # Verify exam exists
+    exam = await db.exams.find_one({"_id": ObjectId(exam_selection.exam_id)})
+    if not exam:
+        raise HTTPException(status_code=404, detail="Exam not found")
+    
+    # Update user's selected exam
+    await db.users.update_one(
+        {"_id": current_user["_id"]},
+        {"$set": {"selected_exam_id": exam_selection.exam_id, "updated_at": datetime.utcnow()}}
+    )
+    
+    return {
+        "success": True,
+        "message": "Exam selected successfully",
+        "exam_id": exam_selection.exam_id,
+        "exam_name": exam.get("name")
+    }
+
 # ==================== BOOKMARKS ====================
 
 @router.post("/bookmarks", response_model=BookmarkResponse)
