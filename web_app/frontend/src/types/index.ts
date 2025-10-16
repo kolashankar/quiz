@@ -4,6 +4,7 @@ export interface User {
   name?: string;
   role: string;
   created_at: string;
+  selected_exam_id?: string;
 }
 
 export interface LoginCredentials {
