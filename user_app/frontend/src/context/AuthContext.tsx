@@ -3,12 +3,19 @@ import { User, LoginCredentials, SignupCredentials } from '../types';
 import { authService } from '../services/api/auth';
 import { storage } from '../services/storage';
 
+interface SelectedExam {
+  id: string;
+  name: string;
+}
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  selectedExam: SelectedExam | null;
   login: (credentials: LoginCredentials) => Promise<void>;
   signup: (credentials: SignupCredentials) => Promise<void>;
   logout: () => Promise<void>;
+  setSelectedExam: (exam: SelectedExam | null) => Promise<void>;
   isAuthenticated: boolean;
 }
 
