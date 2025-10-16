@@ -342,7 +342,7 @@ async def signup(user: UserCreate):
             id=str(user_dict["_id"]),
             email=user_dict["email"],
             role=user_dict["role"],
-            created_at=user_dict["created_at"]
+            created_at=user_dict.get("created_at", datetime.utcnow())
         )
     }
 
@@ -361,7 +361,7 @@ async def login(credentials: UserLogin):
             id=str(user["_id"]),
             email=user["email"],
             role=user["role"],
-            created_at=user["created_at"]
+            created_at=user.get("created_at", datetime.utcnow())
         )
     }
 
@@ -371,7 +371,7 @@ async def get_me(current_user: dict = Depends(get_current_user)):
         id=str(current_user["_id"]),
         email=current_user["email"],
         role=current_user["role"],
-        created_at=current_user["created_at"]
+        created_at=current_user.get("created_at", datetime.utcnow())
     )
 
 # ==================== ADMIN ROUTES - EXAMS ====================
@@ -389,7 +389,7 @@ async def create_exam(exam: ExamCreate, admin: dict = Depends(get_admin_user)):
         id=str(exam_dict["_id"]),
         name=exam_dict["name"],
         description=exam_dict["description"],
-        created_at=exam_dict["created_at"]
+        created_at=exam_dict.get("created_at", datetime.utcnow())
     )
 
 @api_router.get("/admin/exams", response_model=List[ExamResponse])
@@ -426,7 +426,7 @@ async def update_exam(exam_id: str, exam: ExamCreate, admin: dict = Depends(get_
         id=str(updated_exam["_id"]),
         name=updated_exam["name"],
         description=updated_exam["description"],
-        created_at=updated_exam["created_at"]
+        created_at=updated_exam.get("created_at", datetime.utcnow())
     )
 
 @api_router.delete("/admin/exams/{exam_id}")
@@ -452,7 +452,7 @@ async def create_subject(subject: SubjectCreate, admin: dict = Depends(get_admin
         exam_id=subject_dict["exam_id"],
         name=subject_dict["name"],
         description=subject_dict["description"],
-        created_at=subject_dict["created_at"]
+        created_at=subject_dict.get("created_at", datetime.utcnow())
     )
 
 @api_router.get("/admin/subjects", response_model=List[SubjectResponse])
@@ -494,7 +494,7 @@ async def update_subject(subject_id: str, subject: SubjectCreate, admin: dict = 
         exam_id=updated_subject["exam_id"],
         name=updated_subject["name"],
         description=updated_subject["description"],
-        created_at=updated_subject["created_at"]
+        created_at=updated_subject.get("created_at", datetime.utcnow())
     )
 
 @api_router.delete("/admin/subjects/{subject_id}")
@@ -520,7 +520,7 @@ async def create_chapter(chapter: ChapterCreate, admin: dict = Depends(get_admin
         subject_id=chapter_dict["subject_id"],
         name=chapter_dict["name"],
         description=chapter_dict["description"],
-        created_at=chapter_dict["created_at"]
+        created_at=chapter_dict.get("created_at", datetime.utcnow())
     )
 
 @api_router.get("/admin/chapters", response_model=List[ChapterResponse])
@@ -532,7 +532,7 @@ async def get_chapters(subject_id: Optional[str] = None, admin: dict = Depends(g
         subject_id=chapter["subject_id"],
         name=chapter["name"],
         description=chapter["description"],
-        created_at=chapter["created_at"]
+        created_at=chapter.get("created_at", datetime.utcnow())
     ) for chapter in chapters]
 
 @api_router.get("/chapters", response_model=List[ChapterResponse])
@@ -544,7 +544,7 @@ async def get_chapters_public(subject_id: Optional[str] = None):
         subject_id=chapter["subject_id"],
         name=chapter["name"],
         description=chapter["description"],
-        created_at=chapter["created_at"]
+        created_at=chapter.get("created_at", datetime.utcnow())
     ) for chapter in chapters]
 
 @api_router.put("/admin/chapters/{chapter_id}", response_model=ChapterResponse)
@@ -562,7 +562,7 @@ async def update_chapter(chapter_id: str, chapter: ChapterCreate, admin: dict = 
         subject_id=updated_chapter["subject_id"],
         name=updated_chapter["name"],
         description=updated_chapter["description"],
-        created_at=updated_chapter["created_at"]
+        created_at=updated_chapter.get("created_at", datetime.utcnow())
     )
 
 @api_router.delete("/admin/chapters/{chapter_id}")
@@ -588,7 +588,7 @@ async def create_topic(topic: TopicCreate, admin: dict = Depends(get_admin_user)
         chapter_id=topic_dict["chapter_id"],
         name=topic_dict["name"],
         description=topic_dict["description"],
-        created_at=topic_dict["created_at"]
+        created_at=topic_dict.get("created_at", datetime.utcnow())
     )
 
 @api_router.get("/admin/topics", response_model=List[TopicResponse])
@@ -600,7 +600,7 @@ async def get_topics(chapter_id: Optional[str] = None, admin: dict = Depends(get
         chapter_id=topic["chapter_id"],
         name=topic["name"],
         description=topic["description"],
-        created_at=topic["created_at"]
+        created_at=topic.get("created_at", datetime.utcnow())
     ) for topic in topics]
 
 @api_router.get("/topics", response_model=List[TopicResponse])
@@ -612,7 +612,7 @@ async def get_topics_public(chapter_id: Optional[str] = None):
         chapter_id=topic["chapter_id"],
         name=topic["name"],
         description=topic["description"],
-        created_at=topic["created_at"]
+        created_at=topic.get("created_at", datetime.utcnow())
     ) for topic in topics]
 
 @api_router.put("/admin/topics/{topic_id}", response_model=TopicResponse)
@@ -630,7 +630,7 @@ async def update_topic(topic_id: str, topic: TopicCreate, admin: dict = Depends(
         chapter_id=updated_topic["chapter_id"],
         name=updated_topic["name"],
         description=updated_topic["description"],
-        created_at=updated_topic["created_at"]
+        created_at=updated_topic.get("created_at", datetime.utcnow())
     )
 
 @api_router.delete("/admin/topics/{topic_id}")
@@ -656,7 +656,7 @@ async def create_sub_topic(sub_topic: SubTopicCreate, admin: dict = Depends(get_
         topic_id=sub_topic_dict["topic_id"],
         name=sub_topic_dict["name"],
         description=sub_topic_dict["description"],
-        created_at=sub_topic_dict["created_at"]
+        created_at=sub_topic_dict.get("created_at", datetime.utcnow())
     )
 
 @api_router.get("/admin/sub-topics", response_model=List[SubTopicResponse])
@@ -668,7 +668,7 @@ async def get_sub_topics(topic_id: Optional[str] = None, admin: dict = Depends(g
         topic_id=st["topic_id"],
         name=st["name"],
         description=st["description"],
-        created_at=st["created_at"]
+        created_at=st.get("created_at", datetime.utcnow())
     ) for st in sub_topics]
 
 @api_router.get("/sub-topics", response_model=List[SubTopicResponse])
@@ -680,7 +680,7 @@ async def get_sub_topics_public(topic_id: Optional[str] = None):
         topic_id=st["topic_id"],
         name=st["name"],
         description=st["description"],
-        created_at=st["created_at"]
+        created_at=st.get("created_at", datetime.utcnow())
     ) for st in sub_topics]
 
 @api_router.put("/admin/sub-topics/{sub_topic_id}", response_model=SubTopicResponse)
@@ -698,7 +698,7 @@ async def update_sub_topic(sub_topic_id: str, sub_topic: SubTopicCreate, admin: 
         topic_id=updated_sub_topic["topic_id"],
         name=updated_sub_topic["name"],
         description=updated_sub_topic["description"],
-        created_at=updated_sub_topic["created_at"]
+        created_at=updated_sub_topic.get("created_at", datetime.utcnow())
     )
 
 @api_router.delete("/admin/sub-topics/{sub_topic_id}")
@@ -724,7 +724,7 @@ async def create_section(section: SectionCreate, admin: dict = Depends(get_admin
         sub_topic_id=section_dict["sub_topic_id"],
         name=section_dict["name"],
         description=section_dict["description"],
-        created_at=section_dict["created_at"]
+        created_at=section_dict.get("created_at", datetime.utcnow())
     )
 
 @api_router.get("/admin/sections", response_model=List[SectionResponse])
@@ -736,7 +736,7 @@ async def get_sections(sub_topic_id: Optional[str] = None, admin: dict = Depends
         sub_topic_id=s["sub_topic_id"],
         name=s["name"],
         description=s["description"],
-        created_at=s["created_at"]
+        created_at=s.get("created_at", datetime.utcnow())
     ) for s in sections]
 
 @api_router.get("/sections", response_model=List[SectionResponse])
@@ -748,7 +748,7 @@ async def get_sections_public(sub_topic_id: Optional[str] = None):
         sub_topic_id=s["sub_topic_id"],
         name=s["name"],
         description=s["description"],
-        created_at=s["created_at"]
+        created_at=s.get("created_at", datetime.utcnow())
     ) for s in sections]
 
 @api_router.put("/admin/sections/{section_id}", response_model=SectionResponse)
@@ -766,7 +766,7 @@ async def update_section(section_id: str, section: SectionCreate, admin: dict = 
         sub_topic_id=updated_section["sub_topic_id"],
         name=updated_section["name"],
         description=updated_section["description"],
-        created_at=updated_section["created_at"]
+        created_at=updated_section.get("created_at", datetime.utcnow())
     )
 
 @api_router.delete("/admin/sections/{section_id}")
@@ -792,7 +792,7 @@ async def create_sub_section(sub_section: SubSectionCreate, admin: dict = Depend
         section_id=sub_section_dict["section_id"],
         name=sub_section_dict["name"],
         description=sub_section_dict["description"],
-        created_at=sub_section_dict["created_at"]
+        created_at=sub_section_dict.get("created_at", datetime.utcnow())
     )
 
 @api_router.get("/admin/sub-sections", response_model=List[SubSectionResponse])
@@ -804,7 +804,7 @@ async def get_sub_sections(section_id: Optional[str] = None, admin: dict = Depen
         section_id=ss["section_id"],
         name=ss["name"],
         description=ss["description"],
-        created_at=ss["created_at"]
+        created_at=ss.get("created_at", datetime.utcnow())
     ) for ss in sub_sections]
 
 @api_router.get("/sub-sections", response_model=List[SubSectionResponse])
@@ -816,7 +816,7 @@ async def get_sub_sections_public(section_id: Optional[str] = None):
         section_id=ss["section_id"],
         name=ss["name"],
         description=ss["description"],
-        created_at=ss["created_at"]
+        created_at=ss.get("created_at", datetime.utcnow())
     ) for ss in sub_sections]
 
 @api_router.put("/admin/sub-sections/{sub_section_id}", response_model=SubSectionResponse)
@@ -834,7 +834,7 @@ async def update_sub_section(sub_section_id: str, sub_section: SubSectionCreate,
         section_id=updated_sub_section["section_id"],
         name=updated_sub_section["name"],
         description=updated_sub_section["description"],
-        created_at=updated_sub_section["created_at"]
+        created_at=updated_sub_section.get("created_at", datetime.utcnow())
     )
 
 @api_router.delete("/admin/sub-sections/{sub_section_id}")
@@ -870,7 +870,7 @@ async def create_question(question: QuestionCreate, admin: dict = Depends(get_ad
         code_snippet=question_dict.get("code_snippet", ""),
         image_url=question_dict.get("image_url", ""),
         formula=question_dict.get("formula", ""),
-        created_at=question_dict["created_at"]
+        created_at=question_dict.get("created_at", datetime.utcnow())
     )
 
 @api_router.get("/admin/questions", response_model=List[QuestionResponse])
@@ -891,7 +891,7 @@ async def get_questions_admin(sub_section_id: Optional[str] = None, admin: dict 
         code_snippet=q.get("code_snippet", ""),
         image_url=q.get("image_url", ""),
         formula=q.get("formula", ""),
-        created_at=q["created_at"]
+        created_at=q.get("created_at", datetime.utcnow())
     ) for q in questions]
 
 @api_router.put("/admin/questions/{question_id}", response_model=QuestionResponse)
@@ -918,7 +918,7 @@ async def update_question(question_id: str, question: QuestionCreate, admin: dic
         code_snippet=updated_question.get("code_snippet", ""),
         image_url=updated_question.get("image_url", ""),
         formula=updated_question.get("formula", ""),
-        created_at=updated_question["created_at"]
+        created_at=updated_question.get("created_at", datetime.utcnow())
     )
 
 @api_router.delete("/admin/questions/{question_id}")
@@ -1111,7 +1111,7 @@ async def get_questions(
         code_snippet=q.get("code_snippet", ""),
         image_url=q.get("image_url", ""),
         formula=q.get("formula", ""),
-        created_at=q["created_at"]
+        created_at=q.get("created_at", datetime.utcnow())
     ) for q in questions]
 
 # ==================== USER ROUTES - TESTS ====================
@@ -1210,7 +1210,7 @@ async def create_bookmark(bookmark: BookmarkCreate, current_user: dict = Depends
             id=str(existing["_id"]),
             user_id=existing["user_id"],
             question_id=existing["question_id"],
-            created_at=existing["created_at"]
+            created_at=existing.get("created_at", datetime.utcnow())
         )
     
     bookmark_dict = {
@@ -1226,7 +1226,7 @@ async def create_bookmark(bookmark: BookmarkCreate, current_user: dict = Depends
         id=str(bookmark_dict["_id"]),
         user_id=bookmark_dict["user_id"],
         question_id=bookmark_dict["question_id"],
-        created_at=bookmark_dict["created_at"]
+        created_at=bookmark_dict.get("created_at", datetime.utcnow())
     )
 
 @api_router.get("/bookmarks", response_model=List[BookmarkResponse])
@@ -1237,7 +1237,7 @@ async def get_bookmarks(current_user: dict = Depends(get_current_user)):
         id=str(b["_id"]),
         user_id=b["user_id"],
         question_id=b["question_id"],
-        created_at=b["created_at"]
+        created_at=b.get("created_at", datetime.utcnow())
     ) for b in bookmarks]
 
 @api_router.delete("/bookmarks/{bookmark_id}")
@@ -1517,7 +1517,7 @@ async def update_profile(profile: ProfileUpdate, current_user: dict = Depends(ge
         id=str(updated_user["_id"]),
         email=updated_user["email"],
         role=updated_user["role"],
-        created_at=updated_user["created_at"]
+        created_at=updated_user.get("created_at", datetime.utcnow())
     )
 
 # ==================== SEARCH & FILTER ====================
@@ -1759,7 +1759,7 @@ async def get_filtered_questions(
             code_snippet=q.get("code_snippet", ""),
             image_url=q.get("image_url", ""),
             formula=q.get("formula", ""),
-            created_at=q["created_at"]
+            created_at=q.get("created_at", datetime.utcnow())
         ) for q in questions
     ]
 
@@ -1794,7 +1794,7 @@ async def create_syllabus(syllabus: SyllabusCreate, admin: dict = Depends(get_ad
         title=syllabus_dict["title"],
         content=syllabus_dict["content"],
         ai_generated=syllabus_dict["ai_generated"],
-        created_at=syllabus_dict["created_at"]
+        created_at=syllabus_dict.get("created_at", datetime.utcnow())
     )
 
 @api_router.get("/admin/syllabus", response_model=List[SyllabusResponse])
@@ -1807,7 +1807,7 @@ async def get_syllabuses(exam_id: Optional[str] = None, admin: dict = Depends(ge
         title=s["title"],
         content=s["content"],
         ai_generated=s.get("ai_generated", False),
-        created_at=s["created_at"]
+        created_at=s.get("created_at", datetime.utcnow())
     ) for s in syllabuses]
 
 @api_router.get("/syllabus", response_model=List[SyllabusResponse])
@@ -1820,7 +1820,7 @@ async def get_syllabuses_public(exam_id: Optional[str] = None):
         title=s["title"],
         content=s["content"],
         ai_generated=s.get("ai_generated", False),
-        created_at=s["created_at"]
+        created_at=s.get("created_at", datetime.utcnow())
     ) for s in syllabuses]
 
 @api_router.put("/admin/syllabus/{syllabus_id}", response_model=SyllabusResponse)
@@ -1839,7 +1839,7 @@ async def update_syllabus(syllabus_id: str, syllabus: SyllabusCreate, admin: dic
         title=updated_syllabus["title"],
         content=updated_syllabus["content"],
         ai_generated=updated_syllabus.get("ai_generated", False),
-        created_at=updated_syllabus["created_at"]
+        created_at=updated_syllabus.get("created_at", datetime.utcnow())
     )
 
 @api_router.delete("/admin/syllabus/{syllabus_id}")
