@@ -20,6 +20,7 @@ export default function SubsectionsPage() {
   const { register, handleSubmit, reset, formState: { errors } } = useForm<CreateSubsection>();
 
   useEffect(() => { fetchSections(); }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { fetchSubsections(); }, [filterSectionId]);
 
   const fetchSections = async () => { try { setSections(await sectionService.getAll()); } catch { toast.error('Failed'); } };

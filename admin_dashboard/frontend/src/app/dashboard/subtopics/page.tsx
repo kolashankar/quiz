@@ -20,6 +20,7 @@ export default function SubtopicsPage() {
   const { register, handleSubmit, reset, formState: { errors } } = useForm<CreateSubtopic>();
 
   useEffect(() => { fetchTopics(); }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { fetchSubtopics(); }, [filterTopicId]);
 
   const fetchTopics = async () => { try { setTopics(await topicService.getAll()); } catch { toast.error('Failed to fetch topics'); } };

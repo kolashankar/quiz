@@ -33,6 +33,7 @@ export default function QuestionsPage() {
   const [explanation, setExplanation] = useState('');
 
   useEffect(() => { fetchSubsections(); }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { fetchQuestions(); }, [filterSubsectionId, filterDifficulty, currentPage]);
 
   const fetchSubsections = async () => {
