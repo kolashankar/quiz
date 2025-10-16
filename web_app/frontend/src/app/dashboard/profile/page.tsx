@@ -541,7 +541,7 @@ export default function ProfilePage() {
                         <div className="flex items-center gap-2">
                           <CalendarIcon className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                           <span className="text-sm text-gray-900 dark:text-gray-100">
-                            {new Date(test.submitted_at).toLocaleDateString()}
+                            {new Date(test.timestamp).toLocaleDateString()}
                           </span>
                         </div>
                       </td>
