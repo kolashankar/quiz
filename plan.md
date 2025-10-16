@@ -1,6 +1,6 @@
 # 🚀 DUAL PROJECT MASTER PLAN - 2025
 
-## Project 1: Chrome Extension Trading Intelligence System
+### Project 1: Chrome Extension Trading Intelligence System
 ## Project 2: All-in-One AI Automation Platform
 
 ---
