@@ -399,7 +399,7 @@ async def get_exams(admin: dict = Depends(get_admin_user)):
         id=str(exam["_id"]),
         name=exam["name"],
         description=exam["description"],
-        created_at=exam["created_at"]
+        created_at=exam.get("created_at", datetime.utcnow())
     ) for exam in exams]
 
 @api_router.get("/exams", response_model=List[ExamResponse])
