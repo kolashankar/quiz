@@ -127,6 +127,62 @@ async def get_user_analytics(current_user: dict = Depends(get_current_user)):
         improvement_suggestions=suggestions
     )
 
+
+@router.get("/analytics/export")
+async def export_analytics(format: str = "json", current_user: dict = Depends(get_current_user)):
+    """Export user analytics data"""
+    db = get_database()
+    from fastapi.responses import StreamingResponse
+    import io
+    import csv
+    
+    # Get all test results for user
+    results = await db.test_results.find({"user_id": str(current_user["_id"])}).to_list(1000)
+    
+    if format == "csv":
+        # Create CSV
+        output = io.StringIO()
+        writer = csv.writer(output)
+        
+        # Write header
+        writer.writerow(["Test ID", "Date", "Score", "Total Questions", "Correct Answers", "Percentile"])
+        
+        # Write data
+        for result in results:
+            writer.writerow([
+                str(result["_id"]),
+                result["timestamp"].strftime("%Y-%m-%d %H:%M:%S"),
+                result["score"],
+                result["total_questions"],
+                result["correct_answers"],
+                result["percentile"]
+            ])
+        
+        output.seek(0)
+        return StreamingResponse(
+            iter([output.getvalue()]),
+            media_type="text/csv",
+            headers={"Content-Disposition": f"attachment; filename=analytics_export.csv"}
+        )
+    else:
+        # Return JSON
+        return {
+            "user_id": str(current_user["_id"]),
+            "export_date": datetime.utcnow().isoformat(),
+            "total_tests": len(results),
+            "tests": [
+                {
+                    "test_id": str(r["_id"]),
+                    "timestamp": r["timestamp"].isoformat(),
+                    "score": r["score"],
+                    "total_questions": r["total_questions"],
+                    "correct_answers": r["correct_answers"],
+                    "percentile": r["percentile"]
+                } for r in results
+            ]
+        }
+
+
 # ==================== LEADERBOARD ====================
 
 @router.get("/leaderboard")
