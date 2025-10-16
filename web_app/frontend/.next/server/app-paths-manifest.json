@@ -19,8 +19,8 @@
   "/dashboard/profile/page": "app/dashboard/profile/page.js",
   "/dashboard/quiz/hierarchy/page": "app/dashboard/quiz/hierarchy/page.js",
   "/dashboard/quiz/page": "app/dashboard/quiz/page.js",
-  "/dashboard/quiz/result/page": "app/dashboard/quiz/result/page.js",
   "/dashboard/quiz/test/page": "app/dashboard/quiz/test/page.js",
+  "/dashboard/quiz/result/page": "app/dashboard/quiz/result/page.js",
   "/dashboard/search/page": "app/dashboard/search/page.js",
   "/dashboard/settings/page": "app/dashboard/settings/page.js",
   "/dashboard/syllabus/page": "app/dashboard/syllabus/page.js"
