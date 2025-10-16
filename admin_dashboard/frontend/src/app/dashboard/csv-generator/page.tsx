@@ -239,7 +239,7 @@ export default function CSVGeneratorPage() {
           <li>Select the exam type (JEE, NEET, UPSC, etc.)</li>
           <li>Choose one or more subjects to generate questions for</li>
           <li>Set the number of questions per subject (10-100)</li>
-          <li>Click "Generate CSV" and wait for AI to create questions</li>
+          <li>Click &quot;Generate CSV&quot; and wait for AI to create questions</li>
           <li>Download the CSV file when generation is complete</li>
           <li>Use the CSV to bulk upload questions or review in Excel</li>
         </ol>
