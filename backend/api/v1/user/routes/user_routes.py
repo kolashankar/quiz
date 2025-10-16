@@ -5,7 +5,10 @@ from typing import List
 import os
 import google.generativeai as genai
 
-from api.v1.user.models import BookmarkCreate, BookmarkResponse, AnalyticsResponse
+from api.v1.user.models import (
+    BookmarkCreate, BookmarkResponse, AnalyticsResponse,
+    ProfileUpdate, ExamSelectionUpdate, UserProfileResponse
+)
 from core.security import get_current_user
 from core.database import get_database
 
