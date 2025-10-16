@@ -72,7 +72,7 @@ async def get_me(current_user: dict = Depends(get_current_user)):
         id=str(current_user["_id"]),
         email=current_user["email"],
         role=current_user["role"],
-        created_at=current_user["created_at"]
+        created_at=current_user.get("created_at", datetime.utcnow())
     )
 
 @router.post("/push-token")
