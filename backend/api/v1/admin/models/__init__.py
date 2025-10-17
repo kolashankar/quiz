@@ -1,3 +1,3 @@
-from .admin_models import SendNotificationRequest
+from .admin_models import SendNotificationRequest, BatchUpdatePayload
 
-__all__ = ['SendNotificationRequest']
+__all__ = ['SendNotificationRequest', 'BatchUpdatePayload']
