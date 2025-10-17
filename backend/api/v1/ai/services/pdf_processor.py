@@ -8,11 +8,11 @@ import hashlib
 import json
 from typing import Dict, Any, Optional
 from datetime import datetime, timedelta
-import redis
 import os
 
 # Redis client for caching (optional, will work without Redis)
 try:
+    import redis
     redis_client = redis.Redis(
         host=os.getenv('REDIS_HOST', 'localhost'),
         port=int(os.getenv('REDIS_PORT', 6379)),
@@ -20,7 +20,7 @@ try:
         decode_responses=True
     )
     REDIS_AVAILABLE = True
-except:
+except Exception:
     REDIS_AVAILABLE = False
     redis_client = None
 
