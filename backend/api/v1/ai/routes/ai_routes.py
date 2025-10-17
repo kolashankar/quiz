@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, File, UploadFile
 from typing import Dict, Any, List
 import os
 import google.generativeai as genai
@@ -6,6 +6,7 @@ import pandas as pd
 import io
 import uuid
 import json
+from datetime import datetime
 
 from api.v1.ai.models import AIRecommendationRequest
 from core.security import get_current_user, get_admin_user
