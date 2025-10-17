@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { aiService } from '@/services/admin/adminService';
 
 export default function CSVGeneratorPage() {
@@ -10,6 +10,13 @@ export default function CSVGeneratorPage() {
   const [generating, setGenerating] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string>('');
+  
+  // PDF Upload States
+  const [generationMode, setGenerationMode] = useState<'text' | 'pdf'>('text');
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [progress, setProgress] = useState<{step: string; percentage: number; message: string} | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const exams = ['JEE', 'GATE', 'UPSC', 'NEET', 'NMMS', 'EAPCET'];
 
