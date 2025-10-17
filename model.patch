@@ -1150,7 +1150,7 @@ index f036e5b..61ece18 100644
 ---------------+class ComprehensiveBackendTester:
 ---------------+    def __init__(self):
 ---------------+        # Use the backend URL from frontend .env
----------------+        self.base_url = "https://quiz-auth-solution.preview.emergentagent.com"
+---------------+        self.base_url = "https://admin-dash-complete.preview.emergentagent.com"
 ---------------+        self.api_url = f"{self.base_url}/api"
 ---------------+        self.session = requests.Session()
 ---------------+        
@@ -2039,7 +2039,7 @@ index f036e5b..61ece18 100644
 -----------------+import requests
 -----------------+import json
 -----------------+
------------------+BASE_URL = "https://quiz-auth-solution.preview.emergentagent.com/api"
+-----------------+BASE_URL = "https://admin-dash-complete.preview.emergentagent.com/api"
 -----------------+
 -----------------+def test_endpoint(name, url, method="GET", data=None, headers=None):
 -----------------+    """Test a single endpoint"""
