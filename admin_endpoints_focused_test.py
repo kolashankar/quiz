@@ -284,10 +284,10 @@ def test_ai_tools():
         print_error("No admin token available")
         return False
     
-    # Test GET /api/admin/analytics/advanced
-    print_info("Testing GET /api/admin/analytics/advanced...")
+    # Test GET /api/ai/admin/analytics/advanced
+    print_info("Testing GET /api/ai/admin/analytics/advanced...")
     try:
-        response = requests.get(f"{BASE_URL}/admin/analytics/advanced", headers=get_admin_headers())
+        response = requests.get(f"{BASE_URL}/ai/admin/analytics/advanced", headers=get_admin_headers())
         
         print_info(f"Status Code: {response.status_code}")
         
