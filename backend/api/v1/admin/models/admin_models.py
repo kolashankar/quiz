@@ -7,3 +7,7 @@ class SendNotificationRequest(BaseModel):
     data: Optional[Dict[str, Any]] = None
     target_users: Optional[List[str]] = None
     exam_id: Optional[str] = None
+
+class BatchUpdatePayload(BaseModel):
+    ids: List[str]
+    updates: Dict[str, Any]
