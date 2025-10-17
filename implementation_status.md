@@ -1,6 +1,6 @@
 # Quiz App - Implementation Status
 
-## Project Overview
+### Project Overview
 Consolidated backend architecture serving Mobile App (Expo), Web App (Next.js), and Admin Dashboard with a unified FastAPI backend organized in a 5-level nested folder structure.
 
 ---
