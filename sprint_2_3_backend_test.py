@@ -145,7 +145,7 @@ def test_ai_generate_csv():
 def create_test_pdf():
     """Create a simple test PDF content for testing"""
     # Create a simple text file that we'll treat as PDF for testing
-    test_content = b"""
+    test_content = """
     Physics Chapter 1: Mechanics
     
     1. Newton's First Law of Motion
@@ -159,9 +159,9 @@ def create_test_pdf():
     
     Key Formulas:
     - Velocity: v = u + at
-    - Distance: s = ut + (1/2)at²
-    - Kinetic Energy: KE = (1/2)mv²
-    """
+    - Distance: s = ut + (1/2)at^2
+    - Kinetic Energy: KE = (1/2)mv^2
+    """.encode('utf-8')
     return test_content
 
 def test_ai_generate_csv_from_pdf():
