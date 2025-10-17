@@ -1,8 +1,8 @@
 """
 Backend entry point for supervisor
-Uses server_old.py temporarily
+Uses main.py with organized structure
 """
 
-from server_old import app
+from main import app
 
 __all__ = ['app']
