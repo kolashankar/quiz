@@ -238,6 +238,16 @@ async def generate_questions_csv_ai(
         raise HTTPException(status_code=500, detail=f"AI CSV generation failed: {str(e)}")
 
 
+@router.get("/progress/{job_id}")
+async def get_pdf_processing_progress(job_id: str, admin: dict = Depends(get_admin_user)):
+    """Get progress status for a PDF processing job"""
+    progress = pdf_processor.get_progress(job_id)
+    
+    if not progress:
+        raise HTTPException(status_code=404, detail="Job not found or expired")
+    
+    return progress
+
 @router.post("/generate-csv-from-pdf")
 async def generate_questions_from_pdf(
     file: UploadFile = File(...),
@@ -248,18 +258,46 @@ async def generate_questions_from_pdf(
 ):
     """Generate questions CSV from uploaded PDF using Gemini AI
     
+    Sprint 2 Enhanced Version with:
+    - File size validation (50MB limit)
+    - Progress tracking for long operations
+    - Caching for repeated PDF analysis
+    - Detailed step-by-step progress updates
+    
     This endpoint:
-    1. Analyzes the uploaded PDF content using Gemini
+    1. Validates and analyzes the uploaded PDF content
     2. Extracts key concepts, topics, and answer keys from PDF
     3. Generates questions based on PDF content with tricks, tips, and logical solutions
     4. Returns CSV in 24-column format
     """
+    # Generate job ID for progress tracking
+    job_id = str(uuid.uuid4())
+    
     try:
         if not gemini_api_key:
             raise HTTPException(status_code=500, detail="Gemini API key not configured")
         
-        # Read PDF file
+        # Step 1: Read and validate PDF file
+        pdf_processor.set_progress(job_id, "uploading", 10, "Uploading PDF file...")
         pdf_content = await file.read()
+        
+        # Validate file
+        is_valid, error_message = pdf_processor.validate_file(pdf_content, file.filename)
+        if not is_valid:
+            raise HTTPException(status_code=400, detail=error_message)
+        
+        # Calculate file hash for caching
+        file_hash = pdf_processor.get_file_hash(pdf_content)
+        
+        # Check cache
+        pdf_processor.set_progress(job_id, "checking_cache", 20, "Checking cache for previous analysis...")
+        cached_result = pdf_processor.get_cached_result(file_hash, exam, subject)
+        
+        if cached_result:
+            pdf_processor.set_progress(job_id, "completed", 100, "Retrieved from cache")
+            cached_result["job_id"] = job_id
+            cached_result["from_cache"] = True
+            return cached_result
         
         # Use Gemini 1.5 Pro with PDF support
         model = genai.GenerativeModel('gemini-1.5-pro-latest')
