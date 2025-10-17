@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, File, UploadFile
+from fastapi import APIRouter, HTTPException, Depends, File, UploadFile, BackgroundTasks
 from typing import Dict, Any, List
 import os
 import google.generativeai as genai
@@ -7,10 +7,12 @@ import io
 import uuid
 import json
 from datetime import datetime
+import hashlib
 
 from api.v1.ai.models import AIRecommendationRequest
 from core.security import get_current_user, get_admin_user
 from core.database import get_database
+from api.v1.ai.services.pdf_processor import pdf_processor
 
 router = APIRouter(prefix="/ai", tags=["ai"])
 
