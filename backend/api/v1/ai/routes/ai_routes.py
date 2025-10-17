@@ -235,3 +235,448 @@ async def generate_questions_csv_ai(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"AI CSV generation failed: {str(e)}")
 
+
+@router.post("/generate-csv-from-pdf")
+async def generate_questions_from_pdf(
+    file: UploadFile = File(...),
+    exam: str = "JEE",
+    subject: str = "Physics",
+    questions_per_chapter: int = 10,
+    admin: dict = Depends(get_admin_user)
+):
+    """Generate questions CSV from uploaded PDF using Gemini AI
+    
+    This endpoint:
+    1. Analyzes the uploaded PDF content using Gemini
+    2. Extracts key concepts, topics, and answer keys from PDF
+    3. Generates questions based on PDF content with tricks, tips, and logical solutions
+    4. Returns CSV in 24-column format
+    """
+    try:
+        if not gemini_api_key:
+            raise HTTPException(status_code=500, detail="Gemini API key not configured")
+        
+        # Read PDF file
+        pdf_content = await file.read()
+        
+        # Use Gemini 1.5 Pro with PDF support
+        model = genai.GenerativeModel('gemini-1.5-pro-latest')
+        
+        # Upload PDF to Gemini
+        pdf_file = genai.upload_file(io.BytesIO(pdf_content), mime_type="application/pdf")
+        
+        # Step 1: Analyze PDF to extract structure and content
+        analysis_prompt = f"""
+        Analyze this PDF document thoroughly and provide:
+        
+        1. **Main Topics/Chapters**: List all major chapters or topics covered
+        2. **Key Concepts**: Important concepts, formulas, and theories per chapter
+        3. **Answer Keys**: If this PDF contains solutions or answer keys, extract them
+        4. **Difficulty Patterns**: Note the difficulty progression
+        5. **Important Tips/Tricks**: Any shortcuts, tricks, or tips mentioned
+        
+        Format your response as JSON:
+        {{
+            "chapters": [
+                {{
+                    "name": "Chapter name",
+                    "concepts": ["concept1", "concept2"],
+                    "formulas": ["formula1", "formula2"],
+                    "tips": ["tip1", "tip2"]
+                }}
+            ],
+            "exam_type": "{exam}",
+            "subject": "{subject}",
+            "answer_keys": {{}},
+            "overall_difficulty": "medium"
+        }}
+        """
+        
+        analysis_response = model.generate_content([pdf_file, analysis_prompt])
+        analysis_text = analysis_response.text.strip()
+        
+        # Clean and parse JSON
+        if analysis_text.startswith("```"):
+            analysis_text = analysis_text.split("```")[1]
+            if analysis_text.startswith("json"):
+                analysis_text = analysis_text[4:]
+        analysis_text = analysis_text.strip()
+        
+        try:
+            pdf_analysis = json.loads(analysis_text)
+        except json.JSONDecodeError:
+            # Fallback to simple extraction
+            pdf_analysis = {
+                "chapters": [{"name": "Main Content", "concepts": [], "formulas": [], "tips": []}],
+                "exam_type": exam,
+                "subject": subject,
+                "answer_keys": {},
+                "overall_difficulty": "medium"
+            }
+        
+        # Step 2: Generate questions based on PDF analysis
+        all_questions = []
+        chapters = pdf_analysis.get("chapters", [{"name": "Main Content"}])
+        
+        for chapter_info in chapters[:5]:  # Limit to 5 chapters
+            chapter_name = chapter_info.get("name", "Chapter")
+            concepts = chapter_info.get("concepts", [])
+            formulas = chapter_info.get("formulas", [])
+            tips = chapter_info.get("tips", [])
+            
+            generation_prompt = f"""
+            Based on the PDF content for Chapter: "{chapter_name}", generate {questions_per_chapter} high-quality competitive exam questions.
+            
+            **Context from PDF:**
+            - Concepts: {', '.join(concepts[:5]) if concepts else 'From chapter content'}
+            - Key Formulas: {', '.join(formulas[:3]) if formulas else 'Relevant formulas'}
+            - Tips/Tricks: {', '.join(tips[:3]) if tips else 'Include shortcuts'}
+            
+            **Requirements:**
+            1. Questions should be based ONLY on content from the PDF
+            2. Use the concepts, formulas, and topics mentioned in the PDF
+            3. If PDF has answer keys, align questions with those patterns
+            4. Mix difficulty: 30% Easy, 50% Medium, 20% Hard
+            5. Include DETAILED explanations with:
+               - TRICK: Mention time-saving shortcuts
+               - LOGIC: Explain the reasoning step-by-step
+               - TIP: Add memory aids or common mistake warnings
+            6. Use LaTeX for formulas where applicable (use $...$ or $$...$$)
+            7. Make questions realistic for {exam} exam
+            
+            Return ONLY a valid JSON array (no markdown, no extra text):
+            [
+              {{
+                "question_text": "Question based on PDF content",
+                "option_a": "Option A",
+                "option_b": "Option B", 
+                "option_c": "Option C",
+                "option_d": "Option D",
+                "correct_answer": "A",
+                "difficulty": "medium",
+                "explanation": "LOGIC: [Step by step reasoning]. TRICK: [Shortcut method]. TIP: [Common mistake to avoid]",
+                "formula_latex": "$formula$",
+                "year": "2024",
+                "topic": "Specific topic from PDF",
+                "tags": "tag1,tag2"
+              }}
+            ]
+            """
+            
+            response = model.generate_content([pdf_file, generation_prompt])
+            response_text = response.text.strip()
+            
+            # Clean response
+            if response_text.startswith("```"):
+                response_text = response_text.split("```")[1]
+                if response_text.startswith("json"):
+                    response_text = response_text[4:]
+            response_text = response_text.strip()
+            
+            try:
+                questions_data = json.loads(response_text)
+            except json.JSONDecodeError:
+                # Try to extract JSON array
+                import re
+                json_match = re.search(r'\[.*\]', response_text, re.DOTALL)
+                if json_match:
+                    questions_data = json.loads(json_match.group())
+                else:
+                    continue
+            
+            # Convert to 24-column format
+            for q in questions_data:
+                question_dict = {
+                    "UID": str(uuid.uuid4()),
+                    "Exam": exam,
+                    "Year": q.get("year", "2024"),
+                    "Subject": subject,
+                    "Chapter": chapter_name,
+                    "Topic": q.get("topic", chapter_name),
+                    "QuestionType": "MCQ-SC",
+                    "QuestionText": q.get("question_text", ""),
+                    "OptionA": q.get("option_a", ""),
+                    "OptionB": q.get("option_b", ""),
+                    "OptionC": q.get("option_c", ""),
+                    "OptionD": q.get("option_d", ""),
+                    "CorrectAnswer": q.get("correct_answer", "A"),
+                    "AnswerChoicesCount": 4,
+                    "Marks": 4.0 if exam in ["JEE", "GATE"] else 2.0,
+                    "NegativeMarks": 1.0 if exam in ["JEE", "GATE"] else 0.0,
+                    "TimeLimitSeconds": 180 if q.get("difficulty") == "hard" else 120,
+                    "Difficulty": q.get("difficulty", "medium"),
+                    "Tags": q.get("tags", f"{exam},{subject},{chapter_name}"),
+                    "FormulaLaTeX": q.get("formula_latex", ""),
+                    "ImageUploadThingURL": "",
+                    "ImageAltText": "",
+                    "Explanation": q.get("explanation", ""),
+                    "ConfidenceScore": 0.95,
+                    "SourceNotes": f"AI-generated from PDF for {exam} {subject} - {chapter_name}"
+                }
+                all_questions.append(question_dict)
+        
+        # Create DataFrame and CSV
+        df = pd.DataFrame(all_questions)
+        csv_buffer = io.StringIO()
+        df.to_csv(csv_buffer, index=False)
+        csv_content = csv_buffer.getvalue()
+        
+        return {
+            "success": True,
+            "exam": exam,
+            "subject": subject,
+            "total_questions": len(all_questions),
+            "chapters_processed": len(chapters),
+            "csv_content": csv_content,
+            "pdf_analysis": {
+                "chapters": [c.get("name") for c in chapters],
+                "total_concepts": sum(len(c.get("concepts", [])) for c in chapters)
+            },
+            "message": f"Generated {len(all_questions)} questions from PDF for {exam} - {subject}"
+        }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"PDF-based CSV generation failed: {str(e)}")
+
+
+@router.post("/admin/ai/generate-questions")
+async def ai_generate_questions(
+    topic: str,
+    difficulty: str = "medium",
+    count: int = 5,
+    admin: dict = Depends(get_admin_user)
+):
+    """Generate questions using AI for a specific topic"""
+    try:
+        if not gemini_api_key:
+            return {
+                "success": False,
+                "message": "Gemini API key not configured",
+                "questions": []
+            }
+        
+        model = genai.GenerativeModel('gemini-2.0-flash-exp')
+        
+        prompt = f"""
+        Generate {count} multiple-choice questions for the topic: "{topic}"
+        Difficulty level: {difficulty}
+        
+        Requirements:
+        - Create realistic competitive exam questions
+        - Include 4 options (A, B, C, D)
+        - Provide detailed explanation with tricks and tips
+        - Include LaTeX formulas where applicable
+        
+        Return ONLY valid JSON array:
+        [
+          {{
+            "question_text": "Question here",
+            "options": ["Option A", "Option B", "Option C", "Option D"],
+            "correct_answer": 0,
+            "explanation": "LOGIC: ... TRICK: ... TIP: ...",
+            "formula_latex": "$formula$"
+          }}
+        ]
+        """
+        
+        response = model.generate_content(prompt)
+        response_text = response.text.strip()
+        
+        # Clean response
+        if response_text.startswith("```"):
+            response_text = response_text.split("```")[1]
+            if response_text.startswith("json"):
+                response_text = response_text[4:]
+        response_text = response_text.strip()
+        
+        questions = json.loads(response_text)
+        
+        return {
+            "success": True,
+            "questions": questions,
+            "count": len(questions)
+        }
+    
+    except Exception as e:
+        return {
+            "success": False,
+            "message": f"AI generation failed: {str(e)}",
+            "questions": []
+        }
+
+
+@router.post("/admin/ai/suggest-difficulty")
+async def ai_suggest_difficulty(
+    question_text: str,
+    admin: dict = Depends(get_admin_user)
+):
+    """Use AI to suggest difficulty level for a question"""
+    try:
+        if not gemini_api_key:
+            return {
+                "difficulty": "medium",
+                "confidence": 0.5,
+                "reasoning": "Default difficulty (API key not configured)"
+            }
+        
+        model = genai.GenerativeModel('gemini-2.0-flash-exp')
+        
+        prompt = f"""
+        Analyze this question and suggest its difficulty level:
+        
+        Question: {question_text}
+        
+        Consider:
+        - Concept complexity
+        - Steps required to solve
+        - Time needed
+        - Common knowledge vs advanced concepts
+        
+        Respond ONLY with JSON:
+        {{
+            "difficulty": "easy|medium|hard",
+            "confidence": 0.0-1.0,
+            "reasoning": "Brief explanation why this difficulty"
+        }}
+        """
+        
+        response = model.generate_content(prompt)
+        response_text = response.text.strip()
+        
+        # Clean response
+        if response_text.startswith("```"):
+            response_text = response_text.split("```")[1]
+            if response_text.startswith("json"):
+                response_text = response_text[4:]
+        response_text = response_text.strip()
+        
+        result = json.loads(response_text)
+        return result
+    
+    except Exception as e:
+        return {
+            "difficulty": "medium",
+            "confidence": 0.5,
+            "reasoning": f"Error in analysis: {str(e)}"
+        }
+
+
+@router.post("/admin/ai/generate-explanation")
+async def ai_generate_explanation(
+    question_text: str,
+    correct_answer: str,
+    admin: dict = Depends(get_admin_user)
+):
+    """Use AI to generate detailed explanation with tricks and tips"""
+    try:
+        if not gemini_api_key:
+            return {
+                "explanation": "Explanation not available (API key not configured)"
+            }
+        
+        model = genai.GenerativeModel('gemini-2.0-flash-exp')
+        
+        prompt = f"""
+        Generate a comprehensive explanation for this question:
+        
+        Question: {question_text}
+        Correct Answer: {correct_answer}
+        
+        Provide explanation in this format:
+        
+        LOGIC: [Step-by-step reasoning with clear steps]
+        
+        TRICK: [Time-saving shortcut or pattern recognition method]
+        
+        TIP: [Common mistake to avoid or memory aid]
+        
+        FORMULA: [If applicable, key formula in LaTeX format like $E=mc^2$]
+        
+        Keep it concise but complete.
+        """
+        
+        response = model.generate_content(prompt)
+        explanation = response.text.strip()
+        
+        return {
+            "explanation": explanation
+        }
+    
+    except Exception as e:
+        return {
+            "explanation": f"Unable to generate explanation: {str(e)}"
+        }
+
+
+# ==================== ADVANCED ANALYTICS ====================
+
+@router.get("/admin/analytics/advanced")
+async def get_advanced_analytics(admin: dict = Depends(get_admin_user)):
+    """Get advanced analytics for admin dashboard"""
+    db = get_database()
+    
+    # Question engagement - most attempted questions
+    question_attempts_pipeline = [
+        {"$group": {"_id": "$question_id", "attempts": {"$sum": 1}}},
+        {"$sort": {"attempts": -1}},
+        {"$limit": 10}
+    ]
+    top_questions = await db.test_results.aggregate(question_attempts_pipeline).to_list(10)
+    
+    # User engagement - active users
+    active_users_pipeline = [
+        {"$group": {"_id": "$user_id", "tests_taken": {"$sum": 1}}},
+        {"$match": {"tests_taken": {"$gte": 5}}},
+        {"$count": "active_users"}
+    ]
+    active_users_result = await db.test_results.aggregate(active_users_pipeline).to_list(1)
+    active_users = active_users_result[0]["active_users"] if active_users_result else 0
+    
+    # Difficulty analysis - average scores by difficulty
+    difficulty_pipeline = [
+        {"$lookup": {
+            "from": "questions",
+            "localField": "question_id",
+            "foreignField": "_id",
+            "as": "question"
+        }},
+        {"$unwind": "$question"},
+        {"$group": {
+            "_id": "$question.difficulty",
+            "avg_score": {"$avg": "$score"},
+            "count": {"$sum": 1}
+        }}
+    ]
+    difficulty_stats = await db.test_results.aggregate(difficulty_pipeline).to_list(10)
+    
+    # Time trends - tests per day (last 7 days)
+    from datetime import datetime, timedelta
+    seven_days_ago = datetime.utcnow() - timedelta(days=7)
+    
+    time_pipeline = [
+        {"$match": {"timestamp": {"$gte": seven_days_ago}}},
+        {"$group": {
+            "_id": {"$dateToString": {"format": "%Y-%m-%d", "date": "$timestamp"}},
+            "tests": {"$sum": 1}
+        }},
+        {"$sort": {"_id": 1}}
+    ]
+    time_trends = await db.test_results.aggregate(time_pipeline).to_list(7)
+    
+    return {
+        "engagement": {
+            "active_users": active_users,
+            "top_questions": [{"question_id": str(q["_id"]), "attempts": q["attempts"]} for q in top_questions]
+        },
+        "difficulty_analysis": [
+            {
+                "difficulty": d["_id"],
+                "avg_score": round(d["avg_score"], 2),
+                "attempts": d["count"]
+            } for d in difficulty_stats
+        ],
+        "time_trends": [
+            {"date": t["_id"], "tests": t["tests"]} for t in time_trends
+        ]
+    }
+
