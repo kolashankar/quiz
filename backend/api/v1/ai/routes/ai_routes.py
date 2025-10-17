@@ -300,12 +300,15 @@ async def generate_questions_from_pdf(
             return cached_result
         
         # Use Gemini 1.5 Pro with PDF support
+        pdf_processor.set_progress(job_id, "analyzing_pdf", 30, "Analyzing PDF content with Gemini AI...")
         model = genai.GenerativeModel('gemini-1.5-pro-latest')
         
         # Upload PDF to Gemini
+        pdf_processor.set_progress(job_id, "uploading_gemini", 40, "Uploading PDF to Gemini for processing...")
         pdf_file = genai.upload_file(io.BytesIO(pdf_content), mime_type="application/pdf")
         
-        # Step 1: Analyze PDF to extract structure and content
+        # Step 2: Analyze PDF to extract structure and content
+        pdf_processor.set_progress(job_id, "extracting_content", 50, "Extracting chapters, concepts, and formulas...")
         analysis_prompt = f"""
         Analyze this PDF document thoroughly and provide:
         
